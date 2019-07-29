@@ -5,7 +5,10 @@
   "dependencies": {
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-scripts": "3.0.1"
+    "react-scripts": "3.0.1",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.4",
+    "survey-react": "^1.1.1"
   },
   "scripts": {
     "start": "react-scripts start",
