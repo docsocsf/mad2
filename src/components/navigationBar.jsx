@@ -1,18 +1,54 @@
 import React, { Component } from "react";
 
-import { AppBar } from "react-toolbox/lib/app_bar";
-import { Navigation } from "react-toolbox/lib/navigation";
-import { Link } from "react-toolbox/lib/link";
+import { Navbar, NavItem, NavLink, Nav} from "reactstrap";
 
 class NavigationBar extends Component {
   render() {
     return (
-      <AppBar title='React Toolbox' >
-        <Navigation type='horizontal'>
-          <Link href='/student' label='Student' icon='inbox' />
-          <Link href='/parent' active label='Parent' icon='person' />
-        </Navigation>
-      </AppBar>
+      <Navbar color="dark" dark>
+        <Nav>
+          <NavItem>
+            <NavLink
+              style={{
+                color: "white",
+                paddingLeft: "0px",
+                paddingRight: "20px",
+                paddingTop: "20px"
+              }}
+              href="/parent"
+            >
+              Parent
+            </NavLink>
+          </NavItem>
+          <NavItem>
+            <NavLink
+              style={{
+                color: "white",
+                paddingLeft: "0px",
+                paddingRight: "0px",
+                paddingTop: "20px"
+              }}
+              href="/student"
+            >
+              Student
+            </NavLink>
+          </NavItem>
+          {/* <Col xs="3" md="auto">
+                <Link
+                  style={{
+                    color: "white",
+                    paddingLeft: "0px",
+                    paddingRight: "0px",
+                    paddingTop: "20px"
+                  }}
+                  class="nav-link"
+                  to="/Map"
+                >
+                  Admin
+                </Link>
+          </Col> */}
+        </Nav>
+      </Navbar>
     );
   }
 }
