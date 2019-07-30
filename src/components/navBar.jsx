@@ -1,69 +1,39 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import SurveyComponent from "./surveyComponent";
-import Parent from "./parent";
-import Student from "./student";
 
-import { Navbar, Nav, Row, Col, Container } from "reactstrap";
+import { Navbar, NavItem, NavLink, Nav, Row, Col, Container } from "reactstrap";
 
 class NavBar extends Component {
   render() {
     return (
-      <Router>
-        <Navbar
-          color="dark"
-          dark
-          style={{
-            fontFamily: "Georgia, serif",
-            textAlign: "center",
-            padding: "0px"
-          }}
-        >
-          <Container style={{ paddingLeft: "0px", paddingRight: "0px" }}>
-            <Row>
-              <Col xs="3" md="auto">
-                <Link
-                  style={{
-                    color: "white",
-                    paddingLeft: "0px",
-                    paddingRight: "0px",
-                    paddingTop: "20px"
-                  }}
-                  class="nav-link"
-                  to="/"
-                >
-                  Parent <span class="sr-only">(current)</span>
-                </Link>
-              </Col>
-              <Col xs="3" md="auto">
-                <Link
-                  style={{
-                    color: "white",
-                    paddingLeft: "0px",
-                    paddingRight: "0px",
-                    paddingTop: "20px"
-                  }}
-                  class="nav-link"
-                  to="/Submit-Page"
-                >
-                  Submit Notice <span class="sr-only">(current)</span>
-                </Link>
-              </Col>
-              <Col xs="3" md="auto">
-                <Link
-                  style={{
-                    color: "white",
-                    paddingLeft: "0px",
-                    paddingRight: "0px",
-                    paddingTop: "20px"
-                  }}
-                  class="nav-link"
-                  to="/Lost-and-Found"
-                >
-                  Student
-                </Link>
-              </Col>
-              {/* <Col xs="3" md="auto">
+      <Navbar color="dark" dark>
+        <Nav>
+          <NavItem>
+            <NavLink
+              style={{
+                color: "white",
+                paddingLeft: "0px",
+                paddingRight: "20px",
+                paddingTop: "20px"
+              }}
+              href="/parent"
+            >
+              Parent
+            </NavLink>
+          </NavItem>
+          <NavItem>
+            <NavLink
+              style={{
+                color: "white",
+                paddingLeft: "0px",
+                paddingRight: "0px",
+                paddingTop: "20px"
+              }}
+              href="/student"
+            >
+              Student
+            </NavLink>
+          </NavItem>
+          {/* <Col xs="3" md="auto">
                 <Link
                   style={{
                     color: "white",
@@ -77,15 +47,8 @@ class NavBar extends Component {
                   Admin
                 </Link>
               </Col> */}
-            </Row>
-          </Container>
-          <Nav className="ml-auto" navbar />
-        </Navbar>
-
-        <Route exact path="/survey" component={SurveyComponent} />
-        <Route exact path="/parent" component={Parent} />
-        <Route exact path="/student" component={Student} />
-      </Router>
+        </Nav>
+      </Navbar>
     );
   }
 }

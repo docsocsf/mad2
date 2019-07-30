@@ -1,8 +1,13 @@
 import React, { Component } from "react";
-
+import SurveyComponent from "./surveyComponent";
 class Student extends Component {
   render() {
-    return <h1> Student</h1>;
+    return (
+      <div>
+        <h1> Student</h1>
+        <SurveyComponent />
+      </div>
+    );
   }
 }
 
