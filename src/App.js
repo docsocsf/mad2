@@ -1,22 +1,18 @@
-import React, { Component } from "react";
-import NavBar from "./components/navBar";
+import React  from "react";
+import NavigationBar from "./components/navigationBar";
 import { BrowserRouter as Router, Route } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "./App.css";
 
-import Parent from "./components/parent";
-import Student from "./components/student";
+import ParentPage from "./components/pages/parentPage";
+import StudentPage from "./components/pages/studentPage";
+import HomePage from "./components/pages/homePage";
 
-class App extends Component {
-  render() {
+export default function App() {
     return (
       <Router>
-        <NavBar />
-        <Route exact path="/parent" component={Parent} />
-        <Route exact path="/student" component={Student} />
+        <NavigationBar />
+        <Route exact path="/" component={HomePage} />
+        <Route exact path="/parent" component={ParentPage} />
+        <Route exact path="/student" component={StudentPage} />
       </Router>
     );
-  }
 }
-
-export default App;

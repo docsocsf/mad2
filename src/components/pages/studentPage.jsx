@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import SurveyComponent from "./surveyComponent";
-class Student extends Component {
+import SurveyComponent from "../surveyComponent";
+
+class StudentPage extends Component {
   render() {
     return (
       <div>
@@ -11,4 +12,4 @@ class Student extends Component {
   }
 }
 
-export default Student;
+export default StudentPage;
