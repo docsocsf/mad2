@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import * as Survey from "survey-react";
 import "survey-react/survey.css";
 import { Form, FormGroup, Label, Input, Container, Col } from "reactstrap";
+import axios from 'axios';
 
 class SurveyComponent extends Component {
   constructor(props) {
@@ -16,8 +17,9 @@ class SurveyComponent extends Component {
     this.handleShortcodeChange = this.handleShortcodeChange.bind(this);
   }
 
-  onCompleteComponent() {
+  onCompleteComponent(results) {
     this.setState({ isCompleted: true });
+    axios.post("http://localhost:8080/", results.data)
   }
 
   handleNameChange(event) {
@@ -90,64 +92,17 @@ class SurveyComponent extends Component {
                   text: "Product is easy to use"
                 }
               ]
-            }
-          ]
-        },
-        {
-          questions: [
-            {
-              type: "radiogroup",
-              name: "price to competitors",
-              title: "Compared to our competitors, do you feel the Product is",
-              choices: [
-                "Less expensive",
-                "Priced about the same",
-                "More expensive",
-                "Not sure"
-              ]
             },
-            {
-              type: "radiogroup",
-              name: "price",
-              title: "Do you feel our current price is merited by our product?",
-              choices: [
-                "correct|Yes, the price is about right",
-                "low|No, the price is too low for your product",
-                "high|No, the price is too high for your product"
-              ]
-            },
-            {
-              type: "multipletext",
-              name: "pricelimit",
-              title: "What is the... ",
-              items: [
-                {
-                  name: "mostamount",
-                  title:
-                    "Most amount you would every pay for a product like ours"
-                },
-                {
-                  name: "leastamount",
-                  title: "The least amount you would feel comfortable paying"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          questions: [
             {
               type: "text",
-              name: "email",
-              title:
-                "Thank you for taking our survey. Your survey is almost complete, please enter your email address in the box below if you wish to participate in our drawing, then press the 'Submit' button."
+              name: "textQuestion",
+              title: "Answer this question goddamnit"
             }
           ]
         }
       ]
     };
 
-    var onCompleteComponent = this.state.isCompleted ? <div /> : null;
     return (
       <div>
         <Container>
@@ -181,7 +136,6 @@ class SurveyComponent extends Component {
           showCompletedPage={false}
           onComplete={this.onCompleteComponent}
         />
-        {onCompleteComponent}
       </div>
     );
   }
