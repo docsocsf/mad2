@@ -146,78 +146,27 @@ class SurveyComponent extends Component {
         }
       ]
     };
-    //   pages: [
-    //     {
-    //       name: "page1",
-    //       elements: [
-    //         {
-    //           type: "rating",
-    //           name: "question1",
-    //           title: "How much do you enjoy drinking?",
-    //           isRequired: true
-    //         },
-    //         {
-    //           type: "rating",
-    //           name: "question2",
-    //           title: "How much do you enjoy drinking?",
-    //           isRequired: true
-    //         },
-    //         {
-    //           type: "rating",
-    //           name: "question3",
-    //           title: "How much do you enjoy drinking?",
-    //           isRequired: true
-    //         },
-    //         {
-    //           type: "rating",
-    //           name: "question4",
-    //           title: "How much do you enjoy drinking?",
-    //           isRequired: true
-    //         },
-    //         {
-    //           type: "rating",
-    //           name: "question5",
-    //           title: "How much do you enjoy drinking?",
-    //           isRequired: true
-    //         },
-    //         {
-    //           type: "rating",
-    //           name: "question6",
-    //           title: "How much do you enjoy drinking?",
-    //           isRequired: true
-    //         }
-    //       ]
-    //     }
-    //   ]
-    // };
 
-    var survey = new Survey.Model(json);
-    // survey.onComplete.add(function(result) {
-    //   document.querySelector("#surveyResult").textContent =
-    //     "Result JSON:\n" + JSON.stringify(result.data, null, 3);
-    // });
     var onCompleteComponent = this.state.isCompleted ? <div /> : null;
-
-    survey.onComplete.add(function(result) {
-      document.querySelector("#surveyResult").textContent =
-        "Result JSON:\n" + JSON.stringify(result.data, null, 3);
-    });
-
     return (
       <div>
         <Container>
           <Form>
             <FormGroup row>
-              <Label sm={1}> Name </Label>
-              <Col sm={5}>
+              <Col xs={2}>
+                <Label> Name </Label>
+              </Col>
+              <Col xs={10}>
                 <Input
                   name="name"
                   value={this.state.name}
                   onChange={this.handleNameChange}
                 />
               </Col>
-              <Label sm={1}> Shortcode </Label>
-              <Col sm={5}>
+              <Col xs={2} style={{ paddingTop: "10" }}>
+                <Label> Shortcode </Label>
+              </Col>
+              <Col xs={10}>
                 <Input
                   name="shortcode"
                   value={this.state.shortcode}
@@ -228,7 +177,7 @@ class SurveyComponent extends Component {
           </Form>
         </Container>
         <Survey.Survey
-          model={survey}
+          json={json}
           showCompletedPage={false}
           onComplete={this.onCompleteComponent}
         />

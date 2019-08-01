@@ -1,23 +1,33 @@
 import React, { Component } from "react";
 
-import { Navbar, NavItem, NavLink, Nav, NavbarBrand} from "reactstrap";
+import {
+  Navbar,
+  NavItem,
+  NavLink,
+  Nav,
+  NavbarBrand,
+  Col,
+  Container,
+  Row
+} from "reactstrap";
 
 class NavigationBar extends Component {
   render() {
     return (
-      <Navbar 
+      <Navbar
         style={{
-          "background-color": "#225590"
+          backgroundColor: "#225590"
         }}
       >
-        <NavbarBrand href="/">
-          <img 
+        <NavbarBrand className="logo" href="/">
+          <img
             src={process.env.PUBLIC_URL + "/images/docsoc-square-white.png"}
-            height="5%"
-            width="5%"
+            height="60px"
+            width="60px"
             alt="DoCSoc"
           />
         </NavbarBrand>
+
         <Nav>
           <NavItem>
             <NavLink
@@ -45,20 +55,6 @@ class NavigationBar extends Component {
               Student
             </NavLink>
           </NavItem>
-          {/* <Col xs="3" md="auto">
-                <Link
-                  style={{
-                    color: "white",
-                    paddingLeft: "0px",
-                    paddingRight: "0px",
-                    paddingTop: "20px"
-                  }}
-                  class="nav-link"
-                  to="/Map"
-                >
-                  Admin
-                </Link>
-          </Col> */}
         </Nav>
       </Navbar>
     );

@@ -11,7 +11,7 @@ class StudentPage extends Component {
   render() {
     return (
       <div style={{ fontFamily: "Georgia" }}>
-        <h1 style={{ marginTop: "50", textAlign: "center" }}>Student survey</h1>
+        <h1 style={{ textAlign: "center" }}>Student survey</h1>
         <Container>
           <Row>
             <Col sm={1} />
