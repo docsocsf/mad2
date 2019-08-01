@@ -5,7 +5,11 @@ import { Navbar, NavItem, NavLink, Nav, NavbarBrand} from "reactstrap";
 class NavigationBar extends Component {
   render() {
     return (
-      <Navbar dark color="dark">
+      <Navbar 
+        style={{
+          "background-color": "#225590"
+        }}
+      >
         <NavbarBrand href="/">
           <img 
             src={process.env.PUBLIC_URL + "/images/docsoc-square-white.png"}
