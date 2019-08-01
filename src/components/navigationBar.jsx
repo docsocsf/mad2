@@ -1,11 +1,19 @@
 import React, { Component } from "react";
 
-import { Navbar, NavItem, NavLink, Nav} from "reactstrap";
+import { Navbar, NavItem, NavLink, Nav, NavbarBrand} from "reactstrap";
 
 class NavigationBar extends Component {
   render() {
     return (
-      <Navbar color="dark" dark>
+      <Navbar dark color="dark">
+        <NavbarBrand href="/">
+          <img 
+            src={process.env.PUBLIC_URL + "/images/docsoc-square-white.png"}
+            height="5%"
+            width="5%"
+            alt="DoCSoc"
+          />
+        </NavbarBrand>
         <Nav>
           <NavItem>
             <NavLink

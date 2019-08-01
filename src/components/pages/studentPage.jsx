@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import SurveyComponent from "../surveyComponent";
 import { Form, FormGroup, Label, Input, Col, Container } from "reactstrap";
-class Student extends Component {
+
+class StudentPage extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -17,4 +18,4 @@ class Student extends Component {
   }
 }
 
-export default Student;
+export default StudentPage;
