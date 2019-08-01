@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import SurveyComponent from "../surveyComponent";
-import { Form, FormGroup, Label, Input, Col, Container } from "reactstrap";
+import { Form, FormGroup, Label, Input, Col, Container, Row } from "reactstrap";
 
 class StudentPage extends Component {
   constructor(props) {
@@ -10,9 +10,17 @@ class StudentPage extends Component {
 
   render() {
     return (
-      <div>
-        <h1>Student survey</h1>
-        <SurveyComponent />
+      <div style={{ fontFamily: "Georgia" }}>
+        <h1 style={{ marginTop: "50", textAlign: "center" }}>Student survey</h1>
+        <Container>
+          <Row>
+            <Col sm={1} />
+            <Col sm={10}>
+              <SurveyComponent />
+            </Col>
+            <Col sm={1} />
+          </Row>
+        </Container>
       </div>
     );
   }
