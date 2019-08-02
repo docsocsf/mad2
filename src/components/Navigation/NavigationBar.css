@@ -1,0 +1,16 @@
+.NavigationBar {
+  background-color: #225590
+}
+
+.NavigationBarItem {
+  margin: 10px 12px 10px;
+}
+
+.NavigationBarLink {
+  color: white;
+}
+
+.NavigationBarLink:hover {
+  color: #1098F7;
+  text-decoration: none;
+}

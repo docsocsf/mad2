@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import SurveyComponent from "../surveyComponent";
-import { Form, FormGroup, Label, Input, Col, Container, Row } from "reactstrap";
+import SurveyComponent from "../SurveyComponent";
+import { Col, Container, Row } from "reactstrap";
 
 class StudentPage extends Component {
   constructor(props) {

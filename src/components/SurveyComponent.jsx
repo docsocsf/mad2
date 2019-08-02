@@ -105,32 +105,6 @@ class SurveyComponent extends Component {
 
     return (
       <div>
-        <Container>
-          <Form>
-            <FormGroup row>
-              <Col xs={2}>
-                <Label> Name </Label>
-              </Col>
-              <Col xs={10}>
-                <Input
-                  name="name"
-                  value={this.state.name}
-                  onChange={this.handleNameChange}
-                />
-              </Col>
-              <Col xs={2} style={{ paddingTop: "10" }}>
-                <Label> Shortcode </Label>
-              </Col>
-              <Col xs={10}>
-                <Input
-                  name="shortcode"
-                  value={this.state.shortcode}
-                  onChange={this.handleShortcodeChange}
-                />
-              </Col>
-            </FormGroup>
-          </Form>
-        </Container>
         <Survey.Survey
           json={json}
           showCompletedPage={false}

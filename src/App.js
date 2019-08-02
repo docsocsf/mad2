@@ -1,10 +1,10 @@
 import React  from "react";
-import NavigationBar from "./components/navigationBar";
+import NavigationBar from "./components/Navigation/NavigationBar";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import ParentPage from "./components/pages/parentPage";
-import StudentPage from "./components/pages/studentPage";
-import HomePage from "./components/pages/homePage";
+import ParentPage from "./components/Pages/ParentPage";
+import StudentPage from "./components/Pages/StudentPage";
+import HomePage from "./components/Pages/HomePage";
 
 export default function App() {
     return (
