@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import SurveyComponent from "../SurveyComponent";
+import SurveyComponent from "../Survey/SurveyComponent";
 import { Col, Container, Row } from "reactstrap";
 
 class StudentPage extends Component {
