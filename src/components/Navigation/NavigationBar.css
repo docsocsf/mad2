@@ -1,20 +1,31 @@
 .NavigationBar {
   background-color: #225590;
   border-radius: 0px 0px 20px 20px;
+  height: 75px;
 }
 
 .NavigationBarItem {
-  margin: 10px 12px 10px;
-  padding: 5px;
+  margin: 10px 2px 10px;
+  padding: 8px 15px 8px;
+  vertical-align: middle;
+}
+
+.NavigationBarItem:hover {
+  background-color: #1c4370;
+  border-radius: 15px;
 }
 
 .NavigationBarLink {
   color: white;
-  font-family: 'Open Sans', sans-serif;
   font-weight: bold;
 }
 
 .NavigationBarLink:hover {
-  color: #1098F7;
   text-decoration: none;
+  color: white;
+}
+
+.LinkText {
+  font-weight: bold;
+  font-family: 'Open Sans', sans-serif;
 }

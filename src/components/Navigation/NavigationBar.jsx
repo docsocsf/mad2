@@ -13,9 +13,8 @@ import {
 class NavigationBar extends Component {
   render() {
     return (
-        <Container>
-          <Navbar className="NavigationBar"
-          >
+      <Container>
+        <Navbar className="NavigationBar">
             <NavbarBrand className="logo" >
               <Link to="/" >
                 <img
@@ -30,21 +29,21 @@ class NavigationBar extends Component {
             <Nav>
               <NavItem className="NavigationBarItem">
                 <Link to="/parent" className="NavigationBarLink">
-                  <h2>
+                  <h3 className="LinkText">
                     Parent
-                  </h2>
+                  </h3>
                 </Link>
               </NavItem>
               <NavItem className="NavigationBarItem">
                 <Link to="/student" className="NavigationBarLink">
-                  <h2>
+                  <h3 className="LinkText">
                     Student
-                  </h2>
+                  </h3>
                 </Link>
               </NavItem>
             </Nav>
-          </Navbar>
-        </Container>
+        </Navbar>
+      </Container>
     );
   }
 }
