@@ -1,13 +1,17 @@
 .NavigationBar {
-  background-color: #225590
+  background-color: #225590;
+  border-radius: 0px 0px 20px 20px;
 }
 
 .NavigationBarItem {
   margin: 10px 12px 10px;
+  padding: 5px;
 }
 
 .NavigationBarLink {
   color: white;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: bold;
 }
 
 .NavigationBarLink:hover {
