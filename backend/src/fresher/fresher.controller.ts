@@ -3,7 +3,7 @@ import { CreateFresherDto } from './dto/create-fresher.dto';
 import { FresherService } from './fresher.service';
 import { Fresher } from './interfaces/fresher.interface';
 
-@Controller('fresher')
+@Controller('api/signup/fresher')
 export class FresherController {
   constructor(private readonly fresherService: FresherService) {}
 
