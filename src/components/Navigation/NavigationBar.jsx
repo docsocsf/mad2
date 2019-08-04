@@ -15,9 +15,9 @@ class NavigationBar extends Component {
     return (
       <Container>
         <Navbar className="NavigationBar">
-            <NavbarBrand className="logo" >
+            <NavbarBrand className="NavigationBarBrand">
               <Link to="/" >
-                <img
+                <img className="Logo" 
                   src={process.env.PUBLIC_URL + "/images/docsoc-square-white.png"}
                   height="60px"
                   width="60px"
