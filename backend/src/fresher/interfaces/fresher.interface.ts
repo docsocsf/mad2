@@ -1,7 +1,14 @@
 import { Document } from 'mongoose';
 
 export interface Fresher extends Document {
-  readonly name: string;
-  readonly age: number;
-  readonly breed: string;
+  readonly student: {
+    firstName: string;
+    lastName: string;
+    preferredName: string;
+    shortcode: string;
+  };
+  readonly interests: {
+    [key: string]: number;
+  };
+  readonly selfDescription: string;
 }

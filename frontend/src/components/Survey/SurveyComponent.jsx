@@ -29,11 +29,11 @@ class SurveyComponent extends Component {
     student.firstName = results.firstName.trim();
     student.lastName = results.lastName.trim();
     student.preferredName = results.preferredName ? results.preferredName.trim() : null;
+    student.shortcode = results.shortcode;
 
-    const interestsOutput = {}
+    const interestsOutput = {};
 
     for (let hobby of hobbies) {
-      console.log(results);
       const score = results.interests[hobby];
       interestsOutput[hobby] = score !== undefined ? Number(score) : 0
     }
