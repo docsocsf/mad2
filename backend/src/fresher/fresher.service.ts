@@ -1,21 +1,18 @@
+import { Inject, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
-import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Fresher } from './fresher.interface';
-import { CreateFresherDto } from './create-fresher.dto';
+import { CreateFresherDto } from './dto/create-fresher.dto';
+import { Fresher } from './interfaces/fresher.interface';
 
 @Injectable()
 export class FresherService {
-  constructor(
-    @InjectModel('Fresher') private readonly catModel: Model<Fresher>,
-  ) {}
+  constructor(@Inject('FRESHER_MODEL') private readonly fresherModel: Model<Fresher>) {}
 
-  async create(createCatDto: CreateFresherDto): Promise<Fresher> {
-    const createdCat = new this.catModel(createCatDto);
-    return await createdCat.save();
+  async create(createFresherDto: CreateFresherDto): Promise<Fresher> {
+    const createdFresher = new this.fresherModel(createFresherDto);
+    return await createdFresher.save();
   }
 
   async findAll(): Promise<Fresher[]> {
-    return await this.catModel.find().exec();
+    return await this.fresherModel.find().exec();
   }
 }

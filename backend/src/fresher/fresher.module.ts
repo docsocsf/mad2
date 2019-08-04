@@ -1,14 +1,12 @@
 import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
 import { FresherController } from './fresher.controller';
 import { FresherService } from './fresher.service';
-import { FresherSchema } from './fresher.schema';
+import { fresherProviders } from './fresher.providers';
+import { DatabaseModule } from '../database/database.module';
 
 @Module({
-  imports: [
-    MongooseModule.forFeature([{ name: 'Fresher', schema: FresherSchema }]),
-  ],
+  imports: [DatabaseModule],
   controllers: [FresherController],
-  providers: [FresherService],
+  providers: [FresherService, ...fresherProviders],
 })
 export class FresherModule {}
