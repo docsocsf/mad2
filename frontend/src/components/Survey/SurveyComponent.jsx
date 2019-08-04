@@ -17,17 +17,18 @@ class SurveyComponent extends Component {
     this.handleShortcodeChange = this.handleShortcodeChange.bind(this);
   }
 
-  onCompleteComponent(results) {
+  async onCompleteComponent(results) {
     this.setState({ isCompleted: true });
-    axios.post("http://localhost:8080/", 
+    let response = await axios.post("http://localhost:8080/api/signup/fresher", 
       this.serializeResults(results.data));
+    console.log(response);
   }
 
   serializeResults(results) {
     const student = {};
     student.firstName = results.firstName.trim();
     student.lastName = results.lastName.trim();
-    student.preferredName = results.preferredName.trim() || null;
+    student.preferredName = results.preferredName ? results.preferredName.trim() : null;
 
     const interestsOutput = {}
 
@@ -40,7 +41,7 @@ class SurveyComponent extends Component {
     return {
       student: student,
       interests: interestsOutput,
-      selfDescription: results.selfDescription.trim() || null,
+      selfDescription: results.selfDescription ? results.selfDescription.trim() : null,
     }
 
   }
