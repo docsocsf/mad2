@@ -9,19 +9,18 @@ class SurveyComponent extends Component {
     super(props);
     this.state = {
       isCompleted: false,
-      shortcode: "",
-      name: ""
+      submissionSuccess: false,
     };
     this.onCompleteComponent = this.onCompleteComponent.bind(this);
-    this.handleNameChange = this.handleNameChange.bind(this);
-    this.handleShortcodeChange = this.handleShortcodeChange.bind(this);
   }
 
   async onCompleteComponent(results) {
     this.setState({ isCompleted: true });
-    let response = await axios.post("http://localhost:8080/api/signup/fresher", 
+    let response = await axios.post("/api/signup/fresher", 
       this.serializeResults(results.data));
-    console.log(response);
+    if (response.status === 201) {
+      this.setState({ submissionSuccess: true });
+    }
   }
 
   serializeResults(results) {
@@ -46,36 +45,24 @@ class SurveyComponent extends Component {
 
   }
 
-  handleNameChange(event) {
-    this.setState({ name: event.target.value });
-    console.log(this.state);
-  }
-
-  handleShortcodeChange(event) {
-    this.setState({ shortcode: event.target.value });
-    console.log(this.state);
-  }
-
   render() {
-    var defaultThemeColors = Survey.StylesManager.ThemeColors["default"];
-    defaultThemeColors["$main-color"] = "#225590";
-    defaultThemeColors["$main-hover-color"] = "#2255f9";
-    defaultThemeColors["$text-color"] = "#4a4a4a";
-    defaultThemeColors["$header-color"] = "#225590";
-
-    defaultThemeColors["$header-background-color"] = "#4a4a4a";
-    defaultThemeColors["$body-container-background-color"] = "#f8f8f8";
-
-    Survey.StylesManager.applyTheme();
-
     return (
-      <div>
-        <Survey.Survey
-          json={config}
-          showCompletedPage={false}
-          onComplete={this.onCompleteComponent}
-        />
-      </div>
+      <>
+        { !this.state.isCompleted &&
+          <Survey.Survey
+            json={config}
+            showCompletedPage={false}
+            onComplete={this.onCompleteComponent}
+          />
+        }
+
+        {
+          this.state.isCompleted && this.state.submissionSuccess &&
+            <h1>
+              Submission success!
+            </h1>
+        }
+      </>
     );
   }
 }
