@@ -7,6 +7,17 @@ import axios from 'axios';
 class SurveyComponent extends Component {
   constructor(props) {
     super(props);
+
+    const defaultThemeColors = Survey.StylesManager.ThemeColors["default"];
+    defaultThemeColors["$main-color"] = "#225590";
+    defaultThemeColors["$main-hover-color"] = "#2255f9";
+    defaultThemeColors["$text-color"] = "#4a4a4a";
+    defaultThemeColors["$header-color"] = "#225590";
+
+    defaultThemeColors["$header-background-color"] = "#4a4a4a";
+    defaultThemeColors["$body-container-background-color"] = "#f8f8f8";
+
+    Survey.StylesManager.applyTheme();
     this.state = {
       isCompleted: false,
       submissionSuccess: false,
