@@ -62,6 +62,13 @@ class SurveyComponent extends Component {
               Submission success!
             </h1>
         }
+
+        {
+          this.state.isCompleted && !this.state.submissionSuccess &&
+            <h1>
+              Submission Servey error, please try again later
+            </h1>
+        }
       </>
     );
   }
