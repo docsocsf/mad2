@@ -7,21 +7,24 @@ import {
   Navbar,
   Nav,
   NavbarBrand,
-  Container
+  Container,
 } from "reactstrap";
 
 function NavigationBar(props) {
   return (
     <Container>
       <Navbar className="NavigationBar">
-        <NavbarBrand to="/" className="NavigationBarBrand">
-          <Link to="/" >
+        <NavbarBrand className="NavigationBarBrand">
+          <Link to="/" className="NavigationBarLink" >
             <img className="Logo" 
               src={process.env.PUBLIC_URL + "/images/docsoc-square-white.png"}
               height="60px"
               width="60px"
               alt="DoCSoc"
             />
+            <h2 className="LinkText NavigationBarLink" style={{margin: "20px"}}>
+              Mums and Dads
+            </h2>
           </Link>
         </NavbarBrand>
         <Nav>

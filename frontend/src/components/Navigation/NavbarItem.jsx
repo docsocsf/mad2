@@ -6,7 +6,7 @@ import { NavItem } from "reactstrap";
 
 function NavbarItem(props) {
   return (
-          <NavItem className="NavigationBarItem">
+          <NavItem>
             <Link to={ props.linkTo } className="NavigationBarLink">
               <h3 className="LinkText">
                 {props.children}

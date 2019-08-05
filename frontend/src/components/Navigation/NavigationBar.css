@@ -1,4 +1,4 @@
-.NavigationBar {
+.navbar {
   background-color: #225590;
   border-radius: 0px 0px 15px 15px;
   height: 100%;
@@ -6,37 +6,36 @@
   padding-top: 3px;
 }
 
-.NavigationBarItem {
+.nav-item {
   margin: auto 2px auto;
   padding: 1px 15px 1px;
 }
 
-.NavigationBarItem:hover {
+.nav-item:hover {
   background-color: #1c4370;
   border-radius: 15px;
 }
 
 .NavigationBarLink {
-  padding: 0px;
-}
-
-.NavigationBarLink {
-  color: white;
+  padding: 2px;
   font-weight: bold;
 }
 
 .NavigationBarLink:hover {
   text-decoration: none;
-  color: white;
 }
 
 .LinkText {
+  color: white;
   font-weight: bold;
   font-family: 'Open Sans', sans-serif;
   margin-bottom: 0;
+  display: inline;
+  vertical-align: middle;
 }
 
 .Logo {
  padding-top: 0px;
  padding-bottom: 0px;
+ display: inline-block;
 }
