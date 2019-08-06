@@ -1,16 +1,4 @@
-from mongoengine import connect, fields, Document
-
-db = connect(db='demo', host='mongodb://localhost:27017')
-
-class Fresher(Document):
-    student = fields.DictField()
-    interests = fields.DictField()
-    selfDescription = fields.StringField()
-    meta = {'collection': 'fresher_models', 'strict': False}
-
-
-class Family(Document):
-    kids = fields.ListField(fields.ReferenceField(Fresher))
+from models import Family, Fresher
 
 
 def allocate_and_save(freshers):
@@ -24,6 +12,10 @@ def allocate_and_save(freshers):
             kids = []
 
 
+allocate_and_save(Fresher.objects)
+
 for family in Family.objects:
+    print()
+    print(family)
     for kid in family.kids:
         print(kid['student'])
