@@ -33,12 +33,31 @@ class Interests(EmbeddedDocument):
     kpop = IntField(min_value=0, max_value=4, default=0)
     dance = IntField(min_value=0, max_value=4, default=0)
 
+    def to_dict(self):
+        return {
+            "alcohol": self.alcohol,
+            "clubbing": self.clubbing,
+            "anime": self.anime,
+            "sports": self.sports,
+            "cooking": self.cooking,
+            "performingMusic": self.performingMusic,
+            "kpop": self.kpop,
+            "dance": self.dance
+        }
+
 
 class Fresher(Document):
+
     student = EmbeddedDocumentField(Student)
     interests = EmbeddedDocumentField(Interests)
     selfDescription = StringField(default="")
     meta = {'collection': 'fresher_models', 'strict': False}
+
+    def to_dict(self):
+        interests_dict = self.interests.to_dict()
+        interests_dict["shortcode"] = self.student.shortcode
+
+        return interests_dict
 
 
 class Family(Document):
