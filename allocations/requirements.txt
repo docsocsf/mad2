@@ -1,0 +1,6 @@
+pandas
+mongoengine
+numpy
+rstr
+sklearn
+matplotlib

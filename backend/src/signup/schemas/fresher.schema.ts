@@ -4,11 +4,11 @@ export const FresherSchema = new Mongoose.Schema({
   student: {
     firstName: String,
     lastName: String,
-    preferredName: {
+    preferredName: String,
+    shortcode: {
       type: String,
       unique: true,
     },
-    shortcode: String,
   },
   interests: Mongoose.Schema.Types.Mixed,
   selfDescription: String,
