@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
-import { FresherModule } from './fresher/fresher.module';
-import { MongooseModule } from '@nestjs/mongoose';
+import { SignupModule } from './signup/signup.module';
+import { TypegooseModule } from 'nestjs-typegoose';
 
 @Module({
   imports: [
-    FresherModule, 
-    MongooseModule.forRoot(
-      'mongodb://localhost/demo'
+    SignupModule,
+    TypegooseModule.forRoot(
+      'mongodb://localhost/demo',
     )],
 })
 export class ApplicationModule {}

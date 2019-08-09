@@ -2003,6 +2003,11 @@ is-ci@^2.0.0:
   dependencies:
     ci-info "^2.0.0"
 
+is-class@^0.0.7:
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/is-class/-/is-class-0.0.7.tgz#8eca1823d47489cd543cb0c848f3b84bf80c7171"
+  integrity sha512-HXAKcoeWP+zzEGrqDvAVFOBc3nKoV/FbJN5Fa7/en9DakH2egTjEg4RQQZSs3ijUySPPR8s96XM93nQwloItcA==
+
 is-data-descriptor@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/is-data-descriptor/-/is-data-descriptor-0.1.4.tgz#0b5ee648388e2c860282e793f1856fec3f301b56"
@@ -3085,6 +3090,14 @@ neo-async@^2.6.0:
   resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.6.1.tgz#ac27ada66167fa8849a6addd837f6b189ad2081c"
   integrity sha512-iyam8fBuCUpWeKPGpaNMetEocMt364qkCsfL9JuhjXX6dRnguRVOfk2GZaDpPjcOKiiXCPINZC1GczQ7iTq3Zw==
 
+nestjs-typegoose@^5.2.1:
+  version "5.2.1"
+  resolved "https://registry.yarnpkg.com/nestjs-typegoose/-/nestjs-typegoose-5.2.1.tgz#d0f8172ec45ecebae0bdf4d5b42275d45b6def19"
+  integrity sha512-z4s9jUCEG1/pjfJGF4UXGR0huSjRG/agE1EhYJKODEU1BMJEgSpPAXMZfH1XTGObppYtCJ61ys2DZv3qtVUu7A==
+  dependencies:
+    is-class "^0.0.7"
+    reflect-metadata "^0.1.13"
+
 next-tick@1, next-tick@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/next-tick/-/next-tick-1.0.0.tgz#ca86d1fe8828169b0120208e3dc8424b9db8342c"
@@ -3634,7 +3647,7 @@ realpath-native@^1.1.0:
   dependencies:
     util.promisify "^1.0.0"
 
-reflect-metadata@^0.1.12:
+reflect-metadata@^0.1.12, reflect-metadata@^0.1.13:
   version "0.1.13"
   resolved "https://registry.yarnpkg.com/reflect-metadata/-/reflect-metadata-0.1.13.tgz#67ae3ca57c972a2aa1642b10fe363fe32d49dc08"
   integrity sha512-Ts1Y/anZELhSsjMcU605fU9RE4Oi3p5ORujwbIKXfWa+0Zxs510Qrmrce5/Jowq3cHSZSJqBjypxmHarc+vEWg==
@@ -4451,6 +4464,13 @@ typedarray@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
+
+typegoose@^5.9.0:
+  version "5.9.0"
+  resolved "https://registry.yarnpkg.com/typegoose/-/typegoose-5.9.0.tgz#e4b2cdfe4cffe6c2a54be4133a3d67fcda4d6a32"
+  integrity sha512-oczsIaQeT24rxbFfWIq/qyrCFYt1wLG5lgu9GLgeF0X9y07C8l/f2uk1+wDLVroz9j3SlK9jpz6j00kSFogzMg==
+  dependencies:
+    reflect-metadata "^0.1.13"
 
 typescript@3.4.3:
   version "3.4.3"
