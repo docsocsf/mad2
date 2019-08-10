@@ -78,7 +78,7 @@ class ParentSurveyComponent extends Component {
         )}
 
         {this.state.isCompleted && !this.state.submissionSuccess && (
-          <h1>Submission Servey error, please try again later</h1>
+          <h1>Submission Survey error, please try again later</h1>
         )}
       </>
     );
