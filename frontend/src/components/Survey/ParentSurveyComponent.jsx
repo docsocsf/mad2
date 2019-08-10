@@ -44,7 +44,6 @@ class ParentSurveyComponent extends Component {
       ? results.preferredName.trim()
       : null;
     student.shortcode = results.shortcode;
-    student.partnerShortcode = results.partnerShortcode;
 
     const interestsOutput = {};
 
@@ -58,7 +57,8 @@ class ParentSurveyComponent extends Component {
       interests: interestsOutput,
       selfDescription: results.selfDescription
         ? results.selfDescription.trim()
-        : null
+        : null,
+      partnerShortcode: results.partnerShortcode
     };
   }
 
