@@ -13,6 +13,7 @@ export class SignupService {
 
   async createFresher(createFresherDto: Fresher): Promise<Fresher> {
     const createdFresher = new this.fresherModel(createFresherDto);
+    createdFresher.signedUpTs = new Date();
     return await createdFresher.save();
   }
 
@@ -21,6 +22,7 @@ export class SignupService {
   }
 
   async createParent(createParentDto: Parent): Promise<Parent> {
+    createParentDto.signedUpTs = new Date();
     const createdParent = new this.parentModel(createParentDto);
     return await createdParent.save();
   }

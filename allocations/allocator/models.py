@@ -1,6 +1,6 @@
 from mongoengine import Document, EmbeddedDocument, connect
 from mongoengine.fields import (
-    BoolField,
+    BooleanField,
     DateTimeField,
     EmbeddedDocumentField,
     IntField,
@@ -83,7 +83,7 @@ class Marriage(Document):
     parents = ListField(ReferenceField(Parent), required=True)
     proposer = ReferenceField(Parent, required=True)
     proposee = ReferenceField(Parent, required=True)
-    accepted = BoolField(default=False)
+    accepted = BooleanField(default=False)
     proposeTs = DateTimeField()
     acceptedTs = DateTimeField()
 

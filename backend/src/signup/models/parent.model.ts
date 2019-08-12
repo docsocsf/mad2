@@ -14,6 +14,6 @@ export class Parent extends Typegoose {
   @prop()
   selfDescription: string;
 
-  @prop({default: new Date()})
+  @prop()
   signedUpTs: Date;
 }

@@ -8,8 +8,8 @@ export class SignupController {
   constructor(private readonly signupService: SignupService) {}
 
   @Post('fresher')
-  async createFresher(@Body() createFresherDto: Fresher): Promise<Fresher> {
-    return await this.signupService.createFresher(createFresherDto);
+  async createFresher(@Body() fresher: Fresher): Promise<Fresher> {
+    return await this.signupService.createFresher(fresher);
   }
 
   @Get('fresher')
@@ -18,8 +18,8 @@ export class SignupController {
   }
 
   @Post('parent')
-  async createParent(@Body() createParentDto: Parent): Promise<Parent> {
-    return await this.signupService.createParent(createParentDto);
+  async createParent(@Body() parent: Parent): Promise<Parent> {
+    return await this.signupService.createParent(parent);
   }
 
   @Get('parent')
