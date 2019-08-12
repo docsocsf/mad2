@@ -1,6 +1,6 @@
 import { prop, Typegoose } from 'typegoose';
-import {Student} from 'src/signup/models/student.model';
-import {Interests} from 'src/signup/models/interests.model';
+import {Student} from './student.model';
+import {Interests} from './interests.model';
 
 export class Fresher extends Typegoose {
 

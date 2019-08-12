@@ -2,8 +2,8 @@ import { Module } from '@nestjs/common';
 import { SignupController } from './signup.controller';
 import { SignupService } from './signup.service';
 import { TypegooseModule } from 'nestjs-typegoose';
-import { Fresher } from 'src/signup/models/fresher.model';
-import { Parent } from 'src/signup/models/parent.model';
+import { Fresher } from './models/fresher.model';
+import { Parent } from './models/parent.model';
 
 @Module({
   imports: [

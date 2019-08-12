@@ -10,28 +10,26 @@ from mongoengine.fields import (
 db = connect(db='demo', host='mongodb://localhost:27017')
 
 
-class PrefField():
-
-    def __call__(self):
-        return IntField(min_value=0, max_value=4, default=0)
+def preference_field():
+    return IntField(min_value=0, max_value=4, default=0)
 
 
 class Student(EmbeddedDocument):
-    firstName = StringField()
-    lastName = StringField()
+    firstName = StringField(required=True)
+    lastName = StringField(required=True)
     preferredName = StringField(default="")
-    shortcode = StringField(unique=True)
+    shortcode = StringField(unique=True, required=True)
 
 
 class Interests(EmbeddedDocument):
-    alcohol = IntField(min_value=0, max_value=4, default=0)
-    clubbing = IntField(min_value=0, max_value=4, default=0)
-    anime = IntField(min_value=0, max_value=4, default=0)
-    sports = IntField(min_value=0, max_value=4, default=0)
-    cooking = IntField(min_value=0, max_value=4, default=0)
-    performingMusic = IntField(min_value=0, max_value=4, default=0)
-    kpop = IntField(min_value=0, max_value=4, default=0)
-    dance = IntField(min_value=0, max_value=4, default=0)
+    alcohol = preference_field()
+    clubbing = preference_field()
+    anime = preference_field()
+    sports = preference_field()
+    cooking = preference_field()
+    performingMusic = preference_field()
+    kpop = preference_field()
+    dance = preference_field()
 
     def to_dict(self):
         return {
@@ -48,10 +46,30 @@ class Interests(EmbeddedDocument):
 
 class Fresher(Document):
 
-    student = EmbeddedDocumentField(Student)
-    interests = EmbeddedDocumentField(Interests)
+    student = EmbeddedDocumentField(Student, required=True)
+    interests = EmbeddedDocumentField(Interests, required=True)
     selfDescription = StringField(default="")
-    meta = {'collection': 'fresher_models', 'strict': False}
+
+    meta = {'collection': 'freshers'}
+
+    def to_dict(self):
+        interests_dict = self.interests.to_dict()
+        interests_dict["shortcode"] = self.student.shortcode
+
+        return interests_dict
+
+
+class Parent(Document):
+
+    student = EmbeddedDocumentField(Student, required=True)
+
+    interests = EmbeddedDocumentField(Interests, required=True)
+
+    partnerShortcode = StringField(required=True)
+
+    selfDescription = StringField(default="")
+
+    meta = {'collection': 'parents'}
 
     def to_dict(self):
         interests_dict = self.interests.to_dict()
@@ -61,4 +79,5 @@ class Fresher(Document):
 
 
 class Family(Document):
+    parents = ListField(ReferenceField(Parent))
     kids = ListField(ReferenceField(Fresher))
