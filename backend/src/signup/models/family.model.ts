@@ -9,4 +9,7 @@ export class Family extends Typegoose {
 
   @arrayProp({ required: true, unique: true, itemsRef: Fresher})
   kids: Array<Ref<Fresher>>;
+
+  @prop({default: new Date()})
+  assignedTs: Date;
 }

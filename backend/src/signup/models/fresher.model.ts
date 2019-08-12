@@ -12,4 +12,7 @@ export class Fresher extends Typegoose {
 
   @prop()
   selfDescription: string;
+
+  @prop({default: new Date()})
+  signedUpTs: Date;
 }

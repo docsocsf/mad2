@@ -15,4 +15,9 @@ export class Marriage extends Typegoose {
   @prop({default: false})
   accepted: boolean;
 
+  @prop({default: new Date()})
+  proposeTs: Date;
+
+  @prop()
+  acceptedTs: Date;
 }

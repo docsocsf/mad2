@@ -1,5 +1,7 @@
 from mongoengine import Document, EmbeddedDocument, connect
 from mongoengine.fields import (
+    BoolField,
+    DateTimeField,
     EmbeddedDocumentField,
     IntField,
     ListField,
@@ -49,6 +51,7 @@ class Fresher(Document):
     student = EmbeddedDocumentField(Student, required=True)
     interests = EmbeddedDocumentField(Interests, required=True)
     selfDescription = StringField(default="")
+    signedUpTs = DateTimeField()
 
     meta = {'collection': 'freshers'}
 
@@ -62,12 +65,10 @@ class Fresher(Document):
 class Parent(Document):
 
     student = EmbeddedDocumentField(Student, required=True)
-
     interests = EmbeddedDocumentField(Interests, required=True)
-
     partnerShortcode = StringField(required=True)
-
     selfDescription = StringField(default="")
+    signedUpTs = DateTimeField()
 
     meta = {'collection': 'parents'}
 
@@ -78,6 +79,16 @@ class Parent(Document):
         return interests_dict
 
 
+class Marriage(Document):
+    parents = ListField(ReferenceField(Parent), required=True)
+    proposer = ReferenceField(Parent, required=True)
+    proposee = ReferenceField(Parent, required=True)
+    accepted = BoolField(default=False)
+    proposeTs = DateTimeField()
+    acceptedTs = DateTimeField()
+
+
 class Family(Document):
-    parents = ListField(ReferenceField(Parent))
-    kids = ListField(ReferenceField(Fresher))
+    parents = ReferenceField(Marriage)
+    kids = ListField(ReferenceField(Fresher), default=[])
+    assignedTs = DateTimeField()
