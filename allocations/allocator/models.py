@@ -22,6 +22,11 @@ class Student(EmbeddedDocument):
     preferredName = StringField(default="")
     shortcode = StringField(unique=True, required=True)
 
+    meta = {
+        "strict": False,
+        "collection": "students"
+    }
+
 
 class Interests(EmbeddedDocument):
     alcohol = preference_field()
@@ -32,6 +37,11 @@ class Interests(EmbeddedDocument):
     performingMusic = preference_field()
     kpop = preference_field()
     dance = preference_field()
+
+    meta = {
+        "strict": False,
+        "collection": "interests"
+    }
 
     def to_dict(self):
         return {
@@ -53,7 +63,10 @@ class Fresher(Document):
     selfDescription = StringField(default="")
     signedUpTs = DateTimeField()
 
-    meta = {'collection': 'freshers'}
+    meta = {
+        "strict": False,
+        "collection": "freshers"
+    }
 
     def to_dict(self):
         interests_dict = self.interests.to_dict()
@@ -70,7 +83,10 @@ class Parent(Document):
     selfDescription = StringField(default="")
     signedUpTs = DateTimeField()
 
-    meta = {'collection': 'parents'}
+    meta = {
+        "strict": False,
+        "collection": "parents"
+    }
 
     def to_dict(self):
         interests_dict = self.interests.to_dict()
@@ -87,8 +103,18 @@ class Marriage(Document):
     proposeTs = DateTimeField()
     acceptedTs = DateTimeField()
 
+    meta = {
+        "strict": False,
+        "collection": "marriages"
+    }
+
 
 class Family(Document):
     parents = ReferenceField(Marriage)
     kids = ListField(ReferenceField(Fresher), default=[])
     assignedTs = DateTimeField()
+
+    meta = {
+        "strict": False,
+        "collection": "families"
+    }
