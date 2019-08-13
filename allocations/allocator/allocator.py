@@ -1,6 +1,5 @@
 import json
 
-
 from models import Family, Fresher, Parent, Marriage
 
 from pandas import DataFrame as Df

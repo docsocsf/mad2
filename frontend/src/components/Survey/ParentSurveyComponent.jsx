@@ -48,7 +48,12 @@ class ParentSurveyComponent extends Component {
     const interestsOutput = {};
 
     for (let hobby of hobbies) {
-      const score = results.interests[hobby];
+      let score;
+      if (results.interests) {
+        score = results.interests[hobby];
+      } else {
+        score = 0;
+      }
       interestsOutput[hobby] = score !== undefined ? Number(score) : 0;
     }
 
