@@ -1,5 +1,5 @@
 import { Typegoose, arrayProp, Ref, prop} from 'typegoose';
-import { Parent } from 'src/signup/models/parent.model';
+import { Parent } from './parent.model';
 
 export class Marriage extends Typegoose {
 
@@ -9,8 +9,14 @@ export class Marriage extends Typegoose {
   @prop({required: true, ref: Parent})
   proposer: Ref<Parent>;
 
-  @prop({required: true, ref: Parent})
+  @prop({required: true})
+  proposerShortcode: string;
+
+  @prop({ref: Parent})
   proposee: Ref<Parent>;
+
+  @prop({required: true})
+  proposeeShortcode: string;
 
   @prop({default: false})
   accepted: boolean;
