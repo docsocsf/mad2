@@ -78,8 +78,6 @@ class ParentSurveyComponent extends Component {
   }
 
   render() {
-    console.log(this.state);
-    console.log(this.proposalStatus === 'Proposed');
     return (
       <>
         {!this.state.isCompleted && (
@@ -92,7 +90,8 @@ class ParentSurveyComponent extends Component {
 
         {this.state.isCompleted && this.state.submissionSuccess && (
           <div style={{
-            textAlign: 'center'
+            textAlign: 'center',
+            fontFamily: 'Open Sans'
           }}>
             <h1>Submission success!</h1>
             <br/>
