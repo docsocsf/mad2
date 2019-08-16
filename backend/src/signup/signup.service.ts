@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { ModelType } from 'typegoose';
-import { Fresher } from './models/fresher.model';
-import { Parent } from './models/parent.model';
-import { Marriage } from './models/marriage.model';
+import { Fresher } from './models/mongo/fresher.model';
+import { Parent } from './models/mongo/parent.model';
+import { ParentResponse } from './models/responses/parentResponse.model';
+import { Marriage } from './models/mongo/marriage.model';
 
 @Injectable()
 export class SignupService {
@@ -23,14 +24,19 @@ export class SignupService {
     return await this.fresherModel.find().exec();
   }
 
-  async createParent(createParentDto: Parent): Promise<void> {
+  async createParent(createParentDto: Parent): Promise<ParentResponse> {
     createParentDto.signedUpTs = new Date();
     const createdParent = new this.parentModel(createParentDto);
     await createdParent.save();
 
     // If no partner, then don't create a marriage.
     if (createParentDto.partnerShortcode === null) {
-      return;
+      return new ParentResponse(
+        true,
+        createParentDto.student.shortcode,
+        null,
+        null
+      );
     } else {
 
       // Check if there are marriage proposals against the current parent
@@ -47,10 +53,15 @@ export class SignupService {
         acceptedMarriage.acceptedTs = new Date();
         acceptedMarriage.parents.push(createdParent);
         new this.marriageModel(acceptedMarriage).save();
-        return;
+        return new ParentResponse(
+          true,
+          createParentDto.student.shortcode,
+          createParentDto.partnerShortcode,
+          'Accepted'
+        );
       }
 
-      const newMarriage = new this.marriageModel({
+      const newProposal = new this.marriageModel({
         parents: [createdParent],
         proposer: createdParent,
         proposerShortcode: createParentDto.student.shortcode,
@@ -58,8 +69,13 @@ export class SignupService {
         proposeTs: new Date(),
       });
 
-      await newMarriage.save();
-      return;
+      await newProposal.save();
+      return new ParentResponse(
+        true,
+        createParentDto.student.shortcode,
+        createParentDto.partnerShortcode,
+        'Proposed'
+      );
     }
   }
 

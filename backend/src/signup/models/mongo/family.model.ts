@@ -1,6 +1,6 @@
 import { Typegoose, arrayProp, Ref, prop} from 'typegoose';
-import {Marriage} from 'src/signup/models/marriage.model';
-import {Fresher} from 'src/signup/models/fresher.model';
+import {Marriage} from 'src/signup/models/mongo/marriage.model';
+import {Fresher} from 'src/signup/models/mongo/fresher.model';
 
 export class Family extends Typegoose {
 

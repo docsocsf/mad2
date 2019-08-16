@@ -18,10 +18,15 @@ class ParentSurveyComponent extends Component {
     defaultThemeColors["$body-container-background-color"] = "#f8f8f8";
 
     Survey.StylesManager.applyTheme();
+
     this.state = {
       isCompleted: false,
-      submissionSuccess: false
+      submissionSuccess: false,
+      shortcode: '',
+      partnerShortcode: '',
+      proposalStatus: null
     };
+
     this.onCompleteComponent = this.onCompleteComponent.bind(this);
   }
 
@@ -32,7 +37,12 @@ class ParentSurveyComponent extends Component {
       this.serializeResults(results.data)
     );
     if (response.status === 201) {
-      this.setState({ submissionSuccess: true });
+      this.setState({
+        submissionSuccess: true,
+        shortcode: response.data.shortcode,
+        type: response.data.status,
+        partnerShortcode:  response.data.partnerShortcode
+      });
     }
   }
 
@@ -79,7 +89,13 @@ class ParentSurveyComponent extends Component {
         )}
 
         {this.state.isCompleted && this.state.submissionSuccess && (
-          <h1>Submission success!</h1>
+          <div style={{
+            'text-align': 'center'
+          }}>
+            <h1>Submission success!</h1>
+            <br/>
+            Thank you for signing up as a parent, {this.state.shortcode}
+          </div>
         )}
 
         {this.state.isCompleted && !this.state.submissionSuccess && (

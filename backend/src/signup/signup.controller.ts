@@ -1,8 +1,9 @@
 import { Controller, Get, Post, Body } from '@nestjs/common';
 import { SignupService } from './signup.service';
-import { Fresher } from './models/fresher.model';
-import { Parent } from './models/parent.model';
-import { Marriage } from './models/marriage.model';
+import { Fresher } from './models/mongo/fresher.model';
+import { Parent } from './models/mongo/parent.model';
+import { ParentResponse } from './models/responses/parentResponse.model';
+import { Marriage } from './models/mongo/marriage.model';
 
 @Controller('api/signup/')
 export class SignupController {
@@ -19,7 +20,7 @@ export class SignupController {
   }
 
   @Post('parent')
-  async parentSignup(@Body() parent: Parent): Promise<void> {
+  async parentSignup(@Body() parent: Parent): Promise<ParentResponse> {
     // let shortcode: string = parent.partnerShortcode;
     return await this.signupService.createParent(parent);
   }
