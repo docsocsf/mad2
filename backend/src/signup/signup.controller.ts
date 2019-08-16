@@ -21,7 +21,6 @@ export class SignupController {
 
   @Post('parent')
   async parentSignup(@Body() parent: Parent): Promise<ParentResponse> {
-    // let shortcode: string = parent.partnerShortcode;
     return await this.signupService.createParent(parent);
   }
 

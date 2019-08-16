@@ -40,7 +40,7 @@ class ParentSurveyComponent extends Component {
       this.setState({
         submissionSuccess: true,
         shortcode: response.data.shortcode,
-        type: response.data.status,
+        proposalStatus: response.data.status,
         partnerShortcode:  response.data.partnerShortcode
       });
     }
@@ -78,6 +78,8 @@ class ParentSurveyComponent extends Component {
   }
 
   render() {
+    console.log(this.state);
+    console.log(this.proposalStatus === 'Proposed');
     return (
       <>
         {!this.state.isCompleted && (
@@ -90,11 +92,36 @@ class ParentSurveyComponent extends Component {
 
         {this.state.isCompleted && this.state.submissionSuccess && (
           <div style={{
-            'text-align': 'center'
+            textAlign: 'center'
           }}>
             <h1>Submission success!</h1>
             <br/>
-            Thank you for signing up as a parent, {this.state.shortcode}
+            Thank you for signing up as a parent
+
+              { this.state.proposalStatus === 'Proposed' && (
+                <div>
+                  You have successfully proposed to {this.state.partnerShortcode}.
+                </div>
+              )}
+
+              { this.state.proposalStatus === 'Accepted' && (
+                <div>
+                  <h1>
+                    Congratulations, you are married!
+                  </h1>
+                  <br/>
+                  You have successfully accepted {this.state.partnerShortcode}'s proposal!
+                </div>
+              )
+              }
+
+              {
+                this.state.proposalStatus === null && (
+                  <div>
+                    You will be notified via email once you are assigned a partner and family.
+                  </div>
+                )
+              }
           </div>
         )}
 
