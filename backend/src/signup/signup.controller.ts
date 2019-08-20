@@ -32,7 +32,6 @@ export class SignupController {
   @Get('marriages')
   async findAllMarriages(): Promise<Marriage[]> | null {
     const marriages = await this.signupService.findAllMarriages();
-    console.log(marriages);
     return marriages;
   }
 }
