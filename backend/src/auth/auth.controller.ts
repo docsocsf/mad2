@@ -12,8 +12,8 @@ export class AuthController {
   async login(@Request() req: any): Promise<any> {
     const token: string = await this.authService.login(req.user);
     req.res.cookie(
-      'Authorization',
-      'Bearer ' + token,
+      'jwt',
+      token,
       {
         httpOnly: true,
       },
