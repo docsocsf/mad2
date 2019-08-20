@@ -9,7 +9,12 @@ class ParentPage extends Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      loggedIn: isLoggedIn(),
+    };
+
     this.handleChange = this.handleChange.bind(this);
+    this.checkLogin = this.checkLogin.bind(this);
   }
 
   handleChange(e) {
@@ -19,7 +24,14 @@ class ParentPage extends Component {
     });
   }
 
+  checkLogin() {
+    this.setState({
+      loggedIn: isLoggedIn(),
+    });
+  }
+
   render() {
+    const { loggedIn } = this.state;
     return (
       <div style={{ fontFamily: 'Georgia' }}>
         <h1
@@ -34,8 +46,8 @@ class ParentPage extends Component {
           <Row>
             <Col sm={1} />
             <Col sm={10}>
-              { isLoggedIn() && <ParentSurveyComponent />}
-              { !isLoggedIn() && <Login />}
+              { loggedIn && <ParentSurveyComponent />}
+              { !loggedIn && <Login loginSuccess={this.checkLogin} />}
             </Col>
             <Col sm={1} />
           </Row>

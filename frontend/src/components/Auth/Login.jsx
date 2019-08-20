@@ -47,9 +47,7 @@ export default class Login extends Component {
 
       localStorage.expiry = response.data.exp;
 
-      this.setState({
-        submitted: true,
-      });
+      this.props.loginSuccess();
     } catch (err) {
       this.setState({
         submitted: true,
@@ -63,7 +61,6 @@ export default class Login extends Component {
     return (
 
       <>
-        { submitted && !error && (<Redirect to="/signup/parent" />)}
         { error && (<h3>Login unsuccessful, please try again</h3>)}
 
         <div className="Login">
