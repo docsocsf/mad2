@@ -1,30 +1,19 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router';
+import PropTypes from 'prop-types';
 import axios from 'axios';
 
 import {
   Button, FormGroup, Label, Input,
 } from 'reactstrap';
 
-
 export default class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      submitted: false,
       error: false,
     };
 
-    this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  handleChange(event) {
-    console.log(event.target.name);
-    console.log(event.target.value);
-    this.setState({
-      [event.target.id]: event.target.value,
-    });
   }
 
   async handleSubmit(event) {
@@ -50,16 +39,14 @@ export default class Login extends Component {
       this.props.loginSuccess();
     } catch (err) {
       this.setState({
-        submitted: true,
         error: true,
       });
     }
   }
 
   render() {
-    const { submitted, error } = this.state;
+    const { error } = this.state;
     return (
-
       <>
         { error && (<h3>Login unsuccessful, please try again</h3>)}
 
@@ -95,3 +82,7 @@ export default class Login extends Component {
     );
   }
 }
+
+Login.propTypes = {
+  loginSuccess: PropTypes.func,
+};
