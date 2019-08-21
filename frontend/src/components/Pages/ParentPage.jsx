@@ -1,16 +1,16 @@
-import React, { Component } from 'react';
-import { Col, Container, Row } from 'reactstrap';
-import ParentSurveyComponent from '../Survey/ParentSurveyComponent';
-import Login from '../Auth/Login';
+import React, { Component } from "react";
+import { Col, Container, Row } from "reactstrap";
+import ParentSurveyComponent from "../Survey/ParentSurveyComponent";
+import Login from "../Auth/Login";
 
-import isLoggedIn from '../Auth/utils';
+import isLoggedIn from "../Auth/utils";
 
 class ParentPage extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      loggedIn: isLoggedIn(),
+      loggedIn: isLoggedIn()
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -20,24 +20,24 @@ class ParentPage extends Component {
   handleChange(e) {
     const { name, value } = e.target;
     this.setState({
-      [name]: value,
+      [name]: value
     });
   }
 
   checkLogin() {
     this.setState({
-      loggedIn: isLoggedIn(),
+      loggedIn: isLoggedIn()
     });
   }
 
   render() {
     const { loggedIn } = this.state;
     return (
-      <div style={{ fontFamily: 'Georgia' }}>
+      <div style={{ fontFamily: "Montserrat" }}>
         <h1
           style={{
-            textAlign: 'center',
-            fontFamily: 'Open Sans',
+            textAlign: "center",
+            fontFamily: "Open Serif"
           }}
         >
           Parent Signup
@@ -46,8 +46,8 @@ class ParentPage extends Component {
           <Row>
             <Col sm={1} />
             <Col sm={10}>
-              { loggedIn && <ParentSurveyComponent />}
-              { !loggedIn && <Login loginSuccess={this.checkLogin} />}
+              {loggedIn && <ParentSurveyComponent />}
+              {!loggedIn && <Login loginSuccess={this.checkLogin} />}
             </Col>
             <Col sm={1} />
           </Row>

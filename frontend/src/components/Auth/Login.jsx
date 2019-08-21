@@ -1,16 +1,14 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import axios from 'axios';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import axios from "axios";
 
-import {
-  Button, FormGroup, Label, Input,
-} from 'reactstrap';
+import { Button, FormGroup, Label, Input, Col } from "reactstrap";
 
 export default class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      error: false,
+      error: false
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -21,17 +19,19 @@ export default class Login extends Component {
     const username = event.target.username.value;
     const password = event.target.password.value;
     try {
-      await axios.post('/api/login',
+      await axios.post(
+        "/api/login",
         {
           username,
-          password,
+          password
         },
         {
-          withCredentials: true,
-        });
+          withCredentials: true
+        }
+      );
 
-      const response = await axios.get('/api/me', {
-        withCredentials: true,
+      const response = await axios.get("/api/me", {
+        withCredentials: true
       });
 
       localStorage.expiry = response.data.exp;
@@ -39,7 +39,7 @@ export default class Login extends Component {
       this.props.loginSuccess();
     } catch (err) {
       this.setState({
-        error: true,
+        error: true
       });
     }
   }
@@ -48,34 +48,42 @@ export default class Login extends Component {
     const { error } = this.state;
     return (
       <>
-        { error && (<h3>Login unsuccessful, please try again</h3>)}
+        {error && (
+          <h3 className="text-center">Login unsuccessful, please try again</h3>
+        )}
 
         <div className="Login">
           <form onSubmit={this.handleSubmit}>
-            <FormGroup controlId="email" bsSize="large">
-              <Label>Username/Shortcode</Label>
-              <Input
-                type="text"
-                name="username"
-                id="username"
-                placeholder="e.g. ab1219"
-              />
+            <FormGroup row controlId="email" style={{ paddingTop: "10px" }}>
+              <Col sm={3} />
+              <Col sm={6}>
+                <Label>Username/Shortcode</Label>
+                <Input
+                  type="text"
+                  name="username"
+                  id="username"
+                  placeholder="e.g. ab1219"
+                />
+              </Col>
+              <Col sm={3} />
             </FormGroup>
-            <FormGroup controlId="password" bsSize="large">
-              <Label>Password</Label>
-              <Input
-                type="password"
-                name="password"
-                id="password"
-              />
+            <FormGroup row controlId="password">
+              <Col sm={3} />
+              <Col sm={6}>
+                <Label>Password</Label>
+                <Input type="password" name="password" id="password" />
+              </Col>
+              <Col sm={3} />
             </FormGroup>
-            <Button
-              block
-              bsSize="large"
-              type="submit"
-            >
-              Login
-            </Button>
+            <FormGroup row>
+              <Col sm={3} />
+              <Col sm={{ size: 6 }}>
+                <div className="text-center">
+                  <Button type="submit">Login</Button>
+                </div>
+              </Col>
+              <Col sm={3} />
+            </FormGroup>
           </form>
         </div>
       </>
@@ -84,5 +92,5 @@ export default class Login extends Component {
 }
 
 Login.propTypes = {
-  loginSuccess: PropTypes.func,
+  loginSuccess: PropTypes.func
 };

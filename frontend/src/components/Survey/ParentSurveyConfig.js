@@ -2,31 +2,10 @@ const config = {
     pages: [{
         questions: [{
                 "type": "text",
-                "name": "firstName",
-                "title": "Please enter your first name",
-                "isRequired": true,
-                "placeHolder": "i.e. Johnathan"
-            },
-            {
-                "type": "text",
-                "name": "lastName",
-                "title": "Please enter your last name",
-                "isRequired": true,
-                "placeHolder": "i.e. Smith"
-            },
-            {
-                "type": "text",
                 "name": "preferredName",
                 "title": "If you go by a preferred name, please tell us",
                 "isRequired": false,
                 "placeHolder": "i.e. John"
-            },
-            {
-                "type": "text",
-                "name": "shortcode",
-                "title": "Please enter your shortcode",
-                "isRequired": true,
-                "placeHolder": "Shortcode, i.e. AB2916"
             },
             {
                 "type": "text",
