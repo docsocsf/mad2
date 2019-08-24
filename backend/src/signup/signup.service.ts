@@ -35,7 +35,7 @@ export class SignupService {
         true,
         createParentDto.student.shortcode,
         null,
-        null
+        null,
       );
     } else {
 
@@ -49,7 +49,7 @@ export class SignupService {
       if (proposals.length > 0) {
         const acceptedMarriage: Marriage = proposals[0];
         acceptedMarriage.accepted = true;
-        acceptedMarriage.proposee = createdParent;
+        acceptedMarriage.proposeeId = createdParent;
         acceptedMarriage.acceptedTs = new Date();
         acceptedMarriage.parents.push(createdParent);
         new this.marriageModel(acceptedMarriage).save();
@@ -63,7 +63,9 @@ export class SignupService {
 
       const newProposal = new this.marriageModel({
         parents: [createdParent],
-        proposer: createdParent,
+        proposerId: createdParent,
+        proposerName: createdParent.student.preferredName
+          + ' ' + createdParent.student.lastName,
         proposerShortcode: createParentDto.student.shortcode,
         proposeeShortcode: createParentDto.partnerShortcode,
         proposeTs: new Date(),
@@ -74,7 +76,7 @@ export class SignupService {
         true,
         createParentDto.student.shortcode,
         createParentDto.partnerShortcode,
-        'Proposed'
+        'Proposed',
       );
     }
   }
@@ -86,4 +88,17 @@ export class SignupService {
   async findAllMarriages(): Promise<Marriage[]> {
     return await this.marriageModel.find().populate(['proposer', 'parents', 'proposee']).exec();
   }
+
+  async proposalsToSelf(shortcode): Promise<Marriage[]> {
+    return await this.marriageModel.find({
+      proposeeShortcode: shortcode,
+    });
+  }
+
+  async proposalsFromSelf(shortcode): Promise<Marriage[]> {
+    return await this.marriageModel.find({
+      proposerShortcode: shortcode,
+    });
+  }
+
 }

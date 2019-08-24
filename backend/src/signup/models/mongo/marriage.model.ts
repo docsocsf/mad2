@@ -7,13 +7,16 @@ export class Marriage extends Typegoose {
   parents: Array<Ref<Parent>>;
 
   @prop({required: true, ref: Parent})
-  proposer: Ref<Parent>;
+  proposerId: Ref<Parent>;
+
+  @prop({required: true})
+  proposerName: string;
 
   @prop({required: true})
   proposerShortcode: string;
 
   @prop({ref: Parent})
-  proposee: Ref<Parent>;
+  proposeeId: Ref<Parent>;
 
   @prop({required: true})
   proposeeShortcode: string;
