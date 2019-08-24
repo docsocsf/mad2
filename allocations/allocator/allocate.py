@@ -1,6 +1,5 @@
 import json
 
-from models import Family, Fresher, Parent, Marriage
 
 from pandas import DataFrame as Df
 
@@ -8,7 +7,8 @@ from matplotlib import pyplot as plt
 
 from sklearn.cluster import KMeans
 
-from datetime import datetime
+from allocator.models import Parent, Marriage, Fresher
+from allocator.models.family import Family
 
 
 def allocate_parents():

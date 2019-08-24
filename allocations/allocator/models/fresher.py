@@ -1,4 +1,3 @@
-from . import Student, Interests
 
 from mongoengine import Document
 from mongoengine.fields import (
@@ -6,6 +5,8 @@ from mongoengine.fields import (
     EmbeddedDocumentField,
     StringField
 )
+
+from allocator.models import Student, Interests
 
 
 class Fresher(Document):

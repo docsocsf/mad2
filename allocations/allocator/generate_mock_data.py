@@ -1,18 +1,11 @@
 from datetime import datetime
 from random import randint
 
-from allocator.models import (
-    Fresher,
-    Interests,
-    Parent,
-    Student,
-    MarriageStatus
-)
-
 import pandas as pd
 
 from rstr import xeger
 
+from allocator.models import Interests, Parent, Student, MarriageStatus
 
 shortcode_pattern = "[a-z]{2}\d{1,2}19"
 

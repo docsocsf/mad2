@@ -1,4 +1,3 @@
-from . import Parent
 
 from mongoengine import Document
 from mongoengine.fields import (
@@ -7,6 +6,8 @@ from mongoengine.fields import (
     ListField,
     ReferenceField
 )
+
+from allocator.models import Parent
 
 
 class Marriage(Document):

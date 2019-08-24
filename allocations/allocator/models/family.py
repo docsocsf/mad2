@@ -1,4 +1,4 @@
-from . import Fresher, Marriage
+from allocator.models import Marriage, Fresher
 
 from mongoengine import Document
 from mongoengine.fields import (

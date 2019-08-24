@@ -1,10 +1,11 @@
-from . import Marriage
 
 from mongoengine import EmbeddedDocument
 from mongoengine.fields import (
     BooleanField,
     ReferenceField
 )
+
+from allocator.models import Marriage
 
 
 class MarriageStatus(EmbeddedDocument):
