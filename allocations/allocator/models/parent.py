@@ -1,9 +1,4 @@
-from .interests import Interests
-
-from .marriage_status import MarriageStatus
-
-from .student import Student
-
+from . import Interests, MarriageStatus, Student
 
 from mongoengine import Document
 from mongoengine.fields import (

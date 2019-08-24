@@ -1,7 +1,13 @@
 from datetime import datetime
 from random import randint
 
-from allocator.models import Fresher, Interests, Parent, Student, MarriageStatus
+from allocator.models import (
+    Fresher,
+    Interests,
+    Parent,
+    Student,
+    MarriageStatus
+)
 
 import pandas as pd
 

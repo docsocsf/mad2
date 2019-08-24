@@ -1,4 +1,4 @@
-from allocator.models.parent import Parent
+from . import Parent
 
 from mongoengine import Document
 from mongoengine.fields import (

@@ -1,5 +1,4 @@
-from .fresher import Fresher
-from .marriage import Marriage
+from . import Fresher, Marriage
 
 from mongoengine import Document
 from mongoengine.fields import (

@@ -1,6 +1,4 @@
-from .interests import Interests
-
-from .student import Student
+from . import Student, Interests
 
 from mongoengine import Document
 from mongoengine.fields import (
@@ -8,6 +6,7 @@ from mongoengine.fields import (
     EmbeddedDocumentField,
     StringField
 )
+
 
 class Fresher(Document):
 

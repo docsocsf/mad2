@@ -1,4 +1,4 @@
-from .marriage import Marriage
+from . import Marriage
 
 from mongoengine import EmbeddedDocument
 from mongoengine.fields import (
