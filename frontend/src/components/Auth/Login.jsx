@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
 
-import { Button, FormGroup, Label, Input, Col } from "reactstrap";
+import { Button, FormGroup, Label, Input, Col, Card } from "reactstrap";
 
 export default class Login extends Component {
   constructor(props) {
@@ -53,38 +53,49 @@ export default class Login extends Component {
         )}
 
         <div className="Login">
-          <form onSubmit={this.handleSubmit}>
-            <FormGroup row controlId="email" style={{ paddingTop: "10px" }}>
-              <Col sm={3} />
-              <Col sm={6}>
-                <Label>Username/Shortcode</Label>
-                <Input
-                  type="text"
-                  name="username"
-                  id="username"
-                  placeholder="e.g. ab1219"
-                />
-              </Col>
-              <Col sm={3} />
-            </FormGroup>
-            <FormGroup row controlId="password">
-              <Col sm={3} />
-              <Col sm={6}>
-                <Label>Password</Label>
-                <Input type="password" name="password" id="password" />
-              </Col>
-              <Col sm={3} />
-            </FormGroup>
-            <FormGroup row>
-              <Col sm={3} />
-              <Col sm={{ size: 6 }}>
-                <div className="text-center">
-                  <Button type="submit">Login</Button>
-                </div>
-              </Col>
-              <Col sm={3} />
-            </FormGroup>
-          </form>
+          <Card style={{ marginTop: "10px" }}>
+            <h1
+              style={{
+                textAlign: "center",
+                fontFamily: "Open Serif"
+              }}
+            >
+              Parent Signup
+            </h1>
+            <form onSubmit={this.handleSubmit}>
+              <FormGroup row controlId="email" style={{ paddingTop: "10px" }}>
+                <Col sm={3} />
+
+                <Col sm={6}>
+                  <Label>Username/Shortcode</Label>
+                  <Input
+                    type="text"
+                    name="username"
+                    id="username"
+                    placeholder="e.g. ab1219"
+                  />
+                </Col>
+                <Col sm={3} />
+              </FormGroup>
+              <FormGroup row controlId="password">
+                <Col sm={3} />
+                <Col sm={6}>
+                  <Label>Password</Label>
+                  <Input type="password" name="password" id="password" />
+                </Col>
+                <Col sm={3} />
+              </FormGroup>
+              <FormGroup row>
+                <Col sm={3} />
+                <Col sm={{ size: 6 }}>
+                  <div className="text-center">
+                    <Button type="submit">Login</Button>
+                  </div>
+                </Col>
+                <Col sm={3} />
+              </FormGroup>
+            </form>
+          </Card>
         </div>
       </>
     );

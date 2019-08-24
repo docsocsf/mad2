@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Col, Container, Row } from "reactstrap";
+import { Col, Container, Row, Card } from "reactstrap";
 import ParentSurveyComponent from "../Survey/ParentSurveyComponent";
 import Login from "../Auth/Login";
 
@@ -34,14 +34,6 @@ class ParentPage extends Component {
     const { loggedIn } = this.state;
     return (
       <div style={{ fontFamily: "Montserrat" }}>
-        <h1
-          style={{
-            textAlign: "center",
-            fontFamily: "Open Serif"
-          }}
-        >
-          Parent Signup
-        </h1>
         <Container>
           <Row>
             <Col sm={1} />
@@ -49,6 +41,7 @@ class ParentPage extends Component {
               {loggedIn && <ParentSurveyComponent />}
               {!loggedIn && <Login loginSuccess={this.checkLogin} />}
             </Col>
+
             <Col sm={1} />
           </Row>
         </Container>
