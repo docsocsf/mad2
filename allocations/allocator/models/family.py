@@ -1,16 +1,14 @@
-from allocator.models import Marriage, Fresher
-
 from mongoengine import Document
 from mongoengine.fields import (
     DateTimeField,
     ListField,
-    ReferenceField
+    GenericReferenceField
 )
 
 
 class Family(Document):
-    parents = ReferenceField(Marriage)
-    kids = ListField(ReferenceField(Fresher), default=[])
+    parents = GenericReferenceField()
+    kids = ListField(GenericReferenceField(), default=[])
     assignedTs = DateTimeField()
 
     meta = {

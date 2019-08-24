@@ -1,4 +1,3 @@
-
 from mongoengine import Document
 from mongoengine.fields import (
     DateTimeField,
@@ -6,11 +5,11 @@ from mongoengine.fields import (
     StringField
 )
 
-from allocator.models import Student, Interests
+from allocator.models.interests import Interests
+from allocator.models.student import Student
 
 
 class Fresher(Document):
-
     student = EmbeddedDocumentField(Student, required=True)
     interests = EmbeddedDocumentField(Interests, required=True)
     selfDescription = StringField(default="")

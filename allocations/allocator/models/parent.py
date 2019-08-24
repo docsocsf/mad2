@@ -1,21 +1,17 @@
-
 from mongoengine import Document
 from mongoengine.fields import (
     DateTimeField,
-    EmbeddedDocumentField,
+    GenericEmbeddedDocumentField,
     StringField
 )
 
-from allocator.models import Student, Interests
-
 
 class Parent(Document):
-
-    student = EmbeddedDocumentField(Student, required=True)
-    interests = EmbeddedDocumentField(Interests, required=True)
+    student = GenericEmbeddedDocumentField(required=True)
+    interests = GenericEmbeddedDocumentField(required=True)
     selfDescription = StringField(default="")
     signedUpTs = DateTimeField()
-    marriageStatus = EmbeddedDocumentField(MarriageStatus)
+    marriageStatus = GenericEmbeddedDocumentField()
 
     meta = {
         "strict": False,

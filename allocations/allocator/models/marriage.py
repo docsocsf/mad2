@@ -1,4 +1,3 @@
-
 from mongoengine import Document
 from mongoengine.fields import (
     BooleanField,
@@ -7,7 +6,7 @@ from mongoengine.fields import (
     ReferenceField
 )
 
-from allocator.models import Parent
+from allocator.models.parent import Parent
 
 
 class Marriage(Document):
