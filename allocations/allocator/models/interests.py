@@ -1,3 +1,5 @@
+import numpy as np
+
 from mongoengine import EmbeddedDocument
 from mongoengine.fields import (
     IntField
@@ -34,3 +36,15 @@ class Interests(EmbeddedDocument):
             "kpop": self.kpop,
             "dance": self.dance
         }
+
+    def to_np_array(self):
+        return np.array([
+            self.alcohol,
+            self.clubbing,
+            self.anime,
+            self.sports,
+            self.cooking,
+            self.performingMusic,
+            self.kpop,
+            self.dance,
+        ])

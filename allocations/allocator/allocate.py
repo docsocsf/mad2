@@ -34,10 +34,7 @@ def allocate_parents():
         marriage.save()
 
 
-allocate_parents()
-
-
-def allocate_and_save(freshers):
+def dummy_allocate_and_save(freshers):
     kids = []
 
     for fresher in freshers:
@@ -47,14 +44,7 @@ def allocate_and_save(freshers):
             family.save()
             kids = []
 
-# allocate_and_save(Fresher.objects)
-
-# for family in Family.objects:
-#     print()
-#     print(family)
-#     for kid in family.kids:
-#         print(kid['student'])
-
+dummy_allocate_and_save(Fresher.objects)
 
 def cluster():
     freshers = []
@@ -81,3 +71,4 @@ def cluster():
     plt.scatter(centroids[:, 0], centroids[:, 1], c='red', s=50)
 
     plt.show()
+

@@ -25,3 +25,6 @@ class Fresher(Document):
         interests_dict["shortcode"] = self.student.shortcode
 
         return interests_dict
+
+    def interests_vector(self):
+        return self.interests.to_np_array()

@@ -64,4 +64,5 @@ def mock_parents():
         parent.save()
 
 
-mock_parents()
+# mock_parents()
+mock_students()
