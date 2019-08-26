@@ -44,8 +44,6 @@ def dummy_allocate_and_save(freshers):
             family.save()
             kids = []
 
-dummy_allocate_and_save(Fresher.objects)
-
 def cluster():
     freshers = []
 

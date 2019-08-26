@@ -2,6 +2,7 @@ from datetime import datetime
 from random import randint
 
 import pandas as pd
+import os
 
 from rstr import xeger
 
@@ -15,7 +16,7 @@ def rand_interest():
 
 
 def mock_students():
-    df = pd.read_csv('mock/students.csv')
+    df = pd.read_csv(os.path.join(os.path.dirname(__file__), 'mock/students.csv'))
 
     for _, row in df.iterrows():
         fresher = Fresher(
@@ -39,7 +40,7 @@ def mock_students():
 
 
 def mock_parents():
-    df = pd.read_csv('mock/parents.csv')
+    df = pd.read_csv(os.path.join(os.path.dirname(__file__), 'mock/parents.csv'))
 
     for _, row in df.iterrows():
         parent = Parent(
@@ -63,6 +64,3 @@ def mock_parents():
         )
         parent.save()
 
-
-# mock_parents()
-mock_students()

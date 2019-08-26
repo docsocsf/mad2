@@ -3,6 +3,8 @@ import numpy as np
 from itertools import combinations
 
 from allocator.models import Fresher, Family
+from allocator.generate_mock_data import mock_students
+from allocator.allocate import dummy_allocate_and_save
 
 
 def update_families(families):
@@ -99,4 +101,6 @@ def swaps():
         family.save()
 
 
+mock_students()
+dummy_allocate_and_save(Fresher.objects)
 swaps()
