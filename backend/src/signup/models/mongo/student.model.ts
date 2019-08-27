@@ -2,16 +2,16 @@ import { prop, Typegoose } from 'typegoose';
 
 export class Student extends Typegoose {
 
-  @prop()
+  @prop({ required: true })
   firstName: string;
 
-  @prop()
+  @prop({ required: true })
   lastName: string;
 
   @prop()
   preferredName: string;
 
-  @prop({ unique: true })
+  @prop({ unique: true, required: true})
   shortcode: string;
 
 }

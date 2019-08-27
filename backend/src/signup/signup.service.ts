@@ -57,7 +57,7 @@ export class SignupService {
           true,
           createParentDto.student.shortcode,
           createParentDto.partnerShortcode,
-          'Accepted'
+          'Accepted',
         );
       }
 
