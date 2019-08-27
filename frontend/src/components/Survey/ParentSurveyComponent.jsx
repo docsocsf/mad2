@@ -3,6 +3,7 @@ import * as Survey from "survey-react";
 import "survey-react/survey.css";
 import { config, hobbies } from "./ParentSurveyConfig.js";
 import axios from "axios";
+import { Alert, Card, CardBody, CardText, CardTitle } from "reactstrap";
 
 class ParentSurveyComponent extends Component {
   constructor(props) {
@@ -50,9 +51,10 @@ class ParentSurveyComponent extends Component {
     const student = {};
     student.firstName = localStorage.firstName;
     student.lastName = localStorage.lastName;
-    student.preferredName = results.preferredName
-      ? results.preferredName.trim()
-      : null;
+    student.preferredName =
+      results.preferredName != null
+        ? results.preferredName.trim()
+        : localStorage.firstName;
     student.shortcode = localStorage.shortcode;
 
     const interestsOutput = {};
@@ -81,21 +83,23 @@ class ParentSurveyComponent extends Component {
     return (
       <>
         {!this.state.isCompleted && (
-          <div>
-            <h1
-              style={{
-                textAlign: "center",
-                fontFamily: "Open Serif"
-              }}
-            >
-              Parent Signup
-            </h1>
-            <Survey.Survey
-              json={config}
-              showCompletedPage={false}
-              onComplete={this.onCompleteComponent}
-            />
-          </div>
+          <Card style={{ marginTop: "10px" }}>
+            <div>
+              <h1
+                style={{
+                  textAlign: "center",
+                  fontFamily: "Open Serif"
+                }}
+              >
+                Parent Signup
+              </h1>
+              <Survey.Survey
+                json={config}
+                showCompletedPage={false}
+                onComplete={this.onCompleteComponent}
+              />
+            </div>
+          </Card>
         )}
 
         {this.state.isCompleted && this.state.submissionSuccess && (
