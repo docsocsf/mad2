@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Col, Container, Row, Card } from "reactstrap";
 import ParentSurveyComponent from "../Survey/ParentSurveyComponent";
 import Login from "../Auth/Login";
+import Proposals from "../Parents/Proposals";
 
 import isLoggedIn from "../Auth/utils";
 
@@ -38,7 +39,12 @@ class ParentPage extends Component {
           <Row>
             <Col sm={1} />
             <Col sm={10}>
-              {loggedIn && <ParentSurveyComponent />}
+              {loggedIn && (
+                <>
+                  <Proposals />
+                  <ParentSurveyComponent />
+                </>
+              )}
               {!loggedIn && <Login loginSuccess={this.checkLogin} />}
             </Col>
             <Col sm={1} />
