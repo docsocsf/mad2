@@ -41,7 +41,6 @@ class ParentPage extends Component {
               {loggedIn && <ParentSurveyComponent />}
               {!loggedIn && <Login loginSuccess={this.checkLogin} />}
             </Col>
-
             <Col sm={1} />
           </Row>
         </Container>

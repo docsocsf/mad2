@@ -63,7 +63,7 @@ export default class Login extends Component {
               Parent Signup
             </h1>
             <form onSubmit={this.handleSubmit}>
-              <FormGroup row controlId="email" style={{ paddingTop: "10px" }}>
+              <FormGroup row controlid="email" style={{ paddingTop: "10px" }}>
                 <Col sm={3} />
 
                 <Col sm={6}>
@@ -77,7 +77,7 @@ export default class Login extends Component {
                 </Col>
                 <Col sm={3} />
               </FormGroup>
-              <FormGroup row controlId="password">
+              <FormGroup row controlid="password">
                 <Col sm={3} />
                 <Col sm={6}>
                   <Label>Password</Label>

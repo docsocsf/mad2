@@ -10,8 +10,7 @@ class HomePage extends Component {
           <Col sm={8}>
             <h1
               style={{
-                textAlign: "center",
-                fontFamily: "Open Sans"
+                textAlign: "center"
               }}
             >
               About Mums and Dads

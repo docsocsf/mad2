@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import NavigationBar from "./components/Navigation/NavigationBar";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -7,13 +7,15 @@ import StudentPage from "./components/Pages/StudentPage";
 import HomePage from "./components/Pages/HomePage";
 import "./global.css";
 
-export default function App() {
-  return (
-    <Router>
-      <NavigationBar />
-      <Route exact path="/" component={HomePage} />
-      <Route exact path="/parent" component={ParentPage} />
-      <Route exact path="/student" component={StudentPage} />
-    </Router>
-  );
+export default class App extends Component {
+  render() {
+    return (
+      <Router>
+        <NavigationBar />
+        <Route exact path="/" component={HomePage} />
+        <Route exact path="/parent" component={ParentPage} />
+        <Route exact path="/student" component={StudentPage} />
+      </Router>
+    );
+  }
 }
