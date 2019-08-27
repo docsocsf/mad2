@@ -61,7 +61,7 @@ class NavigationBar extends Component {
             </h3>
           </Link>
           <Nav>
-            {!loggedIn && <NavbarItem linkTo="/parent">Parent</NavbarItem>}
+            <NavbarItem linkTo="/parent">Parent</NavbarItem>
             {!loggedIn && <NavbarItem linkTo="/student">Student</NavbarItem>}
             {loggedIn && (
               <NavItem>
