@@ -22,8 +22,8 @@ class ParentSurveyComponent extends Component {
     this.state = {
       isCompleted: false,
       submissionSuccess: false,
-      shortcode: '',
-      partnerShortcode: '',
+      shortcode: "",
+      partnerShortcode: "",
       proposalStatus: null
     };
 
@@ -41,7 +41,7 @@ class ParentSurveyComponent extends Component {
         submissionSuccess: true,
         shortcode: response.data.shortcode,
         proposalStatus: response.data.status,
-        partnerShortcode:  response.data.partnerShortcode
+        partnerShortcode: response.data.partnerShortcode
       });
     }
   }
@@ -81,46 +81,52 @@ class ParentSurveyComponent extends Component {
     return (
       <>
         {!this.state.isCompleted && (
-          <Survey.Survey
-            json={config}
-            showCompletedPage={false}
-            onComplete={this.onCompleteComponent}
-          />
+          <div>
+            <h1
+              style={{
+                textAlign: "center",
+                fontFamily: "Open Serif"
+              }}
+            >
+              Parent Signup
+            </h1>
+            <Survey.Survey
+              json={config}
+              showCompletedPage={false}
+              onComplete={this.onCompleteComponent}
+            />
+          </div>
         )}
 
         {this.state.isCompleted && this.state.submissionSuccess && (
-          <div style={{
-            textAlign: 'center',
-            fontFamily: 'Open Sans'
-          }}>
+          <div
+            style={{
+              textAlign: "center",
+              fontFamily: "Open Sans"
+            }}
+          >
             <h1>Submission success!</h1>
-            <br/>
+            <br />
             Thank you for signing up as a parent
-
-              { this.state.proposalStatus === 'Proposed' && (
-                <div>
-                  You have successfully proposed to {this.state.partnerShortcode}.
-                </div>
-              )}
-
-              { this.state.proposalStatus === 'Accepted' && (
-                <div>
-                  <h1>
-                    Congratulations, you are married!
-                  </h1>
-                  <br/>
-                  You have successfully accepted {this.state.partnerShortcode}'s proposal!
-                </div>
-              )
-              }
-
-              {
-                this.state.proposalStatus === null && (
-                  <div>
-                    You will be notified via email once you are assigned a partner and family.
-                  </div>
-                )
-              }
+            {this.state.proposalStatus === "Proposed" && (
+              <div>
+                You have successfully proposed to {this.state.partnerShortcode}.
+              </div>
+            )}
+            {this.state.proposalStatus === "Accepted" && (
+              <div>
+                <h1>Congratulations, you are married!</h1>
+                <br />
+                You have successfully accepted {this.state.partnerShortcode}'s
+                proposal!
+              </div>
+            )}
+            {this.state.proposalStatus === null && (
+              <div>
+                You will be notified via email once you are assigned a partner
+                and family.
+              </div>
+            )}
           </div>
         )}
 
