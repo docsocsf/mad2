@@ -48,12 +48,12 @@ class ParentSurveyComponent extends Component {
 
   serializeResults(results) {
     const student = {};
-    student.firstName = results.firstName.trim();
-    student.lastName = results.lastName.trim();
+    student.firstName = localStorage.firstName;
+    student.lastName = localStorage.lastName;
     student.preferredName = results.preferredName
       ? results.preferredName.trim()
       : null;
-    student.shortcode = results.shortcode;
+    student.shortcode = localStorage.shortcode;
 
     const interestsOutput = {};
 

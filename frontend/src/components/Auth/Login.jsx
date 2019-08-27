@@ -33,8 +33,10 @@ export default class Login extends Component {
       const response = await axios.get("/api/me", {
         withCredentials: true
       });
-
       localStorage.expiry = response.data.exp;
+      localStorage.firstName = response.data.data.FirstName;
+      localStorage.lastName = response.data.data.Surname;
+      localStorage.shortcode = response.data.data.Login;
 
       this.props.loginSuccess();
     } catch (err) {
