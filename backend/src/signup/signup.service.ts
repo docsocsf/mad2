@@ -29,9 +29,7 @@ export class SignupService {
 
   private async getParentFromShortcode(shortcode: string): Promise<Parent> {
     return await this.parentModel.findOne({
-      student: {
-        shortcode,
-      },
+      'student.shortcode' : shortcode,
     });
   }
 
@@ -45,10 +43,10 @@ export class SignupService {
         + partnerShortcode + ' must be registered first!');
     }
 
-    const existingProposal = this.marriageModel.findOne({
+    const existingProposal = await this.marriageModel.findOne({
       proposerId: partner,
       proposeeId: me,
-    });
+    }).exec();
 
     if (existingProposal !== null) {
       existingProposal.accepted = true;
