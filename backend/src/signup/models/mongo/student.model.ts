@@ -14,4 +14,7 @@ export class Student extends Typegoose {
   @prop({ unique: true, required: true})
   shortcode: string;
 
+  @prop({required: false})
+  socialMedia: string;
+
 }

@@ -10,12 +10,12 @@ import {
 import { SignupService } from './signup.service';
 import { Fresher } from './models/mongo/fresher.model';
 import { Parent } from './models/mongo/parent.model';
-import { ParentResponse } from './models/responses/parentResponse.model';
 import { Marriage } from './models/mongo/marriage.model';
 import { AuthGuard } from '@nestjs/passport';
-import { ProposalsResponse } from './models/responses/proposals.model';
+import { Proposal } from './models/dto/requests/propose.model';
+import {ParentStatus} from './models/dto/responses/parentStatus.model';
 
-@Controller('api/signup/')
+@Controller('api/signup')
 export class SignupController {
   constructor(private readonly signupService: SignupService) {}
 
@@ -24,21 +24,11 @@ export class SignupController {
     return await this.signupService.createFresher(fresher);
   }
 
-  @Get('fresher')
-  async findAllFreshers(): Promise<Fresher[]> | null {
-    return await this.signupService.findAllFreshers();
-  }
-
   @UseGuards(AuthGuard('jwt'))
   @Post('parent')
-  async parentSignup(@Body() parent: Parent): Promise<ParentResponse> {
-    return await this.signupService.createParent(parent);
-  }
-
-  @UseGuards(AuthGuard('jwt'))
-  @Get('parent')
-  async findAllParents(): Promise<Parent[]> | null {
-    return await this.signupService.findAllParents();
+  async parentSignup(@Body() parent: Parent): Promise<void> {
+    await this.signupService.createParent(parent);
+    return;
   }
 
   @UseGuards(AuthGuard('jwt'))
@@ -49,13 +39,15 @@ export class SignupController {
   }
 
   @UseGuards(AuthGuard('jwt'))
-  @Get('proposals')
-  async proposals(@Request() req: any): Promise<ProposalsResponse> {
-    const shortcode: string = req.user.data.Login;
+  @Post('parent/propose')
+  async propose(@Request() req: any, @Body() proposal: Proposal) {
+    return await this.signupService.propose(req.user.data.Login, proposal.partnerShortcode);
+  }
 
-    return new ProposalsResponse(
-      await this.signupService.proposalsFromSelf(shortcode),
-      await this.signupService.proposalsToSelf(shortcode),
-    );
+  @UseGuards(AuthGuard('jwt'))
+  @Get('parent/status')
+  async status(@Request() req: any): Promise<ParentStatus> {
+    const shortcode: string = req.user.data.Login;
+    return await this.signupService.parentStatus(shortcode);
   }
 }

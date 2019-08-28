@@ -9,7 +9,7 @@ class ParentSurveyComponent extends Component {
   constructor(props) {
     super(props);
 
-    const defaultThemeColors = Survey.StylesManager.ThemeColors["default"];
+    const defaultThemeColors = Survey.StylesManager.ThemeColors.default;
     defaultThemeColors["$main-color"] = "#225590";
     defaultThemeColors["$main-hover-color"] = "#2255f9";
     defaultThemeColors["$text-color"] = "#4a4a4a";
@@ -33,7 +33,7 @@ class ParentSurveyComponent extends Component {
 
   async onCompleteComponent(results) {
     this.setState({ isCompleted: true });
-    let response = await axios.post(
+    const response = await axios.post(
       "/api/signup/parent",
       this.serializeResults(results.data)
     );
@@ -56,10 +56,13 @@ class ParentSurveyComponent extends Component {
         ? results.preferredName.trim()
         : localStorage.firstName;
     student.shortcode = localStorage.shortcode;
+    student.socialMedia = results.socialMedia
+      ? results.socialMedia.trim()
+      : null;
 
     const interestsOutput = {};
 
-    for (let hobby of hobbies) {
+    for (const hobby of hobbies) {
       let score;
       if (results.interests) {
         score = results.interests[hobby];
@@ -70,12 +73,11 @@ class ParentSurveyComponent extends Component {
     }
 
     return {
-      student: student,
+      student,
       interests: interestsOutput,
       selfDescription: results.selfDescription
         ? results.selfDescription.trim()
-        : null,
-      partnerShortcode: results.partnerShortcode
+        : null
     };
   }
 
@@ -121,8 +123,8 @@ class ParentSurveyComponent extends Component {
               <div>
                 <h1>Congratulations, you are married!</h1>
                 <br />
-                You have successfully accepted {this.state.partnerShortcode}'s
-                proposal!
+                You have successfully accepted {this.state.partnerShortcode}
+                's proposal!
               </div>
             )}
             {this.state.proposalStatus === null && (

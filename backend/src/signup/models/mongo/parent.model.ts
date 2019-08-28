@@ -10,8 +10,6 @@ export class Parent extends Typegoose {
   @prop({ required: true})
   interests: Interests;
 
-  partnerShortcode: string;
-
   @prop()
   selfDescription: string;
 
