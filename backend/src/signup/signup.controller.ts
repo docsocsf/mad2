@@ -41,15 +41,7 @@ export class SignupController {
   @UseGuards(AuthGuard('jwt'))
   @Post('parent/propose')
   async propose(@Request() req: any, @Body() proposal: Proposal) {
-    console.log(req.user);
     return await this.signupService.propose(req.user.Login, proposal.partnerShortcode);
-  }
-
-  @UseGuards(AuthGuard('jwt'))
-  @Get('me')
-  async getProfile(@Request() req: any) {
-    console.log(req.user);
-    return req.user;
   }
 
   @UseGuards(AuthGuard('jwt'))
