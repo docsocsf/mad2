@@ -74,7 +74,6 @@ class ParentSurveyComponent extends Component {
       selfDescription: results.selfDescription
         ? results.selfDescription.trim()
         : null,
-      partnerShortcode: results.partnerShortcode,
     };
   }
 

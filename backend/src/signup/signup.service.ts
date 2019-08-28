@@ -3,7 +3,6 @@ import { InjectModel } from '@nestjs/mongoose';
 import { ModelType } from 'typegoose';
 import { Fresher } from './models/mongo/fresher.model';
 import { Parent } from './models/mongo/parent.model';
-import { ParentResponse } from './models/responses/parentResponse.model';
 import { Marriage } from './models/mongo/marriage.model';
 
 @Injectable()
@@ -20,85 +19,69 @@ export class SignupService {
     return await createdFresher.save();
   }
 
-  async findAllFreshers(): Promise<Fresher[]> {
-    return await this.fresherModel.find().exec();
-  }
-
-  async createParent(createParentDto: Parent): Promise<ParentResponse> {
+  async createParent(createParentDto: Parent): Promise<void> {
     createParentDto.signedUpTs = new Date();
     const createdParent = new this.parentModel(createParentDto);
     await createdParent.save();
-
-    // If no partner, then don't create a marriage.
-    if (createParentDto.partnerShortcode === null) {
-      return new ParentResponse(
-        true,
-        createParentDto.student.shortcode,
-        null,
-        null,
-      );
-    } else {
-
-      // Check if there are marriage proposals against the current parent
-      const proposals: Marriage[] = await this.marriageModel
-        .find({
-          proposerShortcode: createParentDto.partnerShortcode,
-          proposeeShortcode: createParentDto.student.shortcode,
-        }).exec();
-
-      if (proposals.length > 0) {
-        const acceptedMarriage: Marriage = proposals[0];
-        acceptedMarriage.accepted = true;
-        acceptedMarriage.proposeeId = createdParent;
-        acceptedMarriage.acceptedTs = new Date();
-        acceptedMarriage.parents.push(createdParent);
-        new this.marriageModel(acceptedMarriage).save();
-        return new ParentResponse(
-          true,
-          createParentDto.student.shortcode,
-          createParentDto.partnerShortcode,
-          'Accepted',
-        );
-      }
-
-      const newProposal = new this.marriageModel({
-        parents: [createdParent],
-        proposerId: createdParent,
-        proposerName: createdParent.student.preferredName
-          + ' ' + createdParent.student.lastName,
-        proposerShortcode: createParentDto.student.shortcode,
-        proposeeShortcode: createParentDto.partnerShortcode,
-        proposeTs: new Date(),
-      });
-
-      await newProposal.save();
-      return new ParentResponse(
-        true,
-        createParentDto.student.shortcode,
-        createParentDto.partnerShortcode,
-        'Proposed',
-      );
-    }
+    return;
   }
 
-  async findAllParents(): Promise<Parent[]> {
-    return await this.parentModel.find().exec();
+  private async getParentFromShortcode(shortcode: string): Promise<Parent> {
+    return await this.parentModel.findOne({
+      student: {
+        shortcode,
+      },
+    });
+  }
+
+  async propose(shortcode: string, partnerShortcode: string): Promise<Marriage> {
+    const me: Parent = await this.getParentFromShortcode(shortcode);
+
+    const partner: Parent = await this.getParentFromShortcode(partnerShortcode);
+
+    if (partner === null) {
+      throw new Error('Partner with shortcode '
+        + partnerShortcode + ' must be registered first!');
+    }
+
+    const existingProposal = this.marriageModel.findOne({
+      proposerId: partner,
+      proposeeId: me,
+    });
+
+    if (existingProposal !== null) {
+      existingProposal.accepted = true;
+      existingProposal.acceptedTs = new Date();
+      return await existingProposal.save();
+    } else {
+
+    const proposal = new this.marriageModel({
+      proposerId: me,
+      proposeeId: partner,
+      accepted: false,
+      proposeTs: new Date(),
+    });
+
+    return await proposal.save();
+    }
+
   }
 
   async findAllMarriages(): Promise<Marriage[]> {
     return await this.marriageModel.find().populate(['proposer', 'parents', 'proposee']).exec();
   }
 
-  async proposalsToSelf(shortcode): Promise<Marriage[]> {
+  async proposalsToSelf(shortcode: string): Promise<Marriage[]> {
     return await this.marriageModel.find({
       proposeeShortcode: shortcode,
     });
   }
 
-  async proposalsFromSelf(shortcode): Promise<Marriage[]> {
+  async proposalsFromSelf(shortcode: string): Promise<Marriage[]> {
     return await this.marriageModel.find({
       proposerShortcode: shortcode,
     });
   }
+
 
 }

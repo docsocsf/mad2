@@ -10,12 +10,12 @@ import {
 import { SignupService } from './signup.service';
 import { Fresher } from './models/mongo/fresher.model';
 import { Parent } from './models/mongo/parent.model';
-import { ParentResponse } from './models/responses/parentResponse.model';
 import { Marriage } from './models/mongo/marriage.model';
 import { AuthGuard } from '@nestjs/passport';
-import { ProposalsResponse } from './models/responses/proposals.model';
+import { ProposalsResponse } from './models/dto/responses/proposals.model';
+import { Proposal } from './models/dto/requests/propose.model';
 
-@Controller('api/signup/')
+@Controller('api/signup')
 export class SignupController {
   constructor(private readonly signupService: SignupService) {}
 
@@ -24,21 +24,11 @@ export class SignupController {
     return await this.signupService.createFresher(fresher);
   }
 
-  @Get('fresher')
-  async findAllFreshers(): Promise<Fresher[]> | null {
-    return await this.signupService.findAllFreshers();
-  }
-
   @UseGuards(AuthGuard('jwt'))
   @Post('parent')
-  async parentSignup(@Body() parent: Parent): Promise<ParentResponse> {
-    return await this.signupService.createParent(parent);
-  }
-
-  @UseGuards(AuthGuard('jwt'))
-  @Get('parent')
-  async findAllParents(): Promise<Parent[]> | null {
-    return await this.signupService.findAllParents();
+  async parentSignup(@Body() parent: Parent): Promise<void> {
+    await this.signupService.createParent(parent);
+    return;
   }
 
   @UseGuards(AuthGuard('jwt'))
@@ -49,7 +39,21 @@ export class SignupController {
   }
 
   @UseGuards(AuthGuard('jwt'))
-  @Get('proposals')
+  @Post('parent/propose')
+  async propose(@Request() req: any, @Body() proposal: Proposal) {
+    console.log(req.user);
+    return await this.signupService.propose(req.user.Login, proposal.partnerShortcode);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('me')
+  async getProfile(@Request() req: any) {
+    console.log(req.user);
+    return req.user;
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('parent/proposals')
   async proposals(@Request() req: any): Promise<ProposalsResponse> {
     const shortcode: string = req.user.data.Login;
 

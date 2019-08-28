@@ -1,4 +1,4 @@
-import { Marriage } from '../mongo/marriage.model';
+import { Marriage } from '../../mongo/marriage.model';
 
 export class ProposalsResponse {
   readonly from: Marriage[];
