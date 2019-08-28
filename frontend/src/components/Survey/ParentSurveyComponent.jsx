@@ -1,30 +1,30 @@
-import React, { Component } from "react";
-import * as Survey from "survey-react";
-import "survey-react/survey.css";
-import { config, hobbies } from "./ParentSurveyConfig.js";
-import axios from "axios";
+import React, { Component } from 'react';
+import * as Survey from 'survey-react';
+import 'survey-react/survey.css';
+import axios from 'axios';
+import { config, hobbies } from './ParentSurveyConfig.js';
 
 class ParentSurveyComponent extends Component {
   constructor(props) {
     super(props);
 
-    const defaultThemeColors = Survey.StylesManager.ThemeColors["default"];
-    defaultThemeColors["$main-color"] = "#225590";
-    defaultThemeColors["$main-hover-color"] = "#2255f9";
-    defaultThemeColors["$text-color"] = "#4a4a4a";
-    defaultThemeColors["$header-color"] = "#225590";
+    const defaultThemeColors = Survey.StylesManager.ThemeColors.default;
+    defaultThemeColors['$main-color'] = '#225590';
+    defaultThemeColors['$main-hover-color'] = '#2255f9';
+    defaultThemeColors['$text-color'] = '#4a4a4a';
+    defaultThemeColors['$header-color'] = '#225590';
 
-    defaultThemeColors["$header-background-color"] = "#4a4a4a";
-    defaultThemeColors["$body-container-background-color"] = "#f8f8f8";
+    defaultThemeColors['$header-background-color'] = '#4a4a4a';
+    defaultThemeColors['$body-container-background-color'] = '#f8f8f8';
 
     Survey.StylesManager.applyTheme();
 
     this.state = {
       isCompleted: false,
       submissionSuccess: false,
-      shortcode: "",
-      partnerShortcode: "",
-      proposalStatus: null
+      shortcode: '',
+      partnerShortcode: '',
+      proposalStatus: null,
     };
 
     this.onCompleteComponent = this.onCompleteComponent.bind(this);
@@ -32,16 +32,16 @@ class ParentSurveyComponent extends Component {
 
   async onCompleteComponent(results) {
     this.setState({ isCompleted: true });
-    let response = await axios.post(
-      "/api/signup/parent",
-      this.serializeResults(results.data)
+    const response = await axios.post(
+      '/api/signup/parent',
+      this.serializeResults(results.data),
     );
     if (response.status === 201) {
       this.setState({
         submissionSuccess: true,
         shortcode: response.data.shortcode,
         proposalStatus: response.data.status,
-        partnerShortcode: response.data.partnerShortcode
+        partnerShortcode: response.data.partnerShortcode,
       });
     }
   }
@@ -54,10 +54,11 @@ class ParentSurveyComponent extends Component {
       ? results.preferredName.trim()
       : null;
     student.shortcode = localStorage.shortcode;
+    student.socialMedia = results.socialMedia ? results.socialMedia.trim() : null;
 
     const interestsOutput = {};
 
-    for (let hobby of hobbies) {
+    for (const hobby of hobbies) {
       let score;
       if (results.interests) {
         score = results.interests[hobby];
@@ -68,12 +69,12 @@ class ParentSurveyComponent extends Component {
     }
 
     return {
-      student: student,
+      student,
       interests: interestsOutput,
       selfDescription: results.selfDescription
         ? results.selfDescription.trim()
         : null,
-      partnerShortcode: results.partnerShortcode
+      partnerShortcode: results.partnerShortcode,
     };
   }
 
@@ -84,8 +85,8 @@ class ParentSurveyComponent extends Component {
           <div>
             <h1
               style={{
-                textAlign: "center",
-                fontFamily: "Open Serif"
+                textAlign: 'center',
+                fontFamily: 'Open Serif',
               }}
             >
               Parent Signup
@@ -101,23 +102,29 @@ class ParentSurveyComponent extends Component {
         {this.state.isCompleted && this.state.submissionSuccess && (
           <div
             style={{
-              textAlign: "center",
-              fontFamily: "Open Sans"
+              textAlign: 'center',
+              fontFamily: 'Open Sans',
             }}
           >
             <h1>Submission success!</h1>
             <br />
             Thank you for signing up as a parent
-            {this.state.proposalStatus === "Proposed" && (
+            {this.state.proposalStatus === 'Proposed' && (
               <div>
-                You have successfully proposed to {this.state.partnerShortcode}.
+                You have successfully proposed to
+                {' '}
+                {this.state.partnerShortcode}
+.
               </div>
             )}
-            {this.state.proposalStatus === "Accepted" && (
+            {this.state.proposalStatus === 'Accepted' && (
               <div>
                 <h1>Congratulations, you are married!</h1>
                 <br />
-                You have successfully accepted {this.state.partnerShortcode}'s
+                You have successfully accepted
+                {' '}
+                {this.state.partnerShortcode}
+'s
                 proposal!
               </div>
             )}
