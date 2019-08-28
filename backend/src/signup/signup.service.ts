@@ -78,8 +78,8 @@ export class SignupService {
     } else {
       return new ParentStatus(
         true,
-        await this.proposalsFromSelf(me),
         await this.proposalsToSelf(me),
+        await this.proposalsFromSelf(me),
       );
     }
   }
@@ -87,13 +87,13 @@ export class SignupService {
   private async proposalsToSelf(me: Parent): Promise<Marriage[]> {
     return await this.marriageModel.find({
       proposerId: me,
-    });
+    }).populate(['proposerId', 'proposeeId']).exec();
   }
 
   private async proposalsFromSelf(me: Parent): Promise<Marriage[]> {
     return await this.marriageModel.find({
       proposeeId: me,
-    });
+    }).populate(['proposerId', 'proposeeId']).exec();
   }
 
 }
