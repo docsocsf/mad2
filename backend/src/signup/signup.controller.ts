@@ -12,8 +12,8 @@ import { Fresher } from './models/mongo/fresher.model';
 import { Parent } from './models/mongo/parent.model';
 import { Marriage } from './models/mongo/marriage.model';
 import { AuthGuard } from '@nestjs/passport';
-import { ProposalsResponse } from './models/dto/responses/proposals.model';
 import { Proposal } from './models/dto/requests/propose.model';
+import {ParentStatus} from './models/dto/responses/parentStatus.model';
 
 @Controller('api/signup')
 export class SignupController {
@@ -41,17 +41,13 @@ export class SignupController {
   @UseGuards(AuthGuard('jwt'))
   @Post('parent/propose')
   async propose(@Request() req: any, @Body() proposal: Proposal) {
-    return await this.signupService.propose(req.user.Login, proposal.partnerShortcode);
+    return await this.signupService.propose(req.user.data.Login, proposal.partnerShortcode);
   }
 
   @UseGuards(AuthGuard('jwt'))
-  @Get('parent/proposals')
-  async proposals(@Request() req: any): Promise<ProposalsResponse> {
+  @Get('parent/status')
+  async status(@Request() req: any): Promise<ParentStatus> {
     const shortcode: string = req.user.data.Login;
-
-    return new ProposalsResponse(
-      await this.signupService.proposalsFromSelf(shortcode),
-      await this.signupService.proposalsToSelf(shortcode),
-    );
+    return await this.signupService.parentStatus(shortcode);
   }
 }

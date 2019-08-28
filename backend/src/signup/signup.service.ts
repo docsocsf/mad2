@@ -4,6 +4,7 @@ import { ModelType } from 'typegoose';
 import { Fresher } from './models/mongo/fresher.model';
 import { Parent } from './models/mongo/parent.model';
 import { Marriage } from './models/mongo/marriage.model';
+import {ParentStatus} from './models/dto/responses/parentStatus.model';
 
 @Injectable()
 export class SignupService {
@@ -71,17 +72,30 @@ export class SignupService {
     return await this.marriageModel.find().populate(['proposer', 'parents', 'proposee']).exec();
   }
 
-  async proposalsToSelf(shortcode: string): Promise<Marriage[]> {
+  async parentStatus(shortcode: string): Promise<ParentStatus> {
+    const me: Parent = await this.getParentFromShortcode(shortcode);
+
+    if (me === null) {
+      return new ParentStatus(false, [], []);
+    } else {
+      return new ParentStatus(
+        true,
+        await this.proposalsFromSelf(me),
+        await this.proposalsToSelf(me),
+      );
+    }
+  }
+
+  private async proposalsToSelf(me: Parent): Promise<Marriage[]> {
     return await this.marriageModel.find({
-      proposeeShortcode: shortcode,
+      proposerId: me,
     });
   }
 
-  async proposalsFromSelf(shortcode: string): Promise<Marriage[]> {
+  private async proposalsFromSelf(me: Parent): Promise<Marriage[]> {
     return await this.marriageModel.find({
-      proposerShortcode: shortcode,
+      proposeeId: me,
     });
   }
-
 
 }
