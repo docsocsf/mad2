@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import SurveyComponent from "../Survey/SurveyComponent";
-import { Col, Container, Row } from "reactstrap";
+import React, { Component } from 'react';
+import { Col, Container, Row } from 'reactstrap';
+import FresherSurveyComponent from '../Survey/FresherSurveyComponent';
 
 class StudentPage extends Component {
   constructor(props) {
@@ -10,11 +10,11 @@ class StudentPage extends Component {
 
   render() {
     return (
-      <div style={{ fontFamily: "Georgia" }}>
+      <div style={{ fontFamily: 'Georgia' }}>
         <h1
           style={{
-            textAlign: "center",
-            fontFamily: "Open Sans"
+            textAlign: 'center',
+            fontFamily: 'Open Sans',
           }}
         >
           Student survey
@@ -23,7 +23,7 @@ class StudentPage extends Component {
           <Row>
             <Col sm={1} />
             <Col sm={10}>
-              <SurveyComponent />
+              <FresherSurveyComponent />
             </Col>
             <Col sm={1} />
           </Row>
