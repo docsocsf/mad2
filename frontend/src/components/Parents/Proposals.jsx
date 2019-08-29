@@ -74,7 +74,7 @@ class Proposals extends Component {
     );
     window.setTimeout(() => {
       this.props.getStatus();
-    }, 1000);
+    }, 500);
   }
 
   render() {

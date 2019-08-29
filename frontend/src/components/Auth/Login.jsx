@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
+import ScaleLoader from "react-spinners/ScaleLoader";
 
 import { Button, FormGroup, Label, Input, Col, Card } from "reactstrap";
 
@@ -8,13 +9,15 @@ export default class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      error: false
+      error: false,
+      loading: false
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   async handleSubmit(event) {
+    this.setState({ loading: true });
     event.preventDefault();
     const username = event.target.username.value;
     const password = event.target.password.value;
@@ -37,12 +40,13 @@ export default class Login extends Component {
       localStorage.firstName = response.data.data.FirstName;
       localStorage.lastName = response.data.data.Surname;
       localStorage.shortcode = response.data.data.Login;
-
       this.props.loginSuccess();
+      this.setState({ loading: false });
     } catch (err) {
       this.setState({
         error: true
       });
+      this.setState({ loading: false });
     }
   }
 
@@ -91,7 +95,12 @@ export default class Login extends Component {
                 <Col sm={3} />
                 <Col sm={{ size: 6 }}>
                   <div className="text-center">
-                    <Button type="submit">Login</Button>
+                    {!this.state.loading && (
+                      <Button type="submit">Login</Button>
+                    )}
+                    {this.state.loading && (
+                      <ScaleLoader color={"#225590"}></ScaleLoader>
+                    )}
                   </div>
                 </Col>
                 <Col sm={3} />

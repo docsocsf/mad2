@@ -4,6 +4,7 @@ import "survey-react/survey.css";
 import { config, hobbies } from "./ParentSurveyConfig.js";
 import axios from "axios";
 import { Card } from "reactstrap";
+import ScaleLoader from "react-spinners/ScaleLoader";
 
 class ParentSurveyComponent extends Component {
   constructor(props) {
@@ -22,10 +23,7 @@ class ParentSurveyComponent extends Component {
 
     this.state = {
       isCompleted: false,
-      submissionSuccess: false,
-      shortcode: "",
-      partnerShortcode: "",
-      proposalStatus: null
+      submissionSuccess: false
     };
 
     this.onCompleteComponent = this.onCompleteComponent.bind(this);
@@ -37,14 +35,14 @@ class ParentSurveyComponent extends Component {
       "/api/signup/parent",
       this.serializeResults(results.data)
     );
+    console.log(response);
     if (response.status === 201) {
       this.setState({
-        submissionSuccess: true,
-        shortcode: response.data.shortcode,
-        proposalStatus: response.data.status,
-        partnerShortcode: response.data.partnerShortcode
+        submissionSuccess: true
       });
-      this.props.getStatus();
+      window.setTimeout(() => {
+        this.props.getStatus();
+      }, 4000);
     }
   }
 
@@ -115,25 +113,7 @@ class ParentSurveyComponent extends Component {
             <h1>Submission success!</h1>
             <br />
             Thank you for signing up as a parent
-            {this.state.proposalStatus === "Proposed" && (
-              <div>
-                You have successfully proposed to {this.state.partnerShortcode}.
-              </div>
-            )}
-            {this.state.proposalStatus === "Accepted" && (
-              <div>
-                <h1>Congratulations, you are married!</h1>
-                <br />
-                You have successfully accepted {this.state.partnerShortcode}
-                's proposal!
-              </div>
-            )}
-            {this.state.proposalStatus === null && (
-              <div>
-                You will be notified via email once you are assigned a partner
-                and family.
-              </div>
-            )}
+            <ScaleLoader color={"#225590"}></ScaleLoader>
           </div>
         )}
 
