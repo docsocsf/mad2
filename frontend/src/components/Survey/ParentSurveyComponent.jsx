@@ -3,7 +3,7 @@ import * as Survey from "survey-react";
 import "survey-react/survey.css";
 import { config, hobbies } from "./ParentSurveyConfig.js";
 import axios from "axios";
-import { Alert, Card, CardBody, CardText, CardTitle } from "reactstrap";
+import { Card } from "reactstrap";
 
 class ParentSurveyComponent extends Component {
   constructor(props) {
@@ -44,6 +44,7 @@ class ParentSurveyComponent extends Component {
         proposalStatus: response.data.status,
         partnerShortcode: response.data.partnerShortcode
       });
+      this.props.getStatus();
     }
   }
 

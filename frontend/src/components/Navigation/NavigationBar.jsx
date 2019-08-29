@@ -5,7 +5,7 @@ import "./NavigationBar.css";
 import isLoggedIn from "../Auth/utils";
 import { NavItem } from "reactstrap";
 
-import { Navbar, Nav, NavbarBrand, Container } from "reactstrap";
+import { Navbar, Nav, Container } from "reactstrap";
 
 class NavigationBar extends Component {
   constructor(props) {
@@ -37,9 +37,14 @@ class NavigationBar extends Component {
     });
   }
 
-  logout(e) {
+  logout() {
+    document.cookie = "jwt=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
     localStorage.expiry = 0;
+    localStorage.shortcode = null;
+    localStorage.lastName = null;
+    localStorage.firstName = null;
   }
+
   render() {
     const { loggedIn } = this.state;
     return (
