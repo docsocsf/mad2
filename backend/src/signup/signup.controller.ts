@@ -40,7 +40,7 @@ export class SignupController {
 
   @UseGuards(AuthGuard('jwt'))
   @Post('parent/propose')
-  async propose(@Request() req: any, @Body() proposal: Proposal) {
+  async propose(@Request() req: any, @Body() proposal: Proposal): Promise<Marriage> {
     return await this.signupService.propose(req.user.data.Login, proposal.partnerShortcode);
   }
 

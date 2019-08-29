@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { ModelType } from 'typegoose';
 import { Fresher } from './models/mongo/fresher.model';
@@ -34,34 +34,52 @@ export class SignupService {
   }
 
   async propose(shortcode: string, partnerShortcode: string): Promise<Marriage> {
+
+    if (partnerShortcode === shortcode) {
+      throw new HttpException(
+        'You can\'t propose to yourself, you dummy',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
     const me: Parent = await this.getParentFromShortcode(shortcode);
 
     const partner: Parent = await this.getParentFromShortcode(partnerShortcode);
 
     if (partner === null) {
-      throw new Error('Partner with shortcode '
-        + partnerShortcode + ' must be registered first!');
+      throw new HttpException(
+        'The partner with shortcode '
+        + partnerShortcode +
+        ` has not signed up yet. Please ask them to sign up and then try again.`, HttpStatus.BAD_REQUEST);
     }
 
-    const existingProposal = await this.marriageModel.findOne({
+    const existingProposalFromPartner = await this.marriageModel.findOne({
       proposerId: partner,
       proposeeId: me,
     }).exec();
 
-    if (existingProposal !== null) {
-      existingProposal.accepted = true;
-      existingProposal.acceptedTs = new Date();
-      return await existingProposal.save();
+    if (existingProposalFromPartner !== null) {
+      existingProposalFromPartner.accepted = true;
+      existingProposalFromPartner.acceptedTs = new Date();
+      return await existingProposalFromPartner.save();
     } else {
 
-    const proposal = new this.marriageModel({
-      proposerId: me,
-      proposeeId: partner,
-      accepted: false,
-      proposeTs: new Date(),
-    });
+      const existingProposalFromMe = await this.marriageModel.findOne({
+        proposerId: me,
+        proposeeId: partner,
+      }).exec();
 
-    return await proposal.save();
+      if (existingProposalFromMe != null) {
+        throw new HttpException('You have already proposed to ' + partnerShortcode, HttpStatus.BAD_REQUEST);
+      }
+
+      const proposal = new this.marriageModel({
+        proposerId: me,
+        proposeeId: partner,
+        accepted: false,
+        proposeTs: new Date(),
+      });
+
+      return await proposal.save();
     }
 
   }
