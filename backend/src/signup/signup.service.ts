@@ -1,6 +1,6 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { ModelType } from 'typegoose';
+import { ModelType, InstanceType } from 'typegoose';
 import { Fresher } from './models/mongo/fresher.model';
 import { Parent } from './models/mongo/parent.model';
 import { Marriage } from './models/mongo/marriage.model';
@@ -33,7 +33,7 @@ export class SignupService {
     return;
   }
 
-  private async getParentFromShortcode(shortcode: string): Promise<any> {
+  private async getParentFromShortcode(shortcode: string): Promise<InstanceType<Parent>> {
     return await this.parentModel.findOne({
       'student.shortcode' : shortcode,
     });
@@ -47,9 +47,9 @@ export class SignupService {
         HttpStatus.BAD_REQUEST,
       );
     }
-    const me = await this.getParentFromShortcode(shortcode);
+    const me: InstanceType<Parent> = await this.getParentFromShortcode(shortcode);
 
-    const partner = await this.getParentFromShortcode(partnerShortcode);
+    const partner: InstanceType<Parent> = await this.getParentFromShortcode(partnerShortcode);
 
     if (partner === null) {
       throw new HttpException(
@@ -127,13 +127,13 @@ export class SignupService {
   private async proposalsToSelf(me: Parent): Promise<Marriage[]> {
     return await this.marriageModel.find({
       proposerId: me,
-    }).populate(['proposerId', 'proposeeId']).exec();
+    });
   }
 
   private async proposalsFromSelf(me: Parent): Promise<Marriage[]> {
     return await this.marriageModel.find({
       proposeeId: me,
-    }).populate(['proposerId', 'proposeeId']).exec();
+    });
   }
 
 }
