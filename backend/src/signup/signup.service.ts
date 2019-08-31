@@ -107,7 +107,7 @@ export class SignupService {
 
     if (me === null) {
       return new ParentStatus(me, false, [], []);
-    } else if (me.family !== null) {
+    } else if (me.family !== undefined && me.family !== null) {
       return new ParentStatus(
         me,
         true,

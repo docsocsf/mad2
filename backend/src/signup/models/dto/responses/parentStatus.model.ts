@@ -15,10 +15,7 @@ export class ParentStatus {
   constructor(me: Parent, signedUp: boolean, from: Marriage[], to: Marriage[]) {
     this.me = me;
     this.signedUp = signedUp;
-    this.proposals = {
-      to,
-      from,
-    };
+    this.proposals = { to, from };
   }
 
 }

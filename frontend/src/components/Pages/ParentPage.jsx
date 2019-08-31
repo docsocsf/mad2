@@ -45,12 +45,11 @@ class ParentPage extends Component {
             from: status.proposals.from,
             signedUp: status.signedUp,
           });
-          const marriage = status.proposals.to
-            .filter((prop) => prop.accepted)
-            .concat(data.data.from.filter((prop) => prop.accepted));
-          this.setState({ accepted: marriage.length > 0 });
-          if (marriage.length > 0) {
-            this.setState({ marriage: marriage[0] });
+          if (status.me && status.me.family) {
+            this.setState({
+              accepted: true,
+              marriage: status.me.family,
+            });
           }
           this.setState({ ready: true });
         });
