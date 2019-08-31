@@ -76,10 +76,9 @@ class Proposals extends Component {
   }
 
   render() {
-    const { to } = this.props;
-    const { from } = this.props;
-    const { error } = this.state;
-    const { errorMessage } = this.state;
+    const { to, from } = this.props;
+    const { error, errorMessage } = this.state;
+
     return (
       <div>
         {to.length > 0 && (

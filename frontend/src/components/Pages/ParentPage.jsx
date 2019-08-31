@@ -1,11 +1,13 @@
-import React, { Component } from "react";
-import { Col, Container, Row, Alert } from "reactstrap";
-import ParentSurveyComponent from "../Survey/ParentSurveyComponent";
-import Login from "../Auth/Login";
-import Proposals from "../Parents/Proposals";
-import axios from "axios";
+import React, { Component } from 'react';
+import {
+  Col, Container, Row, Alert,
+} from 'reactstrap';
+import axios from 'axios';
+import ParentSurveyComponent from '../Survey/ParentSurveyComponent';
+import Login from '../Auth/Login';
+import Proposals from '../Parents/Proposals';
 
-import isLoggedIn from "../Auth/utils";
+import isLoggedIn from '../Auth/utils';
 
 class ParentPage extends Component {
   constructor(props) {
@@ -18,7 +20,7 @@ class ParentPage extends Component {
       to: [],
       from: [],
       accepted: false,
-      marriage: {}
+      marriage: {},
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -33,16 +35,19 @@ class ParentPage extends Component {
   getStatus() {
     if (this.state.loggedIn) {
       axios
-        .get("/api/signup/parent/status", {
-          withCredentials: true
+        .get('/api/signup/parent/status', {
+          withCredentials: true,
         })
-        .then(data => {
-          this.setState({ to: data.data.to });
-          this.setState({ from: data.data.from });
-          this.setState({ signedUp: data.data.signedUp });
-          var marriage = data.data.to
-            .filter(prop => prop.accepted)
-            .concat(data.data.from.filter(prop => prop.accepted));
+        .then((data) => {
+          const status = data.data;
+          this.setState({
+            to: status.proposals.to,
+            from: status.proposals.from,
+            signedUp: status.signedUp,
+          });
+          const marriage = status.proposals.to
+            .filter((prop) => prop.accepted)
+            .concat(data.data.from.filter((prop) => prop.accepted));
           this.setState({ accepted: marriage.length > 0 });
           if (marriage.length > 0) {
             this.setState({ marriage: marriage[0] });
@@ -55,13 +60,13 @@ class ParentPage extends Component {
   handleChange(e) {
     const { name, value } = e.target;
     this.setState({
-      [name]: value
+      [name]: value,
     });
   }
 
   checkLogin() {
     this.setState({
-      loggedIn: isLoggedIn()
+      loggedIn: isLoggedIn(),
     });
     this.getStatus();
   }
@@ -74,28 +79,32 @@ class ParentPage extends Component {
       from,
       ready,
       accepted,
-      marriage
+      marriage,
     } = this.state;
-    const getStatus = this.getStatus;
+    const { getStatus } = this;
     return (
-      <div style={{ fontFamily: "Montserrat" }}>
+      <div style={{ fontFamily: 'Montserrat' }}>
         <Container>
           <Row>
             <Col sm={1} />
             <Col sm={10}>
-              {ready &&
-                loggedIn &&
-                signedUp &&
-                accepted &&
-                marriage.proposeeId &&
-                marriage.proposerId && (
-                  <Alert style={{ marginTop: "10px" }}>
-                    {marriage.proposeeId.student.firstName} and{" "}
-                    {marriage.proposerId.student.firstName}, you are now
+              {ready
+                && loggedIn
+                && signedUp
+                && accepted
+                && marriage.proposeeId
+                && marriage.proposerId && (
+                  <Alert style={{ marginTop: '10px' }}>
+                    {marriage.proposeeId.student.firstName}
+                    {' '}
+and
+                    {' '}
+                    {marriage.proposerId.student.firstName}
+, you are now
                     married! Return to this page soon to see more information
                     about your kids
                   </Alert>
-                )}
+              )}
               {ready && loggedIn && signedUp && !accepted && (
                 <Proposals to={to} from={from} getStatus={getStatus} />
               )}

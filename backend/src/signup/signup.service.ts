@@ -4,7 +4,8 @@ import { ModelType } from 'typegoose';
 import { Fresher } from './models/mongo/fresher.model';
 import { Parent } from './models/mongo/parent.model';
 import { Marriage } from './models/mongo/marriage.model';
-import {ParentStatus} from './models/dto/responses/parentStatus.model';
+import { Family } from './models/mongo/family.model';
+import { ParentStatus } from './models/dto/responses/parentStatus.model';
 
 @Injectable()
 export class SignupService {
@@ -12,12 +13,17 @@ export class SignupService {
     @InjectModel('Fresher') private readonly fresherModel: ModelType<Fresher>,
     @InjectModel('Parent') private readonly parentModel: ModelType<Parent>,
     @InjectModel('Marriage') private readonly marriageModel: ModelType<Marriage>,
+    @InjectModel('Family') private readonly familyModel: ModelType<Family>,
   ) {}
 
-  async createFresher(createFresherDto: Fresher): Promise<Fresher> {
+  async createFresher(createFresherDto: Fresher): Promise<any> {
     const createdFresher = new this.fresherModel(createFresherDto);
     createdFresher.signedUpTs = new Date();
-    return await createdFresher.save();
+    const fresher = await createdFresher.save();
+    return {
+      preferredName: fresher.preferredName,
+      shortcode: fresher.shortcode,
+    };
   }
 
   async createParent(createParentDto: Parent): Promise<void> {
@@ -27,7 +33,7 @@ export class SignupService {
     return;
   }
 
-  private async getParentFromShortcode(shortcode: string): Promise<Parent> {
+  private async getParentFromShortcode(shortcode: string): Promise<any> {
     return await this.parentModel.findOne({
       'student.shortcode' : shortcode,
     });
@@ -41,9 +47,9 @@ export class SignupService {
         HttpStatus.BAD_REQUEST,
       );
     }
-    const me: Parent = await this.getParentFromShortcode(shortcode);
+    const me = await this.getParentFromShortcode(shortcode);
 
-    const partner: Parent = await this.getParentFromShortcode(partnerShortcode);
+    const partner = await this.getParentFromShortcode(partnerShortcode);
 
     if (partner === null) {
       throw new HttpException(
@@ -60,6 +66,14 @@ export class SignupService {
     if (existingProposalFromPartner !== null) {
       existingProposalFromPartner.accepted = true;
       existingProposalFromPartner.acceptedTs = new Date();
+      const newFamily = new this.familyModel({
+        parents: existingProposalFromPartner,
+      });
+      partner.family = newFamily;
+      me.family =  newFamily;
+      newFamily.save();
+      me.save();
+      partner.save();
       return await existingProposalFromPartner.save();
     } else {
 
@@ -92,9 +106,17 @@ export class SignupService {
     const me: Parent = await this.getParentFromShortcode(shortcode);
 
     if (me === null) {
-      return new ParentStatus(false, [], []);
+      return new ParentStatus(me, false, [], []);
+    } else if (me.family !== null) {
+      return new ParentStatus(
+        me,
+        true,
+        [],
+        [],
+      );
     } else {
       return new ParentStatus(
+        me,
         true,
         await this.proposalsToSelf(me),
         await this.proposalsFromSelf(me),
