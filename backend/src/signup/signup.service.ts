@@ -26,6 +26,30 @@ export class SignupService {
     };
   }
 
+  async verifyFresher(id: string): Promise<void> {
+    const fresher: InstanceType<Fresher> = await this.fresherModel.findById(id);
+    try {
+      if (fresher) {
+        fresher.verified = true;
+        fresher.save();
+        return;
+      } else {
+        throw new HttpException('Id not found!', HttpStatus.BAD_REQUEST);
+      }
+    } catch (err) {
+      throw new HttpException('Bad id', HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  async fresherStatus(id: string): Promise<Fresher> {
+    const fresher = await this.fresherModel.findById(id);
+    if (fresher) {
+      return fresher;
+    } else {
+      throw new HttpException('Fresher not found', HttpStatus.BAD_REQUEST);
+    }
+  }
+
   async createParent(createParentDto: Parent): Promise<void> {
     createParentDto.signedUpTs = new Date();
     const createdParent = new this.parentModel(createParentDto);

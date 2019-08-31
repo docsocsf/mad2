@@ -7,8 +7,8 @@ export class Family extends Typegoose {
   @prop({required: true, ref: Marriage})
   parents: Ref<Marriage>;
 
-  @arrayProp({ required: true, itemsRef: Fresher, default: new Array()})
-  kids: Array<Ref<Fresher>>;
+  @arrayProp({itemsRef: {name: 'Fresher'}})
+  kids: Ref<Fresher>[];
 
   @prop()
   assignedTs: Date;

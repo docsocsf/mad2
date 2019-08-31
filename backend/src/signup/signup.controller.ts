@@ -5,6 +5,8 @@ import {
   UseGuards,
   Body,
   Request,
+  Param,
+  Query,
 } from '@nestjs/common';
 
 import { SignupService } from './signup.service';
@@ -22,6 +24,16 @@ export class SignupController {
   @Post('fresher')
   async fresherSignup(@Body() fresher: Fresher): Promise<Fresher> {
     return await this.signupService.createFresher(fresher);
+  }
+
+  @Get('fresher/view')
+  async viewFresher(@Query('id') id: string): Promise<Fresher> {
+    return this.signupService.fresherStatus(id);
+  }
+
+  @Get('fresher/verify')
+  async verifyFresher(@Query('id') id: string): Promise<void> {
+    this.signupService.verifyFresher(id);
   }
 
   @UseGuards(AuthGuard('jwt'))
