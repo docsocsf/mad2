@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Alert, Card, CardBody, CardText, Row, Col } from "reactstrap";
+import { Alert, Card, CardBody, CardText, Row, Col, Button } from "reactstrap";
 
 class Family extends Component {
   render() {
@@ -8,10 +8,12 @@ class Family extends Component {
         <br></br>
         <h1 style={{ textAlign: "center" }}>Your Family</h1>
         <Row>
-          <h2>Parents:</h2>
+          <Col>
+            <h2>Parents:</h2>
+          </Col>
         </Row>
         <Row>
-          <Col sm={6}>
+          <Col sm={12} md={6}>
             <Card>
               <CardBody>
                 <CardText>
@@ -21,10 +23,18 @@ class Family extends Component {
                     this.props.parent1.student.firstName}{" "}
                   {this.props.parent1.student.lastName}
                 </CardText>
+                {this.props.parent1.selfDescription != null && (
+                  <CardText>{this.props.parent1.selfDescription}</CardText>
+                )}
+                {this.props.parent1.student.socialMedia != null && (
+                  <CardText>
+                    Social Media: {this.props.parent1.student.socialMedia}
+                  </CardText>
+                )}
               </CardBody>
             </Card>
           </Col>
-          <Col sm={6}>
+          <Col sm={12} md={6}>
             <Card>
               <CardBody>
                 <CardText>
@@ -34,13 +44,25 @@ class Family extends Component {
                     this.props.parent2.student.firstName}{" "}
                   {this.props.parent2.student.lastName}
                 </CardText>
+                {this.props.parent2.selfDescription != null && (
+                  <CardText>
+                    About me: {this.props.parent2.selfDescription}
+                  </CardText>
+                )}
+                {this.props.parent2.student.socialMedia != null && (
+                  <CardText>
+                    Social Media: {this.props.parent2.student.socialMedia}
+                  </CardText>
+                )}
               </CardBody>
             </Card>
           </Col>
         </Row>
         <br></br>
         <Row>
-          <h2>Children:</h2>
+          <Col>
+            <h2>Children:</h2>
+          </Col>
         </Row>
         {this.props.kids.length === 0 && (
           <Alert style={{ marginTop: "10px" }}>
