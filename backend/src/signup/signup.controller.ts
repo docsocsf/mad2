@@ -33,7 +33,8 @@ export class SignupController {
 
   @Get('fresher/verify')
   async verifyFresher(@Query('id') id: string): Promise<void> {
-    this.signupService.verifyFresher(id);
+    await this.signupService.verifyFresher(id);
+    return;
   }
 
   @UseGuards(AuthGuard('jwt'))

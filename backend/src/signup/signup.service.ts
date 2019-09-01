@@ -44,7 +44,11 @@ export class SignupService {
   async fresherStatus(id: string): Promise<Fresher> {
     const fresher = await this.fresherModel.findById(id);
     if (fresher) {
-      return fresher;
+      if (fresher.verified) {
+        return fresher;
+      } else {
+        throw new HttpException('You must verify the sign up first', HttpStatus.BAD_REQUEST);
+      }
     } else {
       throw new HttpException('Fresher not found', HttpStatus.BAD_REQUEST);
     }
