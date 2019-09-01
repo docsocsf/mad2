@@ -88,8 +88,7 @@ class ParentSurveyComponent extends Component {
             <div>
               <h1
                 style={{
-                  textAlign: "center",
-                  fontFamily: "Open Serif"
+                  textAlign: "center"
                 }}
               >
                 Parent Signup
@@ -106,8 +105,7 @@ class ParentSurveyComponent extends Component {
         {this.state.isCompleted && this.state.submissionSuccess && (
           <div
             style={{
-              textAlign: "center",
-              fontFamily: "Open Sans"
+              textAlign: "center"
             }}
           >
             <h1>Submission success!</h1>

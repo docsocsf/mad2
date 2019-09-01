@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 import NavbarItem from "./NavbarItem";
 import "./NavigationBar.css";
 import isLoggedIn from "../Auth/utils";
-import { NavItem } from "reactstrap";
+import {} from "reactstrap";
 
-import { Navbar, Nav, Container } from "reactstrap";
+import { Navbar, Nav, Container, NavItem, NavLink } from "reactstrap";
 
 class NavigationBar extends Component {
   constructor(props) {
@@ -67,7 +67,18 @@ class NavigationBar extends Component {
           </Link>
           <Nav>
             <NavbarItem linkTo="/parent">Parent</NavbarItem>
-            {!loggedIn && <NavbarItem linkTo="/student">Student</NavbarItem>}
+            {!loggedIn && (
+              // <NavbarItem linkTo="/student">Fresher</NavbarItem>
+              <NavLink disabled>
+                <h3 className="LinkText" style={{ color: "lightgrey" }}>
+                  Fresher
+                </h3>
+                <br></br>
+                <p className="LinkText" style={{ color: "lightgrey" }}>
+                  (Coming Soon)
+                </p>
+              </NavLink>
+            )}
             {loggedIn && (
               <NavItem>
                 <Link

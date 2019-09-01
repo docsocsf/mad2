@@ -62,8 +62,7 @@ export default class Login extends Component {
           <Card style={{ marginTop: "10px" }}>
             <h1
               style={{
-                textAlign: "center",
-                fontFamily: "Open Serif"
+                textAlign: "center"
               }}
             >
               Parent Signup
