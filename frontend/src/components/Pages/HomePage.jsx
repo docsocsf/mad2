@@ -47,6 +47,8 @@ class HomePage extends Component {
                 <CardText>
                   For any other information or questions, please contact DoCSoc
                   at <a href="mailto: docsoc@ic.ac.uk">docsoc@ic.ac.uk</a>.
+                  <br></br>For any privacy concerns you can find our privacy
+                  policy <a href="/MaD-privacy-policy.pdf">here</a>.
                 </CardText>
               </CardBody>
             </Card>
