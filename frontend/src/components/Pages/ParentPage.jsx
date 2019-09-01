@@ -85,19 +85,12 @@ class ParentPage extends Component {
           <Row>
             <Col sm={1} />
             <Col sm={10}>
-              {ready &&
-                loggedIn &&
-                signedUp &&
-                accepted &&
-                marriage.proposeeId &&
-                marriage.proposerId && (
-                  <Alert style={{ marginTop: "10px" }}>
-                    {marriage.proposeeId.student.firstName} and{" "}
-                    {marriage.proposerId.student.firstName}, you are now
-                    married! Return to this page soon to see more information
-                    about your kids
-                  </Alert>
-                )}
+              {ready && loggedIn && signedUp && accepted && (
+                <Alert style={{ marginTop: "10px" }}>
+                  You are now married! Return to this page soon to see more
+                  information about your kids,
+                </Alert>
+              )}
               {ready && loggedIn && signedUp && !accepted && (
                 <Proposals to={to} from={from} getStatus={getStatus} />
               )}
