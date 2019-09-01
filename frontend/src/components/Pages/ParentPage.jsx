@@ -46,7 +46,8 @@ class ParentPage extends Component {
           if (status.me && status.me.family) {
             this.setState({
               accepted: true,
-              marriage: status.me.family
+              marriage: status.me.family,
+              kidsNum: status.me.family.kids.length
             });
           }
           this.setState({ ready: true });
@@ -76,7 +77,7 @@ class ParentPage extends Component {
       from,
       ready,
       accepted,
-      marriage
+      kidsNum
     } = this.state;
     const { getStatus } = this;
     return (
@@ -87,8 +88,9 @@ class ParentPage extends Component {
             <Col sm={10}>
               {ready && loggedIn && signedUp && accepted && (
                 <Alert style={{ marginTop: "10px" }}>
-                  You are now married! Return to this page soon to see more
-                  information about your kids,
+                  You are now married! You currently have {kidsNum} kids
+                  assigned. Return to this page soon to see more information
+                  about your kids
                 </Alert>
               )}
               {ready && loggedIn && signedUp && !accepted && (
