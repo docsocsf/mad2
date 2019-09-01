@@ -12,7 +12,8 @@ export class SignupService {
   constructor(
     @InjectModel('Fresher') private readonly fresherModel: ModelType<Fresher>,
     @InjectModel('Parent') private readonly parentModel: ModelType<Parent>,
-    @InjectModel('Marriage') private readonly marriageModel: ModelType<Marriage>,
+    @InjectModel('Marriage')
+    private readonly marriageModel: ModelType<Marriage>,
     @InjectModel('Family') private readonly familyModel: ModelType<Family>,
   ) {}
 
@@ -47,7 +48,10 @@ export class SignupService {
       if (fresher.verified) {
         return fresher;
       } else {
-        throw new HttpException('You must verify the sign up first', HttpStatus.BAD_REQUEST);
+        throw new HttpException(
+          'You must verify the sign up first',
+          HttpStatus.BAD_REQUEST,
+        );
       }
     } else {
       throw new HttpException('Fresher not found', HttpStatus.BAD_REQUEST);
@@ -61,35 +65,47 @@ export class SignupService {
     return;
   }
 
-  private async getParentFromShortcode(shortcode: string): Promise<InstanceType<Parent>> {
+  private async getParentFromShortcode(
+    shortcode: string,
+  ): Promise<InstanceType<Parent>> {
     return await this.parentModel.findOne({
-      'student.shortcode' : shortcode,
+      'student.shortcode': shortcode,
     });
   }
 
-  async propose(shortcode: string, partnerShortcode: string): Promise<Marriage> {
-
+  async propose(
+    shortcode: string,
+    partnerShortcode: string,
+  ): Promise<Marriage> {
     if (partnerShortcode === shortcode) {
       throw new HttpException(
-        'You can\'t propose to yourself, you dummy',
+        "You can't propose to yourself, you dummy",
         HttpStatus.BAD_REQUEST,
       );
     }
-    const me: InstanceType<Parent> = await this.getParentFromShortcode(shortcode);
+    const me: InstanceType<Parent> = await this.getParentFromShortcode(
+      shortcode,
+    );
 
-    const partner: InstanceType<Parent> = await this.getParentFromShortcode(partnerShortcode);
+    const partner: InstanceType<Parent> = await this.getParentFromShortcode(
+      partnerShortcode,
+    );
 
     if (partner === null) {
       throw new HttpException(
-        'The partner with shortcode '
-        + partnerShortcode +
-        ` has not signed up yet. Please ask them to sign up and then try again.`, HttpStatus.BAD_REQUEST);
+        'The partner with shortcode ' +
+          partnerShortcode +
+          ` has not signed up yet. Please ask them to sign up and then try again.`,
+        HttpStatus.BAD_REQUEST,
+      );
     }
 
-    const existingProposalFromPartner = await this.marriageModel.findOne({
-      proposerId: partner,
-      proposeeId: me,
-    }).exec();
+    const existingProposalFromPartner = await this.marriageModel
+      .findOne({
+        proposerId: partner,
+        proposeeId: me,
+      })
+      .exec();
 
     if (existingProposalFromPartner !== null) {
       existingProposalFromPartner.accepted = true;
@@ -98,20 +114,24 @@ export class SignupService {
         parents: existingProposalFromPartner,
       });
       partner.family = newFamily;
-      me.family =  newFamily;
+      me.family = newFamily;
       newFamily.save();
       me.save();
       partner.save();
       return await existingProposalFromPartner.save();
     } else {
-
-      const existingProposalFromMe = await this.marriageModel.findOne({
-        proposerId: me,
-        proposeeId: partner,
-      }).exec();
+      const existingProposalFromMe = await this.marriageModel
+        .findOne({
+          proposerId: me,
+          proposeeId: partner,
+        })
+        .exec();
 
       if (existingProposalFromMe != null) {
-        throw new HttpException('You have already proposed to ' + partnerShortcode, HttpStatus.BAD_REQUEST);
+        throw new HttpException(
+          'You have already proposed to ' + partnerShortcode,
+          HttpStatus.BAD_REQUEST,
+        );
       }
 
       const proposal = new this.marriageModel({
@@ -123,11 +143,13 @@ export class SignupService {
 
       return await proposal.save();
     }
-
   }
 
   async findAllMarriages(): Promise<Marriage[]> {
-    return await this.marriageModel.find().populate(['proposer', 'parents', 'proposee']).exec();
+    return await this.marriageModel
+      .find()
+      .populate(['proposer', 'parents', 'proposee'])
+      .exec();
   }
 
   async parentStatus(shortcode: string): Promise<ParentStatus> {
@@ -136,12 +158,15 @@ export class SignupService {
     if (me === null) {
       return new ParentStatus(me, false, [], []);
     } else if (me.family !== undefined && me.family !== null) {
-      return new ParentStatus(
-        me,
-        true,
-        [],
-        [],
-      );
+      const parents = await this.marriageModel
+        .find({
+          _id: me.family.parents,
+        })
+        .populate(['proposerId', 'proposeeId'])
+        .exec();
+      me.family.parent1 = parents[0].proposerId;
+      me.family.parent2 = parents[0].proposeeId;
+      return new ParentStatus(me, true, [], []);
     } else {
       return new ParentStatus(
         me,
@@ -153,15 +178,20 @@ export class SignupService {
   }
 
   private async proposalsToSelf(me: Parent): Promise<Marriage[]> {
-    return await this.marriageModel.find({
-      proposerId: me,
-    }).populate(['proposerId', 'proposeeId']).exec();
+    return await this.marriageModel
+      .find({
+        proposerId: me,
+      })
+      .populate(['proposerId', 'proposeeId'])
+      .exec();
   }
 
   private async proposalsFromSelf(me: Parent): Promise<Marriage[]> {
-    return await this.marriageModel.find({
-      proposeeId: me,
-    }).populate(['proposerId', 'proposeeId']).exec();
+    return await this.marriageModel
+      .find({
+        proposeeId: me,
+      })
+      .populate(['proposerId', 'proposeeId'])
+      .exec();
   }
-
 }

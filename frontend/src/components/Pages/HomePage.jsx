@@ -43,6 +43,11 @@ class HomePage extends Component {
                   "family" (according to your common interests) and notify you
                   to check your new family members!
                 </CardText>
+
+                <CardText>
+                  For any other information or questions, please contact DoCSoc
+                  at <a href="mailto: docsoc@ic.ac.uk">docsoc@ic.ac.uk</a>.
+                </CardText>
               </CardBody>
             </Card>
           </Col>

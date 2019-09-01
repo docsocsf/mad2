@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-import { Col, Container, Row, Alert } from "reactstrap";
+import { Col, Container, Row } from "reactstrap";
 import axios from "axios";
 import ParentSurveyComponent from "../Survey/ParentSurveyComponent";
 import Login from "../Auth/Login";
 import Proposals from "../Parents/Proposals";
+import Family from "../Parents/Family";
 
 import isLoggedIn from "../Auth/utils";
 
@@ -18,7 +19,9 @@ class ParentPage extends Component {
       to: [],
       from: [],
       accepted: false,
-      marriage: {}
+      parent1: {},
+      parent2: {},
+      kids: []
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -46,8 +49,9 @@ class ParentPage extends Component {
           if (status.me && status.me.family) {
             this.setState({
               accepted: true,
-              marriage: status.me.family,
-              kidsNum: status.me.family.kids.length
+              parent1: status.me.family.parent1,
+              parent2: status.me.family.parent2,
+              kids: status.me.family.kids
             });
           }
           this.setState({ ready: true });
@@ -77,7 +81,9 @@ class ParentPage extends Component {
       from,
       ready,
       accepted,
-      kidsNum
+      kids,
+      parent1,
+      parent2
     } = this.state;
     const { getStatus } = this;
     return (
@@ -87,11 +93,11 @@ class ParentPage extends Component {
             <Col sm={1} />
             <Col sm={10}>
               {ready && loggedIn && signedUp && accepted && (
-                <Alert style={{ marginTop: "10px" }}>
-                  You are now married! You currently have {kidsNum} kids
-                  assigned. Return to this page soon to see more information
-                  about your kids
-                </Alert>
+                <Family
+                  kids={kids}
+                  parent1={parent1}
+                  parent2={parent2}
+                ></Family>
               )}
               {ready && loggedIn && signedUp && !accepted && (
                 <Proposals to={to} from={from} getStatus={getStatus} />
