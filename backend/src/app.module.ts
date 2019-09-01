@@ -14,6 +14,6 @@ import { CookieParserMiddleware } from '@nest-middlewares/cookie-parser';
 })
 export class ApplicationModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(CookieParserMiddleware).forRoutes('*');
+    consumer.apply(CookieParserMiddleware).forRoutes('**');
   }
 }

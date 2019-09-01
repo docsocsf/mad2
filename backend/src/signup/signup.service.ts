@@ -146,8 +146,8 @@ export class SignupService {
       return new ParentStatus(
         me,
         true,
-        await this.proposalsToSelf(me),
         await this.proposalsFromSelf(me),
+        await this.proposalsToSelf(me),
       );
     }
   }
