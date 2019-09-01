@@ -73,10 +73,6 @@ class NavigationBar extends Component {
                 <h3 className="LinkText" style={{ color: "lightgrey" }}>
                   Fresher
                 </h3>
-                <br></br>
-                <p className="LinkText" style={{ color: "lightgrey" }}>
-                  (Coming Soon)
-                </p>
               </NavLink>
             )}
             {loggedIn && (

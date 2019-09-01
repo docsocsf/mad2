@@ -39,9 +39,9 @@ class HomePage extends Component {
                   your Imperial credential. Fill in the sign up form, and make
                   sure your partner does too. You can then "propose" to your
                   partner using their shortcode. Finally make sure they accept
-                  your proposal. After that we will assign 2-3 freshers to your
-                  "family" (according to your common interests) and notify you
-                  to check your new family members!
+                  your proposal. After that we will assign up to 6 freshers to
+                  your "family" (according to your common interests) and notify
+                  you to check your new family members!
                 </CardText>
 
                 <CardText>
