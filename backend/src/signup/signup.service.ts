@@ -79,13 +79,20 @@ export class SignupService {
   ): Promise<Marriage> {
     if (partnerShortcode === shortcode) {
       throw new HttpException(
-        "You can't propose to yourself, you dummy",
+        'You can\'t propose to yourself, you dummy',
         HttpStatus.BAD_REQUEST,
       );
     }
     const me: InstanceType<Parent> = await this.getParentFromShortcode(
       shortcode,
     );
+
+    if (me.married) {
+      throw new HttpException(
+        'You\'re already married, you dummy',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
 
     const partner: InstanceType<Parent> = await this.getParentFromShortcode(
       partnerShortcode,
@@ -96,6 +103,11 @@ export class SignupService {
         'The partner with shortcode ' +
           partnerShortcode +
           ` has not signed up yet. Please ask them to sign up and then try again.`,
+        HttpStatus.BAD_REQUEST,
+      );
+    } else if (partner.married) {
+      throw new HttpException(
+        'The subject of your proposal is already married, sorry :(',
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -113,11 +125,11 @@ export class SignupService {
       const newFamily = new this.familyModel({
         parents: existingProposalFromPartner,
       });
-      partner.family = newFamily;
-      me.family = newFamily;
-      newFamily.save();
-      me.save();
-      partner.save();
+      await newFamily.save();
+      me.married = true;
+      await me.save();
+      partner.married = true;
+      await partner.save();
       return await existingProposalFromPartner.save();
     } else {
       const existingProposalFromMe = await this.marriageModel
@@ -153,26 +165,23 @@ export class SignupService {
   }
 
   async parentStatus(shortcode: string): Promise<ParentStatus> {
-    const me: Parent = await this.getParentFromShortcode(shortcode);
+    const me = await this.getParentFromShortcode(shortcode);
 
     if (me === null) {
-      return new ParentStatus(me, false, [], []);
-    } else if (me.family !== undefined && me.family !== null) {
-      const parents = await this.marriageModel
-        .find({
-          _id: me.family.parents,
-        })
-        .populate(['proposerId', 'proposeeId'])
-        .exec();
-      me.family.parent1 = parents[0].proposerId;
-      me.family.parent2 = parents[0].proposeeId;
-      return new ParentStatus(me, true, [], []);
+      return new ParentStatus(me, false, [], [], null);
+    } else if (me.married) {
+      const myFamily: Family = (await this.familyModel.find().or([
+        { 'parents.proposerId': me._id },
+        { 'parents.proposeeId': me._id },
+      ]))[0];
+      return new ParentStatus(me, true, [], [], myFamily);
     } else {
       return new ParentStatus(
         me,
         true,
         await this.proposalsToSelf(me),
         await this.proposalsFromSelf(me),
+        null,
       );
     }
   }

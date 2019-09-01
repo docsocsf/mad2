@@ -1,7 +1,6 @@
-import { prop, Typegoose, Ref} from 'typegoose';
+import { prop, Typegoose} from 'typegoose';
 import { Student } from './student.model';
 import { Interests } from './interests.model';
-import {Family} from './family.model';
 
 export class Parent extends Typegoose {
 
@@ -17,6 +16,6 @@ export class Parent extends Typegoose {
   @prop()
   signedUpTs: Date;
 
-  @prop({ required: false, ref: Family})
-  family: Ref<Family>;
+  @prop({default: false})
+  married: boolean;
 }

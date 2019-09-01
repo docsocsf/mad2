@@ -19,7 +19,4 @@ export class Fresher extends Typegoose {
 
   @prop({ required: true, default: false })
   verified: boolean;
-
-  @prop({ required: false, ref: Family})
-  family: Ref<Family>;
 }
