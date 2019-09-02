@@ -119,14 +119,14 @@ export class SignupService {
     if (existingProposalFromPartner !== null) {
       existingProposalFromPartner.accepted = true;
       existingProposalFromPartner.acceptedTs = new Date();
-      const newFamily = new this.familyModel({
+      let newFamily = new this.familyModel({
         parents: existingProposalFromPartner,
       });
-      partner.family = newFamily;
-      me.family = newFamily;
-      newFamily.save();
-      me.save();
-      partner.save();
+      newFamily = await newFamily.save();
+      partner.family = newFamily._id;
+      me.family = newFamily._id;
+      await me.save();
+      await partner.save();
       return await existingProposalFromPartner.save();
     } else {
       const existingProposalFromMe = await this.marriageModel
@@ -166,7 +166,7 @@ export class SignupService {
 
     if (me === null) {
       return new ParentStatus(me, false, [], []);
-    } else if (me.family !== undefined && me.family !== null) {
+    } else if (me.family) {
       return new ParentStatus(me, true, [], []);
     } else {
       return new ParentStatus(
