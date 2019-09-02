@@ -130,8 +130,8 @@ export class SignupService {
 
     const existingProposalFromPartner = await this.marriageModel
       .findOne({
-        proposerId: partner,
-        proposeeId: me,
+        proposerId: partner._id,
+        proposeeId: me._id,
       });
 
     if (existingProposalFromPartner !== null) {
