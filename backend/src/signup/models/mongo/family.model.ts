@@ -12,4 +12,10 @@ export class Family extends Typegoose {
 
   @prop()
   assignedTs: Date;
+
+  @prop({default: false})
+  hasFemale: boolean;
+
+  @prop({default: false})
+  hasJmc: boolean;
 }

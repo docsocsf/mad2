@@ -140,6 +140,8 @@ export class SignupService {
       existingProposalFromPartner.acceptedTs = new Date();
       let newFamily = new this.familyModel({
         parents: existingProposalFromPartner,
+        hasFemale: me.student.gender === 'Female' || partner.student.gender === 'Female',
+        hasJmc: me.student.course === 'JMC' || partner.student.course === 'JMC',
       });
       newFamily = await newFamily.save();
       partner.family = newFamily._id;
