@@ -5,7 +5,6 @@ import {
   UseGuards,
   Body,
   Request,
-  Param,
   Query,
 } from '@nestjs/common';
 

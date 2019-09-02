@@ -22,8 +22,8 @@ export class SignupService {
     createdFresher.signedUpTs = new Date();
     const fresher = await createdFresher.save();
     return {
-      preferredName: fresher.preferredName,
-      shortcode: fresher.shortcode,
+      preferredName: fresher.student.preferredName,
+      shortcode: fresher.student.shortcode,
     };
   }
 

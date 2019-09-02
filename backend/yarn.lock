@@ -344,6 +344,11 @@
     express "4.17.1"
     multer "1.4.2"
 
+"@nestjs/serve-static@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@nestjs/serve-static/-/serve-static-1.0.1.tgz#0a4494a927d98c3709ab01739d9380cae631f274"
+  integrity sha512-XAG76ooUSk8EUILl2f56u66/q2I5n8jyEE8j3FwFihtvzMcOQxOyXnhg8Hk/tizRVTExRLFCA7MEijzevxyofw==
+
 "@nestjs/testing@6.1.1":
   version "6.1.1"
   resolved "https://registry.yarnpkg.com/@nestjs/testing/-/testing-6.1.1.tgz#cc871867f9bd053069467a5a2f1b429945413313"
@@ -399,6 +404,13 @@
   integrity sha512-a2+YeUjPkztKJu5aIF2yArYFQQp8d51wZ7DavSHjFuY1mqVgidGyzEQ41JIVNy82fXj8yPgy2vJmfIywgESW6w==
   dependencies:
     "@types/connect" "*"
+    "@types/node" "*"
+
+"@types/bson@*":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@types/bson/-/bson-4.0.0.tgz#9073772679d749116eb1dfca56f8eaac6d59cc7a"
+  integrity sha512-pq/rqJwJWkbS10crsG5bgnrisL8pML79KlMKQMoQwLUjlPAkrUHMvHJ3oGwE7WHR61Lv/nadMwXVAD2b+fpD8Q==
+  dependencies:
     "@types/node" "*"
 
 "@types/connect@*":
@@ -518,6 +530,22 @@
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/@types/mime/-/mime-2.0.1.tgz#dc488842312a7f075149312905b5e3c0b054c79d"
   integrity sha512-FwI9gX75FgVBJ7ywgnq/P7tw+/o1GUbtP0KzbtusLigAOgIgNISRK0ZPl4qertvXSIE8YbsVJueQ90cDt9YYyw==
+
+"@types/mongodb@*":
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/@types/mongodb/-/mongodb-3.3.1.tgz#9569ffcb356fbb5313ae2d3afa88c230bf8cf0d1"
+  integrity sha512-Va7o1fN3zeabmIJSQ6yuAWkqPvrT38HSTIi4YbVOb2UL7FJ4diXrWt+OUuuEFWAVPtF9VZV5h+7LDYdzgXWgQA==
+  dependencies:
+    "@types/bson" "*"
+    "@types/node" "*"
+
+"@types/mongoose@^5.5.16":
+  version "5.5.16"
+  resolved "https://registry.yarnpkg.com/@types/mongoose/-/mongoose-5.5.16.tgz#d8bda28fbb6f8338d64244841835804aa3191a44"
+  integrity sha512-He7VRmleSucCi63v2Hihy+ii1IqG4nTuXWsNrYXeCk7cBZ4J7jufbNcUNjswsDlSr9Ir1Eai/AQC9qDtecsXtA==
+  dependencies:
+    "@types/mongodb" "*"
+    "@types/node" "*"
 
 "@types/morgan@^1.7.36":
   version "1.7.36"
