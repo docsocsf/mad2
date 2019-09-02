@@ -170,18 +170,21 @@ export class SignupService {
     if (me === null) {
       return new ParentStatus(me, false, [], [], null);
     } else if (me.married) {
-      const myFamily: Family = (await this.familyModel.find()
+      const families: Family[] = await this.familyModel.find()
         .populate({
           path: 'parents',
           populate: [
             { path: 'proposeeId' },
             { path: 'proposerId' },
           ],
-        })
-        .or([
-          { 'parents.proposerId._id': me._id },
-          { 'parents.proposeeId._id': me._id },
-        ]))[0];
+        });
+      // @ts-ignore
+      const myFamily: Family = families.filter( family =>
+        // @ts-ignore
+        (String(family.parents.proposeeId._id) === String(me._id))
+        // @ts-ignore
+        || (String(family.parents.proposerId._id) === String(me._id)),
+      );
       return new ParentStatus(me, true, [], [], myFamily);
     } else {
       return new ParentStatus(
