@@ -170,10 +170,18 @@ export class SignupService {
     if (me === null) {
       return new ParentStatus(me, false, [], [], null);
     } else if (me.married) {
-      const myFamily: Family = (await this.familyModel.find().or([
-        { 'parents.proposerId': me._id },
-        { 'parents.proposeeId': me._id },
-      ]))[0];
+      const myFamily: Family = (await this.familyModel.find()
+        .populate({
+          path: 'parents',
+          populate: [
+            { path: 'proposeeId' },
+            { path: 'proposerId' },
+          ],
+        })
+        .or([
+          { 'parents.proposerId._id': me._id },
+          { 'parents.proposeeId._id': me._id },
+        ]))[0];
       return new ParentStatus(me, true, [], [], myFamily);
     } else {
       return new ParentStatus(
