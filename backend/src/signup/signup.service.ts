@@ -70,6 +70,15 @@ export class SignupService {
   ): Promise<InstanceType<Parent>> {
     return await this.parentModel.findOne({
       'student.shortcode': shortcode,
+    }).populate({
+      path: 'family',
+      populate: {
+        path: 'parents',
+        populate: [
+          {path: 'proposerId'},
+          {path: 'proposeeId'},
+        ],
+      },
     });
   }
 
@@ -158,14 +167,6 @@ export class SignupService {
     if (me === null) {
       return new ParentStatus(me, false, [], []);
     } else if (me.family !== undefined && me.family !== null) {
-      const parents = await this.marriageModel
-        .find({
-          _id: me.family.parents,
-        })
-        .populate(['proposerId', 'proposeeId'])
-        .exec();
-      me.family.parent1 = parents[0].proposerId;
-      me.family.parent2 = parents[0].proposeeId;
       return new ParentStatus(me, true, [], []);
     } else {
       return new ParentStatus(
