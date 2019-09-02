@@ -10,7 +10,7 @@ const common = {
     interestsMatrix: {
       type: 'matrix',
       name: 'interests',
-      title: `In order to match you with fellow Freshers and Parents, we'd like to know a few things about your hobbies and interests. Please fill in the following, with 1 as having no interest whatsoever, to 5 being very strong interest.
+      title: `In order to assign you a family, we'd like to know a few things about your hobbies and interests. Please fill in the following, with 1 as having no interest, 2 being moderate interest, and 3 being strong interest.
             (Note you do not have to fill out every row - unchecked rows will be marked a no interest)`,
       columns: [
         {
