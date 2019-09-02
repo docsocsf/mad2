@@ -72,11 +72,13 @@ export class SignupService {
       'student.shortcode': shortcode,
     }).populate({
       path: 'family',
+      model: Family,
       populate: {
         path: 'parents',
+        model: Marriage,
         populate: [
-          {path: 'proposerId'},
-          {path: 'proposeeId'},
+          {path: 'proposerId', model: Parent },
+          {path: 'proposeeId', model: Parent },
         ],
       },
     });
@@ -88,13 +90,25 @@ export class SignupService {
   ): Promise<Marriage> {
     if (partnerShortcode === shortcode) {
       throw new HttpException(
-        "You can't propose to yourself, you dummy",
+        'You can\'t propose to yourself, you dummy',
         HttpStatus.BAD_REQUEST,
       );
     }
     const me: InstanceType<Parent> = await this.getParentFromShortcode(
       shortcode,
     );
+
+    if (me === null) {
+      throw new HttpException(
+        'You need to sign up first!',
+        HttpStatus.BAD_REQUEST,
+      );
+    } else if (me.family) {
+      throw new HttpException(
+        'You\'re already married!',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
 
     const partner: InstanceType<Parent> = await this.getParentFromShortcode(
       partnerShortcode,
@@ -105,6 +119,11 @@ export class SignupService {
         'The partner with shortcode ' +
           partnerShortcode +
           ` has not signed up yet. Please ask them to sign up and then try again.`,
+        HttpStatus.BAD_REQUEST,
+      );
+    } else if (partner.family) {
+      throw new HttpException(
+        partnerShortcode + ' is already married!',
         HttpStatus.BAD_REQUEST,
       );
     }
