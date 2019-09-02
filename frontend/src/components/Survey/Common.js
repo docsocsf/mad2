@@ -65,7 +65,7 @@ const common = {
         },
         {
           value: 'danceContemporary',
-          text: 'Dance - Hip hop, ',
+          text: 'Dance - Hip hop, urban, other contemporary dances',
         },
         {
           value: 'dramatics',
@@ -140,12 +140,12 @@ const common = {
     selfDescription: {
       type: 'comment',
       name: 'selfDescription',
-      title: 'If you\'d like to write a few words about yourself, here is your chance!',
+      title: 'If you\'d like to write a few words to introduce yourself to the rest of your family, here\'s your chance. Your family will see this once the families have been assigned. If you don\t want to write anything, don\'t worry, this is purely optional!',
     },
     socialMedia: {
       type: 'text',
       name: 'socialMedia',
-      title: 'Feel free to add a link to your social media i.e. Facebook. This the rest of your family to make contacting each other before term time easier',
+      title: 'Social Media link i.e. Facebook so other family members can contact you prior to term time.',
     },
     gender: {
       type: 'dropdown',
