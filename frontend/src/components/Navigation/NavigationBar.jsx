@@ -3,9 +3,8 @@ import { Link } from "react-router-dom";
 import NavbarItem from "./NavbarItem";
 import "./NavigationBar.css";
 import isLoggedIn from "../Auth/utils";
-import {} from "reactstrap";
 
-import { Navbar, Nav, Container, NavItem, NavLink } from "reactstrap";
+import { Navbar, Nav, Container, NavItem, NavLink, Col } from "reactstrap";
 
 class NavigationBar extends Component {
   constructor(props) {
@@ -50,43 +49,53 @@ class NavigationBar extends Component {
     return (
       <Container>
         <Navbar className="NavigationBar">
-          <Link to="/" className="NavigationBarLink">
-            <img
-              className="Logo"
-              src={process.env.PUBLIC_URL + "/images/docsoc-square-white.png"}
-              height="60px"
-              width="60px"
-              alt="DoCSoc"
-            />
-            <h3
-              className="LinkText NavigationBarLink"
-              style={{ margin: "20px" }}
-            >
-              Mums and Dads
-            </h3>
-          </Link>
-          <Nav>
-            <NavbarItem linkTo="/parent">Parent</NavbarItem>
-            {!loggedIn && (
-              // <NavbarItem linkTo="/student">Fresher</NavbarItem>
-              <NavLink disabled>
-                <h3 className="LinkText" style={{ color: "lightgrey" }}>
-                  Fresher
-                </h3>
-              </NavLink>
-            )}
-            {loggedIn && (
-              <NavItem>
-                <Link
-                  to={"/"}
-                  onClick={this.logout}
-                  className="NavigationBarLink"
-                >
-                  <h3 className="LinkText">Logout</h3>
-                </Link>
-              </NavItem>
-            )}
-          </Nav>
+          <Col>
+            <Link to="/" className="NavigationBarLink">
+              <img
+                className="Logo"
+                src={process.env.PUBLIC_URL + "/images/docsoc-square-white.png"}
+                height="60px"
+                width="58px"
+                alt="DoCSoc"
+              />
+              <h3
+                className="LinkText NavigationBarLink d-none d-md-inline"
+                style={{ marginLeft: "10px" }}
+              >
+                Mums and Dads
+              </h3>
+              <h3
+                className="LinkText NavigationBarLink d-md-none"
+                style={{ marginLeft: "10px" }}
+              >
+                MAD
+              </h3>
+            </Link>
+          </Col>
+          <Col sm="auto" xs="5">
+            <Nav pills>
+              <NavbarItem linkTo="/parent">Parent</NavbarItem>
+              {!loggedIn && (
+                // <NavbarItem linkTo="/student">Fresher</NavbarItem>
+                <NavLink disabled>
+                  <h3 className="LinkText" style={{ color: "#c0c0c0cb" }}>
+                    Fresher
+                  </h3>
+                </NavLink>
+              )}
+              {loggedIn && (
+                <NavItem>
+                  <Link
+                    to={"/"}
+                    onClick={this.logout}
+                    className="NavigationBarLink"
+                  >
+                    <h3 className="LinkText">Logout</h3>
+                  </Link>
+                </NavItem>
+              )}
+            </Nav>
+          </Col>
         </Navbar>
       </Container>
     );

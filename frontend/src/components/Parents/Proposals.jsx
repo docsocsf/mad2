@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import axios from 'axios';
+import React, { Component } from "react";
+import axios from "axios";
 import {
   Alert,
   Card,
@@ -11,14 +11,15 @@ import {
   Col,
   Row,
   Label,
-} from 'reactstrap';
+  CardText
+} from "reactstrap";
 
 class Proposals extends Component {
   constructor(props) {
     super(props);
     this.state = {
       error: false,
-      errorMessage: '',
+      errorMessage: ""
     };
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -27,24 +28,24 @@ class Proposals extends Component {
     event.preventDefault();
     this.setState({
       error: false,
-      errorMessage: '',
+      errorMessage: ""
     });
     const username = event.target.username.value;
-    if (username === '') {
+    if (username === "") {
       this.setState({
         error: true,
-        errorMessage: 'Shortcode cannot be empty',
+        errorMessage: "Shortcode cannot be empty"
       });
     } else {
       try {
         await axios.post(
-          '/api/signup/parent/propose',
+          "/api/signup/parent/propose",
           {
-            partnerShortcode: username,
+            partnerShortcode: username
           },
           {
-            withCredentials: true,
-          },
+            withCredentials: true
+          }
         );
         this.props.getStatus();
       } catch (err) {
@@ -53,7 +54,7 @@ class Proposals extends Component {
         if (err.response) {
           errorMessage = err.response.data.message;
         } else {
-          errorMessage = 'Server is down right now, please try again later';
+          errorMessage = "Server is down right now, please try again later";
         }
         this.setState({ errorMessage });
       }
@@ -62,13 +63,13 @@ class Proposals extends Component {
 
   async propose(username) {
     await axios.post(
-      '/api/signup/parent/propose',
+      "/api/signup/parent/propose",
       {
-        partnerShortcode: username,
+        partnerShortcode: username
       },
       {
-        withCredentials: true,
-      },
+        withCredentials: true
+      }
     );
     window.setTimeout(() => {
       this.props.getStatus();
@@ -81,18 +82,39 @@ class Proposals extends Component {
 
     return (
       <div>
+        <Card style={{ marginTop: "10px" }}>
+          <CardHeader tag="h3">Info</CardHeader>
+
+          <CardBody>
+            <CardText>
+              To complete your registration you must be in a family. You can do
+              that by either proposing to someone or accepting a proposal.{" "}
+              <li>
+                If you have any proposals they will appear on this page, and you
+                can accept one to complete registration.
+              </li>
+              <li>
+                You can also propose to your chosen partner using their
+                shortcode.{" "}
+                <b>
+                  Make sure they accept your proposal or your registration will
+                  not be valid.
+                </b>
+              </li>
+            </CardText>
+          </CardBody>
+        </Card>
         {to.length > 0 && (
-          <Card style={{ marginTop: '10px' }}>
+          <Card style={{ marginTop: "10px" }}>
             <CardHeader tag="h3">People that proposed to you</CardHeader>
             <CardBody>
-              {to.map((value) => (
+              {to.map(value => (
                 <Alert color="primary" key={value.proposeTs}>
                   <Row>
                     <Col sm={9}>
-                      {value.proposerId.student.firstName}
-                      {' '}
+                      {value.proposerId.student.firstName}{" "}
                       {value.proposerId.student.lastName}
-                      {', '}
+                      {", "}
                       {value.proposerId.student.shortcode}
                     </Col>
                     <Col sm={3}>
@@ -100,9 +122,11 @@ class Proposals extends Component {
                         block
                         outline
                         color="primary"
-                        onClick={() => this.propose(value.proposerId.student.shortcode)}
+                        onClick={() =>
+                          this.propose(value.proposerId.student.shortcode)
+                        }
                       >
-                          Accept Proposal
+                        Accept Proposal
                       </Button>
                     </Col>
                   </Row>
@@ -112,27 +136,26 @@ class Proposals extends Component {
           </Card>
         )}
         {from.length > 0 && (
-          <Card style={{ marginTop: '10px' }}>
+          <Card style={{ marginTop: "10px" }}>
             <CardHeader tag="h3">People you Proposed to</CardHeader>
             <CardBody>
-              {from.map((value) => (
+              {from.map(value => (
                 <Alert color="primary" key={value.proposeTs}>
-                  {value.proposeeId.student.firstName}
-                  {' '}
+                  {value.proposeeId.student.firstName}{" "}
                   {value.proposeeId.student.lastName}
-                  {', '}
+                  {", "}
                   {value.proposeeId.student.shortcode}
                 </Alert>
               ))}
             </CardBody>
           </Card>
         )}
-        <Card style={{ marginTop: '10px' }}>
+        <Card style={{ marginTop: "10px" }}>
           <CardHeader tag="h3">Propose to someone</CardHeader>
           <CardBody>
             {error && <Alert color="danger">{errorMessage}</Alert>}
             <form onSubmit={this.handleSubmit}>
-              <FormGroup row controlid="email" style={{ paddingTop: '10px' }}>
+              <FormGroup row controlid="email" style={{ paddingTop: "10px" }}>
                 <Col>
                   <Label>Shortcode of partner</Label>
                   <Input

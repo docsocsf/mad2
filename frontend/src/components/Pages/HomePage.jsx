@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import {
   Col,
   Container,
@@ -6,23 +6,23 @@ import {
   Card,
   CardTitle,
   CardText,
-  CardBody,
-} from 'reactstrap';
+  CardBody
+} from "reactstrap";
 
 class HomePage extends Component {
   render() {
     return (
       <Container>
         <Row>
-          <Col sm={2} />
-          <Col sm={8}>
-            <Card style={{ marginTop: '10px' }}>
-              <CardBody style={{ textAlign: 'center' }}>
+          <Col xs={0} md={2} />
+          <Col xs={12} md={8}>
+            <Card style={{ marginTop: "10px" }}>
+              <CardBody style={{ textAlign: "center" }}>
                 <CardTitle>
                   <h2>
                     Welcome to DoCSoc's
                     <br />
-Mums and Dads Portal!
+                    Mums and Dads Portal!
                   </h2>
                 </CardTitle>
                 <CardText>
@@ -31,40 +31,84 @@ Mums and Dads Portal!
                   freshers and form a family. It is not only a great way to
                   welcome freshers and help them settle into university life,
                   but for everyone involved to make some friends and enjoy some
-                  events together. Each family will also get a termly budget that
-                  they can decide how to spend themselves.
+                  events together. Each family will also get a termly budget
+                  that they can decide how to spend themselves.
                 </CardText>
 
                 <CardText>
-                  <b>Parent Signup has now began!</b>
-                  {' '}
-If you want to be a
-                  parent, click on the parent tab (top right) and login with
-                  your Imperial credential. Fill in the sign up form, and make
-                  sure your partner does too. You can then "propose" to your
-                  partner using their shortcode. Finally make sure they accept
-                  your proposal. After that we will assign up to 6 freshers to
-                  your "family" (according to your common interests) and notify
-                  you to check your new family members!
+                  <b>Parent Signup has now began!</b> If you want to be a
+                  parent, click on the parent tab (<a href="/parent">here</a>)
+                  and login with your Imperial credential. Fill in the sign up
+                  form, and make sure your partner does too. You can then
+                  "propose" to your partner using their shortcode. Finally make
+                  sure they accept your proposal. After that we will assign up
+                  to 6 freshers to your "family" (according to your common
+                  interests) and notify you to check your new family members!
                 </CardText>
-
+              </CardBody>
+            </Card>
+            <Card style={{ marginTop: "10px" }}>
+              <CardBody style={{ textAlign: "center" }}>
+                <CardTitle>
+                  <h4>FAQ:</h4>
+                </CardTitle>
+                <CardTitle>
+                  <h5>How does it all work?</h5>
+                </CardTitle>
+                <CardText>
+                  Parents are existing 2nd, 3rd, and 3th year Computing and JMC
+                  students in DoC. Each family will consist of two parents, and
+                  up to 6 freshers. After term commences, there will be a
+                  timetabled slot for freshers to meet their families, along
+                  with some food and activities to get to know each other. Each
+                  term there is also a small budget for each family (around 20
+                  pounds) to use as appropriate (dinner, drinks, any family
+                  gathering etc).
+                </CardText>
+                <CardTitle>
+                  <h5>Can I sign up as a solo parent?</h5>
+                </CardTitle>
+                <CardText>
+                  No, unfortunately you can't. You will need to sign up with a
+                  partner - this is done to ensure the best possible experience
+                  for incoming freshers. If you sign up without choosing a
+                  partner, your registration will be ignored.
+                </CardText>
+                <CardTitle>
+                  <h5>
+                    I've already signed up on the union website. Do I sign up
+                    here too?
+                  </h5>
+                </CardTitle>
+                <CardText>
+                  Yes, please do. If you haven't signed up on the union website
+                  then you won't need to, as long as you sign up here.
+                </CardText>
+                <CardTitle>
+                  <h5>How will freshers be allocated?</h5>
+                </CardTitle>
+                <CardText>
+                  Based on the interests filled in, we do our best to assign
+                  each fresher to fellow freshers and parents with similar
+                  interests. If you're interested to find out more, the source
+                  code of this application is available{" "}
+                  <a href="https://github.com/docsocsf/mad2">here</a>.
+                </CardText>
+              </CardBody>
+            </Card>
+            <Card style={{ marginTop: "10px", marginBottom: "50px" }}>
+              <CardBody style={{ textAlign: "center" }}>
                 <CardText>
                   For any other information or questions, please contact DoCSoc
-                  at
-                  {' '}
-                  <a href="mailto: docsoc@ic.ac.uk">docsoc@ic.ac.uk</a>
-.
+                  at <a href="mailto: docsoc@ic.ac.uk">docsoc@ic.ac.uk</a>.
                   <br />
-For any privacy concerns you can find our privacy
-                  policy
-                  {' '}
-                  <a href="/MaD-privacy-policy.pdf">here</a>
-.
+                  For any privacy concerns you can find our privacy policy{" "}
+                  <a href="/MaD-privacy-policy.pdf">here</a>.
                 </CardText>
               </CardBody>
             </Card>
           </Col>
-          <Col sm={2} />
+          <Col xs={0} md={2} />
         </Row>
       </Container>
     );

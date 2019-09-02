@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import axios from "axios";
 import ScaleLoader from "react-spinners/ScaleLoader";
 
-import { Button, FormGroup, Label, Input, Col, Card } from "reactstrap";
+import { Button, FormGroup, Label, Input, Col, Card, Alert } from "reactstrap";
 
 export default class Login extends Component {
   constructor(props) {
@@ -54,10 +54,6 @@ export default class Login extends Component {
     const { error } = this.state;
     return (
       <>
-        {error && (
-          <h3 className="text-center">Login unsuccessful, please try again</h3>
-        )}
-
         <div className="Login">
           <Card style={{ marginTop: "10px" }}>
             <h1
@@ -67,11 +63,17 @@ export default class Login extends Component {
             >
               Parent Signup
             </h1>
+            <Col xs={12}>
+              {error && (
+                <Alert color="danger" className="text-center">
+                  Login unsuccessful, please try again
+                </Alert>
+              )}
+            </Col>
             <form onSubmit={this.handleSubmit}>
               <FormGroup row controlid="email" style={{ paddingTop: "10px" }}>
-                <Col sm={3} />
-
-                <Col sm={6}>
+                <Col sm={3} xs="auto" />
+                <Col sm={6} xs={10}>
                   <Label>Username/Shortcode</Label>
                   <Input
                     type="text"
@@ -80,15 +82,15 @@ export default class Login extends Component {
                     placeholder="e.g. ab1219"
                   />
                 </Col>
-                <Col sm={3} />
+                <Col sm={3} xs="auto" />
               </FormGroup>
               <FormGroup row controlid="password">
-                <Col sm={3} />
-                <Col sm={6}>
+                <Col sm={3} xs="auto" />
+                <Col sm={6} xs="10">
                   <Label>Password</Label>
                   <Input type="password" name="password" id="password" />
                 </Col>
-                <Col sm={3} />
+                <Col sm={3} xs="auto" />
               </FormGroup>
               <FormGroup row>
                 <Col sm={3} />

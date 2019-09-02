@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import { Col, Container, Row } from 'reactstrap';
-import axios from 'axios';
-import ParentSurveyComponent from '../Survey/ParentSurveyComponent';
-import Login from '../Auth/Login';
-import Proposals from '../Parents/Proposals';
-import Family from '../Parents/Family';
+import React, { Component } from "react";
+import { Col, Container, Row } from "reactstrap";
+import axios from "axios";
+import ParentSurveyComponent from "../Survey/ParentSurveyComponent";
+import Login from "../Auth/Login";
+import Proposals from "../Parents/Proposals";
+import Family from "../Parents/Family";
 
-import isLoggedIn from '../Auth/utils';
+import isLoggedIn from "../Auth/utils";
 
 class ParentPage extends Component {
   constructor(props) {
@@ -21,7 +21,7 @@ class ParentPage extends Component {
       accepted: false,
       parent1: {},
       parent2: {},
-      kids: [],
+      kids: []
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -38,22 +38,22 @@ class ParentPage extends Component {
 
     if (loggedIn) {
       axios
-        .get('/api/signup/parent/status', {
-          withCredentials: true,
+        .get("/api/signup/parent/status", {
+          withCredentials: true
         })
-        .then((data) => {
+        .then(data => {
           const status = data.data;
           this.setState({
             to: status.proposals.to,
             from: status.proposals.from,
-            signedUp: status.signedUp,
+            signedUp: status.signedUp
           });
           if (status.me && status.me.family) {
             this.setState({
               accepted: true,
               parent1: status.me.family.parents.proposerId,
               parent2: status.me.family.parents.proposeeId,
-              kids: status.me.family.kids,
+              kids: status.me.family.kids
             });
           }
           this.setState({ ready: true });
@@ -64,13 +64,13 @@ class ParentPage extends Component {
   handleChange(e) {
     const { name, value } = e.target;
     this.setState({
-      [name]: value,
+      [name]: value
     });
   }
 
   checkLogin() {
     this.setState({
-      loggedIn: isLoggedIn(),
+      loggedIn: isLoggedIn()
     });
     this.getStatus();
   }
@@ -85,7 +85,7 @@ class ParentPage extends Component {
       accepted,
       kids,
       parent1,
-      parent2,
+      parent2
     } = this.state;
     const { getStatus } = this;
     return (
@@ -95,11 +95,7 @@ class ParentPage extends Component {
             <Col sm={1} />
             <Col sm={10}>
               {ready && loggedIn && signedUp && accepted && (
-                <Family
-                  kids={kids}
-                  parent1={parent1}
-                  parent2={parent2}
-                />
+                <Family kids={kids} parent1={parent1} parent2={parent2} />
               )}
               {ready && loggedIn && signedUp && !accepted && (
                 <Proposals to={to} from={from} getStatus={getStatus} />

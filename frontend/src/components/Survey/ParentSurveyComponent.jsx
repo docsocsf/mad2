@@ -1,29 +1,29 @@
-import React, { Component } from 'react';
-import * as Survey from 'survey-react';
-import 'survey-react/survey.css';
-import axios from 'axios';
-import { Card } from 'reactstrap';
-import ScaleLoader from 'react-spinners/ScaleLoader';
-import { config, hobbies } from './ParentSurveyConfig.js';
+import React, { Component } from "react";
+import * as Survey from "survey-react";
+import "survey-react/survey.css";
+import axios from "axios";
+import { Card } from "reactstrap";
+import ScaleLoader from "react-spinners/ScaleLoader";
+import { config, hobbies } from "./ParentSurveyConfig.js";
 
 class ParentSurveyComponent extends Component {
   constructor(props) {
     super(props);
 
     const defaultThemeColors = Survey.StylesManager.ThemeColors.default;
-    defaultThemeColors['$main-color'] = '#225590';
-    defaultThemeColors['$main-hover-color'] = '#2255f9';
-    defaultThemeColors['$text-color'] = '#4a4a4a';
-    defaultThemeColors['$header-color'] = '#225590';
+    defaultThemeColors["$main-color"] = "#225590";
+    defaultThemeColors["$main-hover-color"] = "#2255f9";
+    defaultThemeColors["$text-color"] = "#4a4a4a";
+    defaultThemeColors["$header-color"] = "#225590";
 
-    defaultThemeColors['$header-background-color'] = '#4a4a4a';
-    defaultThemeColors['$body-container-background-color'] = '#f8f8f8';
+    defaultThemeColors["$header-background-color"] = "#4a4a4a";
+    defaultThemeColors["$body-container-background-color"] = "#f8f8f8";
 
     Survey.StylesManager.applyTheme();
 
     this.state = {
       isCompleted: false,
-      submissionSuccess: false,
+      submissionSuccess: false
     };
 
     this.onCompleteComponent = this.onCompleteComponent.bind(this);
@@ -32,13 +32,12 @@ class ParentSurveyComponent extends Component {
   async onCompleteComponent(results) {
     this.setState({ isCompleted: true });
     const response = await axios.post(
-      '/api/signup/parent',
-      this.serializeResults(results.data),
+      "/api/signup/parent",
+      this.serializeResults(results.data)
     );
-    console.log(response);
     if (response.status === 201) {
       this.setState({
-        submissionSuccess: true,
+        submissionSuccess: true
       });
       window.setTimeout(() => {
         this.props.getStatus();
@@ -50,9 +49,10 @@ class ParentSurveyComponent extends Component {
     const student = {};
     student.firstName = localStorage.firstName;
     student.lastName = localStorage.lastName;
-    student.preferredName = results.preferredName != null
-      ? results.preferredName.trim()
-      : localStorage.firstName;
+    student.preferredName =
+      results.preferredName != null
+        ? results.preferredName.trim()
+        : localStorage.firstName;
     student.gender = results.gender;
     student.course = results.course;
     student.shortcode = localStorage.shortcode;
@@ -77,7 +77,7 @@ class ParentSurveyComponent extends Component {
       interests: interestsOutput,
       selfDescription: results.selfDescription
         ? results.selfDescription.trim()
-        : null,
+        : null
     };
   }
 
@@ -85,11 +85,11 @@ class ParentSurveyComponent extends Component {
     return (
       <>
         {!this.state.isCompleted && (
-          <Card style={{ marginTop: '10px' }}>
+          <Card style={{ marginTop: "10px" }}>
             <div>
               <h1
                 style={{
-                  textAlign: 'center',
+                  textAlign: "center"
                 }}
               >
                 Parent Signup
@@ -106,7 +106,7 @@ class ParentSurveyComponent extends Component {
         {this.state.isCompleted && this.state.submissionSuccess && (
           <div
             style={{
-              textAlign: 'center',
+              textAlign: "center"
             }}
           >
             <h1>Submission success!</h1>
