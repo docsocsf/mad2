@@ -132,8 +132,7 @@ export class SignupService {
       .findOne({
         proposerId: partner,
         proposeeId: me,
-      })
-      .exec();
+      });
 
     if (existingProposalFromPartner !== null) {
       existingProposalFromPartner.accepted = true;
@@ -152,8 +151,8 @@ export class SignupService {
     } else {
       const existingProposalFromMe = await this.marriageModel
         .findOne({
-          proposerId: me,
-          proposeeId: partner,
+          proposerId: me._id,
+          proposeeId: partner._id,
         })
         .exec();
 
@@ -165,8 +164,8 @@ export class SignupService {
       }
 
       const proposal = new this.marriageModel({
-        proposerId: me,
-        proposeeId: partner,
+        proposerId: me._id,
+        proposeeId: partner._id,
         accepted: false,
         proposeTs: new Date(),
       });
@@ -183,7 +182,7 @@ export class SignupService {
   }
 
   async parentStatus(shortcode: string): Promise<ParentStatus> {
-    const me: Parent = await this.getParentFromShortcode(shortcode);
+    const me: InstanceType<Parent> = await this.getParentFromShortcode(shortcode);
 
     if (me === null) {
       return new ParentStatus(me, false, [], []);
@@ -199,21 +198,27 @@ export class SignupService {
     }
   }
 
-  private async proposalsToSelf(me: Parent): Promise<Marriage[]> {
+  private async proposalsToSelf(me: InstanceType<Parent>): Promise<Marriage[]> {
     return await this.marriageModel
       .find({
-        proposerId: me,
+        proposerId: me._id,
       })
-      .populate(['proposerId', 'proposeeId'])
+      .populate([
+        { path: 'proposerId', model: Parent },
+        { path: 'proposeeId', model: Parent },
+      ])
       .exec();
   }
 
-  private async proposalsFromSelf(me: Parent): Promise<Marriage[]> {
+  private async proposalsFromSelf(me: InstanceType<Parent>): Promise<Marriage[]> {
     return await this.marriageModel
       .find({
-        proposeeId: me,
+        proposeeId: me._id,
       })
-      .populate(['proposerId', 'proposeeId'])
+      .populate([
+        { path: 'proposerId', model: Parent },
+        { path: 'proposeeId', model: Parent },
+      ])
       .exec();
   }
 }

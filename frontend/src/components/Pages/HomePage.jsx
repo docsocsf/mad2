@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import {
   Col,
   Container,
@@ -6,8 +6,8 @@ import {
   Card,
   CardTitle,
   CardText,
-  CardBody
-} from "reactstrap";
+  CardBody,
+} from 'reactstrap';
 
 class HomePage extends Component {
   render() {
@@ -16,12 +16,14 @@ class HomePage extends Component {
         <Row>
           <Col sm={2} />
           <Col sm={8}>
-            <Card style={{ marginTop: "10px" }}>
-              <CardBody style={{ textAlign: "center" }}>
+            <Card style={{ marginTop: '10px' }}>
+              <CardBody style={{ textAlign: 'center' }}>
                 <CardTitle>
-                  <h1>
-                    Welcome to DoCSoc's<br></br>Mums and Dads Portal!
-                  </h1>
+                  <h2>
+                    Welcome to DoCSoc's
+                    <br />
+Mums and Dads Portal!
+                  </h2>
                 </CardTitle>
                 <CardText>
                   If you're unfamiliar with the Mums and Dads Scheme, every year
@@ -29,12 +31,14 @@ class HomePage extends Component {
                   freshers and form a family. It is not only a great way to
                   welcome freshers and help them settle into university life,
                   but for everyone involved to make some friends and enjoy some
-                  events together. Each family will get a termly budget that
+                  events together. Each family will also get a termly budget that
                   they can decide how to spend themselves.
                 </CardText>
 
                 <CardText>
-                  <b>Parent Signup has now began!</b> If you want to be a
+                  <b>Parent Signup has now began!</b>
+                  {' '}
+If you want to be a
                   parent, click on the parent tab (top right) and login with
                   your Imperial credential. Fill in the sign up form, and make
                   sure your partner does too. You can then "propose" to your
@@ -46,9 +50,16 @@ class HomePage extends Component {
 
                 <CardText>
                   For any other information or questions, please contact DoCSoc
-                  at <a href="mailto: docsoc@ic.ac.uk">docsoc@ic.ac.uk</a>.
-                  <br></br>For any privacy concerns you can find our privacy
-                  policy <a href="/MaD-privacy-policy.pdf">here</a>.
+                  at
+                  {' '}
+                  <a href="mailto: docsoc@ic.ac.uk">docsoc@ic.ac.uk</a>
+.
+                  <br />
+For any privacy concerns you can find our privacy
+                  policy
+                  {' '}
+                  <a href="/MaD-privacy-policy.pdf">here</a>
+.
                 </CardText>
               </CardBody>
             </Card>
