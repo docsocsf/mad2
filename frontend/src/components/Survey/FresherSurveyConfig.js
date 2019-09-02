@@ -1,5 +1,14 @@
 import common from './Common';
 
+const {
+  preferredName,
+  gender,
+  course,
+  interestsMatrix,
+  selfDescription,
+  socialMedia,
+} = common.questions;
+
 const config = {
   pages: [
     {
@@ -18,17 +27,19 @@ const config = {
           isRequired: true,
           placeHolder: 'i.e. Smith',
         },
-        common.questions.preferredName,
+        preferredName,
         {
           type: 'text',
           name: 'shortcode',
-          title: 'Please enter your shortcode',
+          title: 'Please enter your shortcode (College Login)',
           isRequired: true,
-          placeHolder: 'Shortcode, i.e. AB2916',
+          placeHolder: 'i.e. AB2916',
         },
-        common.questions.interestsMatrix,
-        common.questions.selfDescription,
-        common.questions.socialMedia,
+        gender,
+        course,
+        interestsMatrix,
+        selfDescription,
+        socialMedia,
       ],
     },
   ],

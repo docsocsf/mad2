@@ -1,12 +1,23 @@
 import common from './Common';
 
+const {
+  preferredName,
+  gender,
+  course,
+  interestsMatrix,
+  selfDescription,
+  socialMedia,
+} = common.questions;
+
 const config = {
   pages: [{
     questions: [
-      common.questions.preferredName,
-      common.questions.interestsMatrix,
-      common.questions.selfDescription,
-      common.questions.socialMedia,
+      preferredName,
+      gender,
+      course,
+      interestsMatrix,
+      selfDescription,
+      socialMedia,
     ],
   }],
 };

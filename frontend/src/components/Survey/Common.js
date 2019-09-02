@@ -154,6 +154,46 @@ const common = {
       name: 'socialMedia',
       title: 'Feel free to add a link to your social media i.e. Facebook. This the rest of your family to make contacting each other before term time easier',
     },
+    gender: {
+      type: 'dropdown',
+      name: 'gender',
+      title: 'Gender',
+      isRequired: true,
+      choices: [
+        {
+          value: 'Male',
+          text: 'Male',
+        },
+        {
+          value: 'Female',
+          text: 'Female',
+        },
+        {
+          value: 'Other',
+          text: 'Other',
+        },
+        {
+          value: 'NA',
+          text: 'Prefer not to say',
+        },
+      ],
+    },
+    course: {
+      type: 'dropdown',
+      name: 'course',
+      title: 'Course',
+      isRequired: true,
+      choices: [
+        {
+          value: 'Computing',
+          text: 'Computing',
+        },
+        {
+          value: 'JMC',
+          text: 'JMC',
+        },
+      ],
+    },
   },
 };
 

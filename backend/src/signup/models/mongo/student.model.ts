@@ -1,5 +1,8 @@
 import { prop, Typegoose } from 'typegoose';
 
+type Gender = 'Male' | 'Female' | 'Other' | 'NA';
+type Course = 'JMC' | 'Computing';
+
 export class Student extends Typegoose {
 
   @prop({ required: true })
@@ -10,6 +13,12 @@ export class Student extends Typegoose {
 
   @prop()
   preferredName: string;
+
+  @prop({required: true})
+  gender: Gender;
+
+  @prop({required: true})
+  course: Course;
 
   @prop({ unique: true, required: true})
   shortcode: string;

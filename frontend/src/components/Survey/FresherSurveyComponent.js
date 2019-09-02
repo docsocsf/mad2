@@ -39,6 +39,8 @@ class SurveyComponent extends Component {
     student.firstName = results.firstName.trim();
     student.lastName = results.lastName.trim();
     student.preferredName = results.preferredName ? results.preferredName.trim() : null;
+    student.gender = results.gender;
+    student.course = results.course;
     student.shortcode = results.shortcode;
     student.socialMedia = results.socialMedia ? results.socialMedia.trim() : null;
 
