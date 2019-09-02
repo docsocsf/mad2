@@ -10,20 +10,19 @@ const common = {
     interestsMatrix: {
       type: 'matrix',
       name: 'interests',
-      title: `In order to assign you a family, we'd like to know a few things about your hobbies and interests. Please fill in the following, with 1 as having no interest, 2 being moderate interest, and 3 being strong interest.
-            (Note you do not have to fill out every row - unchecked rows will be marked a no interest)`,
+      title: 'In order to assign you a family, we\'d like to know a few things about your hobbies and interests. Note that you do not have to fill out every row - unchecked rows will be marked a no interest.',
       columns: [
         {
           value: 0,
-          text: '1',
+          text: 'No Interest',
         },
         {
           value: 1,
-          text: '2',
+          text: 'Mild Interest',
         },
         {
           value: 2,
-          text: '3',
+          text: 'Strong Interest',
         },
       ],
       rows: [
@@ -140,7 +139,7 @@ const common = {
     selfDescription: {
       type: 'comment',
       name: 'selfDescription',
-      title: 'If you\'d like to write a few words to introduce yourself to the rest of your family, here\'s your chance. Your family will see this once the families have been assigned. If you don\t want to write anything, don\'t worry, this is purely optional!',
+      title: 'If you\'d like to write a few words to introduce yourself to the rest of your family, here\'s your chance. Your family will see this once the families have been assigned. If you don\'t want to write anything, don\'t worry, this is purely optional!',
     },
     socialMedia: {
       type: 'text',

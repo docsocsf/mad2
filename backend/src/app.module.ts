@@ -14,7 +14,7 @@ import * as path from 'path';
       {
         user: process.env.MONGO_USER,
         pass: process.env.MONGO_PASS,
-        dbName: process.env.MONGO_DB_NAME,
+        dbName: process.env.MONGO_DB_NAME || 'demo',
         useNewUrlParser: true,
       },
     ),

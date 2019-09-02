@@ -64,7 +64,7 @@ class HomePage extends Component {
                   <h5><b>How does it all work?</b></h5>
                 </CardTitle>
                 <CardText>
-                  Parents are existing 2nd, 3rd, and 3th year Computing and JMC
+                  Parents are existing 2nd, 3rd, and 4th year Computing and JMC
                   students in DoC. Each family will consist of two parents, and
                   up to 6 freshers. After term commences, there will be a
                   timetabled slot for freshers to meet their families, along
