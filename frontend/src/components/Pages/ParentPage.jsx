@@ -98,7 +98,8 @@ class ParentPage extends Component {
                 <Family kids={kids} parent1={parent1} parent2={parent2} />
               )}
               {ready && loggedIn && signedUp && !accepted && (
-                <Proposals to={to} from={from} getStatus={getStatus} />
+                <h1 style={{ textAlign: "center" }}>Sign ups are full.</h1>
+                //<Proposals to={to} from={from} getStatus={getStatus} />
               )}
               {ready && loggedIn && !signedUp && (
                 <h1 style={{ textAlign: "center" }}>Sign ups are full.</h1>
