@@ -101,7 +101,8 @@ class ParentPage extends Component {
                 <Proposals to={to} from={from} getStatus={getStatus} />
               )}
               {ready && loggedIn && !signedUp && (
-                <ParentSurveyComponent getStatus={getStatus} />
+                <h1 style={{ textAlign: "center" }}>Sign ups are full.</h1>
+                //<ParentSurveyComponent getStatus={getStatus} />
               )}
               {!loggedIn && <Login loginSuccess={this.checkLogin} />}
             </Col>
