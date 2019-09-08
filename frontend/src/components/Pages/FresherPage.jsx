@@ -1,14 +1,20 @@
 import React, { Component } from "react";
 import { Col, Container, Row } from "reactstrap";
 import FresherSurveyComponent from "../Survey/FresherSurveyComponent";
+import isLoggedIn from "../Auth/utils";
+import Family from "./Family";
 
-class StudentPage extends Component {
+class FresherPage extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      loggedIn: isLoggedIn()
+    };
   }
 
   render() {
+    const { loggedIn } = this.state;
+
     return (
       <div>
         <h1
@@ -22,7 +28,8 @@ class StudentPage extends Component {
           <Row>
             <Col sm={1} />
             <Col sm={10}>
-              <FresherSurveyComponent />
+              {!loggedIn && <FresherSurveyComponent />}
+              {loggedIn && Family}
             </Col>
             <Col sm={1} />
           </Row>
@@ -32,4 +39,4 @@ class StudentPage extends Component {
   }
 }
 
-export default StudentPage;
+export default FresherPage;

@@ -4,7 +4,7 @@ import axios from "axios";
 import ParentSurveyComponent from "../Survey/ParentSurveyComponent";
 import Login from "../Auth/Login";
 import Proposals from "../Parents/Proposals";
-import Family from "../Parents/Family";
+import Family from "./Family";
 
 import isLoggedIn from "../Auth/utils";
 

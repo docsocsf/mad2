@@ -4,7 +4,7 @@ import NavbarItem from "./NavbarItem";
 import "./NavigationBar.css";
 import isLoggedIn from "../Auth/utils";
 
-import { Navbar, Nav, Container, NavItem, NavLink, Col } from "reactstrap";
+import { Navbar, Nav, Container, NavItem, Col } from "reactstrap";
 
 class NavigationBar extends Component {
   constructor(props) {
@@ -76,12 +76,12 @@ class NavigationBar extends Component {
             <Nav pills>
               <NavbarItem linkTo="/parent">Parent</NavbarItem>
               {!loggedIn && (
-                // <NavbarItem linkTo="/student">Fresher</NavbarItem>
-                <NavLink disabled>
-                  <h3 className="LinkText" style={{ color: "#c0c0c0cb" }}>
-                    Fresher
-                  </h3>
-                </NavLink>
+                <NavbarItem linkTo="/fresherPage">Fresher</NavbarItem>
+                // <NavLink disabled>
+                //   <h3 className="LinkText" style={{ color: "#c0c0c0cb" }}>
+                //     Fresher
+                //   </h3>
+                // </NavLink>
               )}
               {loggedIn && (
                 <NavItem>
