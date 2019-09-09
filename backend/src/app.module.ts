@@ -4,6 +4,7 @@ import { TypegooseModule } from 'nestjs-typegoose';
 import { AuthModule } from './auth/auth.module';
 import { CookieParserMiddleware } from '@nest-middlewares/cookie-parser';
 import { ServeStaticModule } from '@nestjs/serve-static';
+import { MailerModule } from '@nest-modules/mailer';
 import * as path from 'path';
 
 @Module({
@@ -23,6 +24,19 @@ import * as path from 'path';
       rootPath: path.join(__dirname, '..', '..', 'frontend', 'build'),
       renderPath: '*',
     }),
+    MailerModule.forRoot(
+      {
+        transport: {
+          host: 'smtp.office365.com',
+          port: 587,
+          secure: false,
+          auth: {
+            user: 'pp2916@ic.ac.uk',
+            pass: process.env.EMAIL_PASSWORD,
+          },
+        },
+      },
+    ),
   ],
 })
 export class ApplicationModule {

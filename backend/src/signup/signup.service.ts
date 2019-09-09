@@ -6,21 +6,37 @@ import { Parent } from './models/mongo/parent.model';
 import { Marriage } from './models/mongo/marriage.model';
 import { Family } from './models/mongo/family.model';
 import { ParentStatus } from './models/dto/responses/parentStatus.model';
+import { MailerService } from '@nest-modules/mailer';
+
+import * as fs from 'fs';
 
 @Injectable()
 export class SignupService {
+
+  private confirmationHtml: string;
+
   constructor(
     @InjectModel('Fresher') private readonly fresherModel: ModelType<Fresher>,
     @InjectModel('Parent') private readonly parentModel: ModelType<Parent>,
     @InjectModel('Marriage')
     private readonly marriageModel: ModelType<Marriage>,
     @InjectModel('Family') private readonly familyModel: ModelType<Family>,
-  ) {}
+    private readonly mailerService: MailerService,
+  ) {
+    this.confirmationHtml = fs.readFileSync('./emails/confirmation.html').toString();
+  }
 
   async createFresher(createFresherDto: Fresher): Promise<any> {
     const createdFresher = new this.fresherModel(createFresherDto);
     createdFresher.signedUpTs = new Date();
     const fresher = await createdFresher.save();
+    console.log(fresher._id);
+    this.mailerService.sendMail({
+      from: 'pp2916@ic.ac.uk',
+      to: fresher.student.shortcode + '@ic.ac.uk',
+      subject: 'Mums and Dads Signup Verification!',
+      html: this.confirmationHtml.replace('FRESHER_UUID_HERE', fresher._id),
+    });
     return {
       preferredName: fresher.student.preferredName,
       shortcode: fresher.student.shortcode,
