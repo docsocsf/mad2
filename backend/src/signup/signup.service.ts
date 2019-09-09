@@ -32,7 +32,7 @@ export class SignupService {
     const fresher = await createdFresher.save();
     console.log(fresher._id);
     this.mailerService.sendMail({
-      from: 'pp2916@ic.ac.uk',
+      from: 'docsoc@ic.ac.uk',
       to: fresher.student.shortcode + '@ic.ac.uk',
       subject: 'Mums and Dads Signup Verification!',
       html: this.confirmationHtml.replace('FRESHER_UUID_HERE', fresher._id),

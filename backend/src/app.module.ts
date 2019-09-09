@@ -31,7 +31,7 @@ import * as path from 'path';
           port: 587,
           secure: false,
           auth: {
-            user: 'pp2916@ic.ac.uk',
+            user: 'docsoc@ic.ac.uk',
             pass: process.env.EMAIL_PASSWORD,
           },
         },

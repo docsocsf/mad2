@@ -1,13 +1,13 @@
-import React, { Component } from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
-import NavigationBar from "./components/Navigation/NavigationBar";
-import "bootstrap/dist/css/bootstrap.min.css";
-import ParentPage from "./components/Pages/ParentPage";
-import FresherPage from "./components/Pages/FresherPage";
-import HomePage from "./components/Pages/HomePage";
-import Validate from "./components/Freshers/Validate";
-import Status from "./components/Freshers/Status";
-import "./global.css";
+import React, { Component } from 'react';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import NavigationBar from './components/Navigation/NavigationBar';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import ParentPage from './components/Pages/ParentPage';
+import FresherPage from './components/Pages/FresherPage';
+import HomePage from './components/Pages/HomePage';
+import Validate from './components/Freshers/Validate';
+import Status from './components/Freshers/Status';
+import './global.css';
 
 export default class App extends Component {
   render() {
