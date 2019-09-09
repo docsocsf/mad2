@@ -76,7 +76,7 @@ class NavigationBar extends Component {
             <Nav pills>
               <NavbarItem linkTo="/parent">Parent</NavbarItem>
               {!loggedIn && (
-                <NavbarItem linkTo="/fresherPage">Fresher</NavbarItem>
+                <NavbarItem linkTo="/fresher">Fresher</NavbarItem>
                 // <NavLink disabled>
                 //   <h3 className="LinkText" style={{ color: "#c0c0c0cb" }}>
                 //     Fresher

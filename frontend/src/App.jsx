@@ -16,7 +16,7 @@ export default class App extends Component {
         <NavigationBar />
         <Route exact path="/" component={HomePage} />
         <Route exact path="/parent" component={ParentPage} />
-        <Route exact path="/fresherPage" component={FresherPage} />
+        <Route exact path="/fresher" component={FresherPage} />
         <Route exact path="/fresher/verify/:id" component={Validate} />
         <Route exact path="/fresher/status/:id" component={Status} />
       </Router>
