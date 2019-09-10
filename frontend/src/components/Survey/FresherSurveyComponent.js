@@ -46,7 +46,7 @@ class SurveyComponent extends Component {
       : null;
     student.gender = results.gender;
     student.course = results.course;
-    student.shortcode = results.shortcode;
+    student.shortcode = results.shortcode.toLowerCase();
     student.socialMedia = results.socialMedia
       ? results.socialMedia.trim()
       : null;

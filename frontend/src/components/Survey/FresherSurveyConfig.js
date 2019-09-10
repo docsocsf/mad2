@@ -31,9 +31,16 @@ const config = {
         {
           type: 'text',
           name: 'shortcode',
-          title: 'Please enter your shortcode (College Login e.g. ab2916 NOT your 8-number Collede ID)',
+          title: 'Please enter your shortcode (College Login e.g. ab2916 NOT your 8-number College ID)',
           isRequired: true,
           placeHolder: 'i.e. ab2916',
+          validators: [
+            {
+              type: 'regex',
+              text: 'Your College Login should be 2-3 letters followed by 2-4 numbers. Please do not input your College ID.',
+              regex: '[a-zA-Z]+[0-9]+',
+            },
+          ],
         },
         gender,
         course,
