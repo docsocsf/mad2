@@ -31,9 +31,9 @@ const config = {
         {
           type: 'text',
           name: 'shortcode',
-          title: 'Please enter your shortcode (College Login)',
+          title: 'Please enter your shortcode (College Login e.g. ab2916 NOT your 8-number Collede ID)',
           isRequired: true,
-          placeHolder: 'i.e. AB2916',
+          placeHolder: 'i.e. ab2916',
         },
         gender,
         course,
