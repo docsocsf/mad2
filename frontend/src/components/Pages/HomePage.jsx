@@ -36,22 +36,16 @@ class HomePage extends Component {
                 </CardText>
 
                 <CardText>
-                  <b>Parent Signup has now opened!</b>
-                  If you want to be a
-                  parent, click
+                  <b>Freshers sign up has opened! </b>
+                  Click
                   {' '}
-                  <a href="/parent">here</a>
+                  <a href="/fresher">here</a>
                   {' '}
-                  and login with your Imperial credential. Fill in the sign up
-                  form, and make sure your partner does too. You can then
-                  "propose" to your partner using their shortcode. Finally make
-                  sure they accept your proposal. After that we will assign up
-                  to 6 freshers to your "family" (according to your common
-                  interests) and notify you to check your new family members!
+                  to sign up! Fill in the sign up form and check your Imperial College email (i.e. ab1219@ic.ac.uk)
 
                 </CardText>
                 <CardText>
-                  <b>Freshers' sign up will open soon, stay tuned!</b>
+                  <b>Once you have signed up, we will inform you via email when you have been allocated a family!</b>
                 </CardText>
               </CardBody>
             </Card>
