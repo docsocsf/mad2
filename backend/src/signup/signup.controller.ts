@@ -36,6 +36,11 @@ export class SignupController {
     return;
   }
 
+  @Get('fresher/status')
+  async fresherStatus(@Query('id') id: string): Promise<FresherStatus> {
+    return await this.signupService.fresherStatus(id);
+  }
+
   @UseGuards(AuthGuard('jwt'))
   @Post('parent')
   async parentSignup(@Body() parent: Parent): Promise<void> {

@@ -59,7 +59,7 @@ export class SignupService {
   }
 
   async fresherStatus(id: string): Promise<Fresher> {
-    const fresher = await this.fresherModel.findById(id);
+    const fresher = await this.getFresherFromId(id);
     if (fresher) {
       if (fresher.verified) {
         return fresher;
@@ -81,23 +81,55 @@ export class SignupService {
     return;
   }
 
+  private async getFresherFromId(
+    id: string,
+  ): Promise<InstanceType<Fresher>> {
+    return await this.fresherModel.findById(id)
+    .populate([
+      {
+        path: 'family',
+        model: Family,
+        populate: {
+          path: 'parents',
+          model: Marriage,
+          populate: [
+            {path: 'proposerId', model: Parent },
+            {path: 'proposeeId', model: Parent },
+          ],
+        },
+      },
+      {
+        path: 'kids',
+        model: Fresher,
+      },
+    ],
+    );
+  }
+
   private async getParentFromShortcode(
     shortcode: string,
   ): Promise<InstanceType<Parent>> {
     return await this.parentModel.findOne({
       'student.shortcode': shortcode,
-    }).populate({
-      path: 'family',
-      model: Family,
-      populate: {
-        path: 'parents',
-        model: Marriage,
-        populate: [
-          {path: 'proposerId', model: Parent },
-          {path: 'proposeeId', model: Parent },
-        ],
+    })
+    .populate([
+      {
+        path: 'family',
+        model: Family,
+        populate: {
+          path: 'parents',
+          model: Marriage,
+          populate: [
+            {path: 'proposerId', model: Parent },
+            {path: 'proposeeId', model: Parent },
+          ],
+        },
       },
-    });
+      {
+        path: 'kids',
+        model: Fresher,
+      },
+    ]);
   }
 
   async propose(
