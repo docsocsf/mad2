@@ -2,7 +2,7 @@ import numpy as np
 
 from itertools import combinations
 
-from allocator.models import Fresher, Family
+from allocator.models import Fresher, Parent
 from allocator.generate_mock_data import mock_students
 from allocator.allocate import dummy_allocate_and_save
 
@@ -18,6 +18,14 @@ def update_family(family):
     family.sort_children()
 
 
+def score_kids(kids):
+    pairs = list(combinations(kids, 2))
+    vectors = [list(map(lambda x: x.interests_vector(), pair)) for pair in pairs]
+    distances = [np.linalg.norm(pair[0] - pair[1])
+                 for pair in vectors]
+    return sum([distance ** 2 for distance in distances]) / len(kids)
+
+
 def should_swap(current_kid, old_family, worst_kid, new_family):
 
     old_family_kids = old_family.kids.copy()
@@ -29,26 +37,23 @@ def should_swap(current_kid, old_family, worst_kid, new_family):
     old_family_kids.remove(current_kid)
     old_family_kids.append(worst_kid)
 
-    def score_kids(kids):
-        pairs = list(combinations(kids, 2))
-        vectors = [list(map(lambda x: x.interests_vector(), pair)) for pair in pairs]
-        distances = [np.linalg.norm(pair[0] - pair[1])
-                     for pair in vectors]
-        return sum([distance ** 2 for distance in distances]) / len(kids)
-
     if score_kids(old_family_kids) < old_family.children_score and \
             score_kids(new_family_kids) < new_family.children_score:
         print("Swap has been deemed appropriate")
-        print("Old Scores: {} {}".format(old_family.children_score, new_family.children_score))
-        print("New Scores: {} {}".format(score_kids(old_family_kids), score_kids(new_family_kids)))
+        print("Old Scores: {} {}".format(
+            old_family.children_score, new_family.children_score))
+        print("New Scores: {} {}".format(
+            score_kids(old_family_kids), score_kids(new_family_kids)))
         print()
         return True
     else:
         return False
 
+def transferrable(kid, current_family, potential_family, max_family_size=2):
+    pass
 
-def swaps():
-    families = list(Family.objects)
+
+def swaps(families):
     no_swaps = 0
     first_run = True
     update_families(families)
@@ -98,9 +103,12 @@ def swaps():
     print(list(map(lambda x: x.interests_vector(), families[-1].kids)))
 
     for family in families:
-        family.save()
+        print(family)
+        # family.save()
 
 
-mock_students()
-dummy_allocate_and_save(Fresher.objects)
-swaps()
+for fresher in Fresher.objects():
+    print(type(fresher.to_json()))
+
+# placeholders = dummy_allocate_and_save()
+# swaps(placeholders)

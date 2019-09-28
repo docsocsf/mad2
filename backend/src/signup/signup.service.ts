@@ -116,18 +116,20 @@ export class SignupService {
       {
         path: 'family',
         model: Family,
-        populate: {
-          path: 'parents',
-          model: Marriage,
-          populate: [
-            {path: 'proposerId', model: Parent },
-            {path: 'proposeeId', model: Parent },
-          ],
-        },
-      },
-      {
-        path: 'kids',
-        model: Fresher,
+        populate: [
+          {
+            path: 'parents',
+            model: Marriage,
+            populate: [
+              {path: 'proposerId', model: Parent },
+              {path: 'proposeeId', model: Parent },
+            ],
+          },
+          {
+            path: 'kids',
+            model: Fresher,
+          },
+        ],
       },
     ]);
   }
@@ -227,6 +229,29 @@ export class SignupService {
       .find()
       .populate(['proposer', 'parents', 'proposee'])
       .exec();
+  }
+
+  async allFamilies(): Promise<Family[]> {
+    return await this.familyModel
+    .find()
+    .populate([
+      {
+        path: 'parents',
+        model: Marriage,
+        populate: [
+          {path: 'proposerId', model: Parent },
+          {path: 'proposeeId', model: Parent },
+        ],
+      },
+      {
+        path: 'kids',
+          model: Fresher,
+      },
+    ]);
+  }
+
+  async allUnallocatedKids(): Promise<Fresher[]> {
+    return await this.fresherModel.find({family: null, verified: true});
   }
 
   async parentStatus(shortcode: string): Promise<ParentStatus> {

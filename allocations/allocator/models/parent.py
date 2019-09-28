@@ -1,32 +1,28 @@
-from mongoengine import Document
-from mongoengine.fields import (
-    DateTimeField,
-    GenericEmbeddedDocumentField,
-    EmbeddedDocumentField,
-    StringField
-)
+from allocator.models.student import Student
 
-from allocator.models.interests import Interests
+import numpy as np
 
 
-class Parent(Document):
-    student = GenericEmbeddedDocumentField(required=True)
-    interests = EmbeddedDocumentField(Interests, required=True)
-    selfDescription = StringField(default="")
-    signedUpTs = DateTimeField()
-    marriageStatus = GenericEmbeddedDocumentField()
+class Parent:
 
-    meta = {
-        "strict": False,
-        "collection": "parents"
-    }
+    def __init__(self, data):
+        self.id = data['_id']
+        self.student = Student(data['student'])
 
-    def to_dict(self):
-        interests_dict = self.interests.to_dict()
-        interests_dict["shortcode"] = self.student.shortcode
+        self._interests = data['interests']
+        del self._interests['_id']
 
-        return interests_dict
+        self.family = data['family']
 
-    def interests_vector(self):
-        return self.interests.to_np_array()
+    # def to_dict(self):
+    #     interests_dict = self.interests.copy()
+    #     interests_dict["shortcode"] = self.student.shortcode
 
+    #     return interests_dict
+
+    @property
+    def interests(self):
+        return np.fromiter(self._interests.values(), dtype=float)
+
+    def __repr__(self):
+        return "Parent(" + str(self.student) + ")"

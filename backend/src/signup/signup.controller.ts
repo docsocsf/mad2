@@ -37,7 +37,7 @@ export class SignupController {
   }
 
   @Get('fresher/status')
-  async fresherStatus(@Query('id') id: string): Promise<FresherStatus> {
+  async fresherStatus(@Query('id') id: string): Promise<Fresher> {
     return await this.signupService.fresherStatus(id);
   }
 
@@ -66,5 +66,15 @@ export class SignupController {
   async status(@Request() req: any): Promise<ParentStatus> {
     const shortcode: string = req.user.data.Login;
     return await this.signupService.parentStatus(shortcode);
+  }
+
+  @Get('all-families')
+  async allFamilies(): Promise<any> {
+    return await this.signupService.allFamilies();
+  }
+
+  @Get('all-unallocated-freshers')
+  async unallocatedFreshers(): Promise<any> {
+    return await this.signupService.allUnallocatedKids();
   }
 }

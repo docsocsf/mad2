@@ -6,7 +6,7 @@ import os
 
 from rstr import xeger
 
-from allocator.models import Fresher, Student, Interests, Parent, MarriageStatus
+from allocator.models import Fresher, Student, Interests, Parent
 
 shortcode_pattern = "[a-z]{2}\d{1,2}19"
 
@@ -59,8 +59,6 @@ def mock_parents():
                 kpop=rand_interest(),
                 dance=rand_interest()
             ),
-            marriageStatus=MarriageStatus(married=False),
             signedUpTs=datetime.now()
         )
         parent.save()
-

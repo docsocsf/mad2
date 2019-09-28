@@ -1,72 +1,75 @@
 import json
 
+from allocator.models import Family, Fresher
 
-from pandas import DataFrame as Df
+import requests
 
-from matplotlib import pyplot as plt
-
-from sklearn.cluster import KMeans
-
-from allocator.models import Parent, Marriage, Fresher
-from allocator.models.family import Family
+LOCAL_URL = "http://localhost:8080/"
+MAX_CHILDREN = 2
 
 
-def allocate_parents():
+def dummy_allocate(families, freshers):
 
-    parents = Parent.objects
-    parents = list(parents)
-
-    print(parents)
-
-    pairs = list(zip(parents, parents[::-1][:(len(parents) // 2)]))
-
-    if len(parents) % 2 == 1:
-        pairs[-1] = pairs[-1] + (parents[(len(parents) // 2)],)
-
-    print(pairs)
-
-    for pair in pairs:
-        marriage = Marriage(
-            parents=list(pair),
-            proposer=pair[0],
-            proposee=pair[1]
-        )
-        marriage.save()
+    while freshers:
+        for family in families:
+            if freshers:
+                family.unallocated_kids.append(freshers.pop())
+            else:
+                break
 
 
-def dummy_allocate_and_save(freshers):
-    kids = []
+def transferrable(kid, current_family, potential_family,
+                  max_children=MAX_CHILDREN):
+    pass
 
-    for fresher in freshers:
-        kids.append(fresher)
-        if len(kids) == 4:
-            family = Family(kids=kids)
-            family.save()
-            kids = []
 
-def cluster():
-    freshers = []
+def allocate(dry=True, url=LOCAL_URL, debug=False, max_children=MAX_CHILDREN):
+    families = requests.get(url + "api/signup/all-families")
+    freshers = requests.get(url + "api/signup/all-unallocated-freshers")
 
-    for fresher in Fresher.objects:
-        # fresher = json.loads(fresher.to_json())
-        # print(json.dumps(fresher, indent=4))
-        freshers.append(fresher.to_dict())
-        print(json.dumps(fresher.to_dict(), indent=4))
+    if debug:
+        print(json.dumps(families.json(), indent=4))
+        print(json.dumps(freshers.json(), indent=4))
 
-    df = Df(freshers)
+    families = [Family(family) for family in families.json()]
+    freshers = [Fresher(fresher) for fresher in freshers.json()]
 
-    df.set_index("shortcode", inplace=True)
+    if debug:
+        print("Number of families: {}".format(len(families)))
+        print("Number of unallocated freshers: {}".format(len(freshers)))
 
-    df = df[['alcohol', 'anime']]
+    # Blind dummy allocations
+    dummy_allocate(families, freshers)
 
-    print(df)
+    if debug:
+        for family in families:
+            print(family)
 
-    km = KMeans(n_clusters=2).fit(df)
-    centroids = km.cluster_centers_
+    # Swaps and transfers need to occur here
+    while True:
+        # Sort families by score, and then start with lowest score family
+        swapped = False
+        families.sort(key=lambda x: x.score())
+        for family_index in range(1, len(families)):
+            current_family = families[-family_index]
+            print(current_family.score())
+            for kid in current_family.unallocated_kids:
+                for potential_family in families:
+                    transfer = transferrable(kid,
+                                             current_family,
+                                             potential_family)
+                    if transfer:  # Do the swap/transfer and then break
+                        if transfer is True:  # One way transfer:
+                            pass
+                        else:  # Swap
+                            pass
+                        swapped = True
+                        break
 
-    plt.scatter(df['alcohol'], df['anime'],
-                c=km.labels_.astype(float), s=50, alpha=0.5)
-    plt.scatter(centroids[:, 0], centroids[:, 1], c='red', s=50)
+        if not swapped:
+            break
 
-    plt.show()
-
+    # Construct allocations request to backend
+    for family in families:
+        for kid in family.unallocated_kids:
+            print(family.id, kid.id)
