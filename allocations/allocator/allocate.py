@@ -1,26 +1,219 @@
 import json
+import random
 
 from allocator.models import Family, Fresher
 
 import requests
 
+
+SEED = 12345
 LOCAL_URL = "http://localhost:8080/"
 MAX_CHILDREN = 2
+ITERATIONS = 1000
+
+random.seed(555)
 
 
-def dummy_allocate(families, freshers):
+def dummy_allocate(families, freshers, debug=False):
 
-    while freshers:
-        for family in families:
-            if freshers:
-                family.unallocated_kids.append(freshers.pop())
-            else:
-                break
+    leftovers = []
+
+    # Try fullfill BOTH female and JMC constraints
+
+    freshers.sort(key=lambda x: x.constraint_type())
+
+    for fresher in freshers:
+        if fresher.female and fresher.jmc:
+            valid_families = [f for f in families
+                              if f.hasJmc and f.hasFemale
+                              and f.no_of_kids < MAX_CHILDREN]
+        elif fresher.female:
+            valid_families = [f for f in families
+                              if f.hasFemale
+                              and f.no_of_kids < MAX_CHILDREN]
+        elif fresher.jmc:
+            valid_families = [f for f in families
+                              if f.hasJmc
+                              and f.no_of_kids < MAX_CHILDREN]
+        else:
+            valid_families = [f for f in families
+                              if f.no_of_kids < MAX_CHILDREN]
+
+        if valid_families == []:
+            leftovers.append(fresher)
+        else:
+            family = random.choice(valid_families)
+            family.unallocated_kids.append(fresher)
+
+    # For JMC Females, see if we can fulfill at least ONE constraint
+
+    for fresher in [f for f in leftovers if f.female and f.jmc]:
+
+        # JMC constraint first
+        valid_families = [f for f in families
+                          if f.hasJmc
+                          and f.no_of_kids < MAX_CHILDREN]
+        if valid_families:
+            family = random.choice(valid_families)
+            family.unallocated_kids.append(fresher)
+            leftovers.remove(fresher)
+            continue
+
+        # Female constraint second
+        valid_families = [f for f in families
+                          if f.hasFemale
+                          and f.no_of_kids < MAX_CHILDREN]
+        if valid_families:
+            family = random.choice(valid_families)
+            family.unallocated_kids.append(fresher)
+            leftovers.remove(fresher)
+            continue
+
+    families.sort(key=lambda x: x.no_of_kids)
+    for fresher, family in zip(leftovers, families):
+            family.unallocated_kids.append(fresher)
 
 
 def transferrable(kid, current_family, potential_family,
                   max_children=MAX_CHILDREN):
-    pass
+
+    if constraints_violation(kid, potential_family):
+        return False
+
+    # Look at swap potential
+    for swappable in potential_family.unallocated_kids:
+        if constraints_violation(swappable, current_family):
+            continue
+        if current_family.score(addition=swappable, removal=kid) \
+                + potential_family.score(addition=kid, removal=swappable) < \
+                current_family.score() + potential_family.score():
+            return swappable
+        # Perform the swap and break
+
+    if potential_family.no_of_kids < max_children:
+        # Possible to transfer only
+        if current_family.score(removal=kid) \
+                + potential_family.score(addition=kid) \
+                < current_family.score() + potential_family.score():
+            return True
+
+    return False
+
+
+def constraints_violation(kid, family):
+    if kid.female and not family.hasFemale:
+        return True
+    elif kid.jmc and not family.hasJmc:
+        return True
+    else:
+        return False
+
+
+def swaps_and_transfers(families, debug=False):
+    iterations = 0
+    no_swaps = 0
+    while True and iterations < ITERATIONS:
+        # Sort families by score, and then start with lowest score family
+        swapped = False
+        families.sort(key=lambda x: x.score())
+        for family_index in range(1, len(families)):
+            current_family = families[-family_index]
+            if debug:
+                print(current_family.score())
+            for kid in current_family.unallocated_kids:
+                for potential_family in \
+                        [x for x in families if x is not current_family]:
+                    transfer = transferrable(kid,
+                                             current_family,
+                                             potential_family)
+                    if transfer:  # Do the swap/transfer and then break
+
+                        if debug:
+                            print("Swap has been deemed appropriate")
+
+                        if transfer is True:  # One way transfer:
+                            if debug:
+                                print("Transferring {}".format(kid))
+                            potential_family.add_kid(kid)
+                            current_family.remove_kid(kid)
+                        elif isinstance(transfer, Fresher):  # Swap
+                            if debug:
+                                print("Swapping {} and {}".format(
+                                    kid, transfer))
+                                print("Between families {} and {}".format(
+                                    current_family.kids,
+                                    potential_family.kids))
+                            potential_family.add_kid(kid)
+                            current_family.remove_kid(kid)
+                            potential_family.remove_kid(transfer)
+                            current_family.add_kid(transfer)
+                        swapped = True
+                        no_swaps += 1
+                        break
+
+        iterations += 1
+
+        if not swapped:
+            break
+
+    print("Finished swaps after " +
+          "{} iterations and {} swaps".format(iterations, no_swaps))
+
+
+def pre_stats(freshers, families):
+
+    total = len(freshers)
+    females = len([f for f in freshers if f.female])
+    jmc = len([f for f in freshers if f.jmc])
+    jmc_and_female = len([f for f in freshers if f.female and f.jmc])
+
+    total_families = len(families)
+    female_families = len([f for f in families if f.hasFemale])
+    jmc_families = len([f for f in families if f.hasJmc])
+    jmc_female_families = len([f for f in families
+                               if f.hasFemale and f.hasJmc])
+
+    print("Freshers stats:")
+    print("JMC Freshers: {}".format(jmc))
+    print("Female Freshers: {}".format(females))
+    print("JMC and Female Freshers: {}".format(jmc_and_female))
+    print("All Freshers: {}".format(total))
+    print()
+    print("Family stats:")
+    print("JMC Families: {}".format(jmc_families))
+    print("Female Families: {}".format(female_families))
+    print("JMC and Female Families: {}".format(jmc_female_families))
+    print("All Families: {}".format(total_families))
+
+
+def post_stats(families):
+
+    scores = [f.score() for f in families]
+
+    print("\nFINAL SCORES:")
+    for family, score in zip(families, scores):
+        print("{}: {}".format(family, score))
+
+    print("\nAVERAGE SCORE: {}".format(sum(scores) / len(scores)))
+
+    violations = [f for f in families if f.violates_constraints()]
+
+    print("\nVIOLATIONS:")
+    print("  NUMBER OF VIOLATIONS: {}".format(len(violations)))
+    for v in violations:
+        print("  {}:  {}".format(v, v.violators()))
+
+
+def allocations_request(families, url=LOCAL_URL):
+    allocations = []
+    for family in families:
+        for kid in family.unallocated_kids:
+            allocations.append({
+                "fresher": kid.id,
+                "family": family.id
+            })
+
+    return allocations
 
 
 def allocate(dry=True, url=LOCAL_URL, debug=False, max_children=MAX_CHILDREN):
@@ -34,42 +227,24 @@ def allocate(dry=True, url=LOCAL_URL, debug=False, max_children=MAX_CHILDREN):
     families = [Family(family) for family in families.json()]
     freshers = [Fresher(fresher) for fresher in freshers.json()]
 
-    if debug:
-        print("Number of families: {}".format(len(families)))
-        print("Number of unallocated freshers: {}".format(len(freshers)))
+    # Pre Allocation Stats
+    pre_stats(freshers, families)
 
     # Blind dummy allocations
-    dummy_allocate(families, freshers)
+    dummy_allocate(families, freshers, debug=debug)
 
     if debug:
         for family in families:
             print(family)
 
     # Swaps and transfers need to occur here
-    while True:
-        # Sort families by score, and then start with lowest score family
-        swapped = False
-        families.sort(key=lambda x: x.score())
-        for family_index in range(1, len(families)):
-            current_family = families[-family_index]
-            print(current_family.score())
-            for kid in current_family.unallocated_kids:
-                for potential_family in families:
-                    transfer = transferrable(kid,
-                                             current_family,
-                                             potential_family)
-                    if transfer:  # Do the swap/transfer and then break
-                        if transfer is True:  # One way transfer:
-                            pass
-                        else:  # Swap
-                            pass
-                        swapped = True
-                        break
+    swaps_and_transfers(families, debug=debug)
 
-        if not swapped:
-            break
+    # Post Allocation Stats
+    post_stats(families)
 
     # Construct allocations request to backend
-    for family in families:
-        for kid in family.unallocated_kids:
-            print(family.id, kid.id)
+    req = allocations_request(families, url=url)
+    response = requests.post(url + "api/signup/allocations", json=req)
+    print(response)
+    # print(json.dumps(req, indent=4))

@@ -14,6 +14,8 @@ import * as fs from 'fs';
 export class SignupService {
 
   private confirmationHtml: string;
+  private parentAllocationHtml: string;
+  private fresherAllocationHtml: string;
 
   constructor(
     @InjectModel('Fresher') private readonly fresherModel: ModelType<Fresher>,
@@ -23,14 +25,18 @@ export class SignupService {
     @InjectModel('Family') private readonly familyModel: ModelType<Family>,
     private readonly mailerService: MailerService,
   ) {
-    this.confirmationHtml = fs.readFileSync('./emails/confirmation.html').toString();
+    this.confirmationHtml =
+      fs.readFileSync('./emails/confirmation.html').toString();
+    this.parentAllocationHtml =
+      fs.readFileSync('./emails/parentAllocation.html').toString();
+    this.fresherAllocationHtml =
+      fs.readFileSync('./emails/fresherAllocation.html').toString();
   }
 
   async createFresher(createFresherDto: Fresher): Promise<any> {
     const createdFresher = new this.fresherModel(createFresherDto);
     createdFresher.signedUpTs = new Date();
     const fresher = await createdFresher.save();
-    console.log(fresher._id);
     this.mailerService.sendMail({
       from: 'docsoc@ic.ac.uk',
       to: fresher.student.shortcode + '@ic.ac.uk',
@@ -89,7 +95,7 @@ export class SignupService {
       {
         path: 'family',
         model: Family,
-        populate: {
+        populate: [{
           path: 'parents',
           model: Marriage,
           populate: [
@@ -97,10 +103,11 @@ export class SignupService {
             {path: 'proposeeId', model: Parent },
           ],
         },
-      },
-      {
-        path: 'kids',
-        model: Fresher,
+          {
+            path: 'kids',
+            model: Fresher,
+          },
+        ],
       },
     ],
     );
@@ -294,4 +301,95 @@ export class SignupService {
       ])
       .exec();
   }
+
+  async allocate(allocations: any[]): Promise<void> {
+    const toSave = allocations.map(
+      alloc => this.saveAllocation(alloc.fresher, alloc.family),
+    );
+
+    const allocatedPairs: any = await Promise.all(toSave);
+
+    const allocatedFamilies: Set<any> = new Set(allocatedPairs.map(
+      pair => pair.family,
+    ));
+
+    await Promise.all([...allocatedFamilies].flatMap(f => {
+      return [
+        this.notifyParentAllocation(f.parents.proposerId),
+        this.notifyParentAllocation(f.parents.proposeeId),
+      ];
+    }));
+
+    const allocatedFreshers: Set<InstanceType<Fresher>> = new Set(allocatedPairs.map(
+      pair => pair.fresher,
+    ));
+
+    await Promise.all([...allocatedFreshers].map(
+      f => this.notifyFresherAllocation(f),
+    ));
+
+  }
+
+  private async saveAllocation(fresherId: any, familyId: any): Promise<any> {
+    const fresher: InstanceType<Fresher>
+    = await this.getFresherFromId(fresherId);
+    if (fresher.family) {
+      throw new HttpException(
+        'That fresher has already been assigned',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    const family =
+      await this.familyModel.findById(familyId)
+      .populate([
+        {
+          path: 'parents',
+          model: Marriage,
+          populate: [
+            {path: 'proposerId', model: Parent },
+            {path: 'proposeeId', model: Parent },
+          ],
+        },
+        {
+          path: 'kids',
+          model: Fresher,
+        },
+      ]);
+
+    if (family === null) {
+      throw new HttpException(
+        'Family does not exist',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    fresher.family = familyId;
+    family.kids.push(fresherId);
+
+    fresher.save();
+    family.save();
+
+    return {fresher, family};
+  }
+
+  private async notifyParentAllocation(parent: Parent): Promise<any> {
+    return this.mailerService.sendMail({
+      from: 'docsoc@ic.ac.uk',
+      to: parent.student.shortcode + '@ic.ac.uk',
+      subject: 'Mums and Dads Family Allocation',
+      html: this.parentAllocationHtml,
+    });
+  }
+
+  private async notifyFresherAllocation(fresher: InstanceType<Fresher>): Promise<any> {
+    return this.mailerService.sendMail({
+      from: 'docsoc@ic.ac.uk',
+      to: fresher.student.shortcode + '@ic.ac.uk',
+      subject: 'Mums and Dads Family Allocation',
+      html: this.fresherAllocationHtml
+        .replace('FRESHER_UUID_HERE', fresher._id),
+    });
+
+  }
+
 }

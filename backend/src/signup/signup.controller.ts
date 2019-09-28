@@ -77,4 +77,9 @@ export class SignupController {
   async unallocatedFreshers(): Promise<any> {
     return await this.signupService.allUnallocatedKids();
   }
+
+  @Post('allocations')
+  async allocate(@Body() allocations: any): Promise<void> {
+    return await this.signupService.allocate(allocations);
+  }
 }

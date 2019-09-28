@@ -21,19 +21,18 @@ export default class Status extends Component {
   }
 
   handleSubmit() {
-    axios.get("/api/signup/fresher/verify?id=" + this.state.match).then(() => {
-      axios
-        .get("/api/signup/fresher/status?id=" + this.state.match, {
-          withCredentials: true
-        })
-        .then(data => {
-          const status = data.data;
-          this.setState({
-            parent1: status.me.family.parents.proposerId,
-            parent2: status.me.family.parents.proposeeId,
-            kids: status.me.family.kids,
-            ready: true
-          });
+    axios
+      .get("/api/signup/fresher/status?id=" + this.state.match, {
+        withCredentials: true
+      })
+      .then(data => {
+        console.log(data);
+        const status = data.data;
+        this.setState({
+          parent1: status.family.parents.proposerId,
+          parent2: status.family.parents.proposeeId,
+          kids: status.family.kids,
+          ready: true
         });
     });
   }
