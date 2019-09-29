@@ -1,16 +1,14 @@
-from mongoengine import EmbeddedDocument
-from mongoengine.fields import (
-    StringField
-)
+class Student:
 
+    def __init__(self, data):
 
-class Student(EmbeddedDocument):
-    firstName = StringField(required=True)
-    lastName = StringField(required=True)
-    preferredName = StringField(default="")
-    shortcode = StringField(unique=True, required=True)
+        self.firstName = data['firstName']
+        self.lastName = data['lastName']
+        self.preferredName = data['preferredName']
+        self.gender = data['gender']
+        self.shortcode = data['shortcode']
+        self.course = data['course']
+        self.socialMedia = data['socialMedia']
 
-    meta = {
-        "strict": False,
-        "collection": "students"
-    }
+    def __str__(self):
+        return self.firstName + " " + self.lastName

@@ -1,72 +1,250 @@
 import json
+import random
+
+from allocator.models import Family, Fresher
+
+import requests
 
 
-from pandas import DataFrame as Df
+SEED = 12345
+LOCAL_URL = "http://localhost:8080/"
+MAX_CHILDREN = 2
+ITERATIONS = 1000
 
-from matplotlib import pyplot as plt
-
-from sklearn.cluster import KMeans
-
-from allocator.models import Parent, Marriage, Fresher
-from allocator.models.family import Family
+random.seed(555)
 
 
-def allocate_parents():
+def dummy_allocate(families, freshers, debug=False):
 
-    parents = Parent.objects
-    parents = list(parents)
+    leftovers = []
 
-    print(parents)
+    # Try fullfill BOTH female and JMC constraints
 
-    pairs = list(zip(parents, parents[::-1][:(len(parents) // 2)]))
-
-    if len(parents) % 2 == 1:
-        pairs[-1] = pairs[-1] + (parents[(len(parents) // 2)],)
-
-    print(pairs)
-
-    for pair in pairs:
-        marriage = Marriage(
-            parents=list(pair),
-            proposer=pair[0],
-            proposee=pair[1]
-        )
-        marriage.save()
-
-
-def dummy_allocate_and_save(freshers):
-    kids = []
+    freshers.sort(key=lambda x: x.constraint_type())
 
     for fresher in freshers:
-        kids.append(fresher)
-        if len(kids) == 4:
-            family = Family(kids=kids)
-            family.save()
-            kids = []
+        if fresher.female and fresher.jmc:
+            valid_families = [f for f in families
+                              if f.hasJmc and f.hasFemale
+                              and f.no_of_kids < MAX_CHILDREN]
+        elif fresher.female:
+            valid_families = [f for f in families
+                              if f.hasFemale
+                              and f.no_of_kids < MAX_CHILDREN]
+        elif fresher.jmc:
+            valid_families = [f for f in families
+                              if f.hasJmc
+                              and f.no_of_kids < MAX_CHILDREN]
+        else:
+            valid_families = [f for f in families
+                              if f.no_of_kids < MAX_CHILDREN]
 
-def cluster():
-    freshers = []
+        if valid_families == []:
+            leftovers.append(fresher)
+        else:
+            family = random.choice(valid_families)
+            family.unallocated_kids.append(fresher)
 
-    for fresher in Fresher.objects:
-        # fresher = json.loads(fresher.to_json())
-        # print(json.dumps(fresher, indent=4))
-        freshers.append(fresher.to_dict())
-        print(json.dumps(fresher.to_dict(), indent=4))
+    # For JMC Females, see if we can fulfill at least ONE constraint
 
-    df = Df(freshers)
+    for fresher in [f for f in leftovers if f.female and f.jmc]:
 
-    df.set_index("shortcode", inplace=True)
+        # JMC constraint first
+        valid_families = [f for f in families
+                          if f.hasJmc
+                          and f.no_of_kids < MAX_CHILDREN]
+        if valid_families:
+            family = random.choice(valid_families)
+            family.unallocated_kids.append(fresher)
+            leftovers.remove(fresher)
+            continue
 
-    df = df[['alcohol', 'anime']]
+        # Female constraint second
+        valid_families = [f for f in families
+                          if f.hasFemale
+                          and f.no_of_kids < MAX_CHILDREN]
+        if valid_families:
+            family = random.choice(valid_families)
+            family.unallocated_kids.append(fresher)
+            leftovers.remove(fresher)
+            continue
 
-    print(df)
+    families.sort(key=lambda x: x.no_of_kids)
+    for fresher, family in zip(leftovers, families):
+            family.unallocated_kids.append(fresher)
 
-    km = KMeans(n_clusters=2).fit(df)
-    centroids = km.cluster_centers_
 
-    plt.scatter(df['alcohol'], df['anime'],
-                c=km.labels_.astype(float), s=50, alpha=0.5)
-    plt.scatter(centroids[:, 0], centroids[:, 1], c='red', s=50)
+def transferrable(kid, current_family, potential_family,
+                  max_children=MAX_CHILDREN):
 
-    plt.show()
+    if constraints_violation(kid, potential_family):
+        return False
 
+    # Look at swap potential
+    for swappable in potential_family.unallocated_kids:
+        if constraints_violation(swappable, current_family):
+            continue
+        if current_family.score(addition=swappable, removal=kid) \
+                + potential_family.score(addition=kid, removal=swappable) < \
+                current_family.score() + potential_family.score():
+            return swappable
+        # Perform the swap and break
+
+    if potential_family.no_of_kids < max_children:
+        # Possible to transfer only
+        if current_family.score(removal=kid) \
+                + potential_family.score(addition=kid) \
+                < current_family.score() + potential_family.score():
+            return True
+
+    return False
+
+
+def constraints_violation(kid, family):
+    if kid.female and not family.hasFemale:
+        return True
+    elif kid.jmc and not family.hasJmc:
+        return True
+    else:
+        return False
+
+
+def swaps_and_transfers(families, debug=False):
+    iterations = 0
+    no_swaps = 0
+    while True and iterations < ITERATIONS:
+        # Sort families by score, and then start with lowest score family
+        swapped = False
+        families.sort(key=lambda x: x.score())
+        for family_index in range(1, len(families)):
+            current_family = families[-family_index]
+            if debug:
+                print(current_family.score())
+            for kid in current_family.unallocated_kids:
+                for potential_family in \
+                        [x for x in families if x is not current_family]:
+                    transfer = transferrable(kid,
+                                             current_family,
+                                             potential_family)
+                    if transfer:  # Do the swap/transfer and then break
+
+                        if debug:
+                            print("Swap has been deemed appropriate")
+
+                        if transfer is True:  # One way transfer:
+                            if debug:
+                                print("Transferring {}".format(kid))
+                            potential_family.add_kid(kid)
+                            current_family.remove_kid(kid)
+                        elif isinstance(transfer, Fresher):  # Swap
+                            if debug:
+                                print("Swapping {} and {}".format(
+                                    kid, transfer))
+                                print("Between families {} and {}".format(
+                                    current_family.kids,
+                                    potential_family.kids))
+                            potential_family.add_kid(kid)
+                            current_family.remove_kid(kid)
+                            potential_family.remove_kid(transfer)
+                            current_family.add_kid(transfer)
+                        swapped = True
+                        no_swaps += 1
+                        break
+
+        iterations += 1
+
+        if not swapped:
+            break
+
+    print("Finished swaps after " +
+          "{} iterations and {} swaps".format(iterations, no_swaps))
+
+
+def pre_stats(freshers, families):
+
+    total = len(freshers)
+    females = len([f for f in freshers if f.female])
+    jmc = len([f for f in freshers if f.jmc])
+    jmc_and_female = len([f for f in freshers if f.female and f.jmc])
+
+    total_families = len(families)
+    female_families = len([f for f in families if f.hasFemale])
+    jmc_families = len([f for f in families if f.hasJmc])
+    jmc_female_families = len([f for f in families
+                               if f.hasFemale and f.hasJmc])
+
+    print("Freshers stats:")
+    print("JMC Freshers: {}".format(jmc))
+    print("Female Freshers: {}".format(females))
+    print("JMC and Female Freshers: {}".format(jmc_and_female))
+    print("All Freshers: {}".format(total))
+    print()
+    print("Family stats:")
+    print("JMC Families: {}".format(jmc_families))
+    print("Female Families: {}".format(female_families))
+    print("JMC and Female Families: {}".format(jmc_female_families))
+    print("All Families: {}".format(total_families))
+
+
+def post_stats(families):
+
+    scores = [f.score() for f in families]
+
+    print("\nFINAL SCORES:")
+    for family, score in zip(families, scores):
+        print("{}: {}".format(family, score))
+
+    print("\nAVERAGE SCORE: {}".format(sum(scores) / len(scores)))
+
+    violations = [f for f in families if f.violates_constraints()]
+
+    print("\nVIOLATIONS:")
+    print("  NUMBER OF VIOLATIONS: {}".format(len(violations)))
+    for v in violations:
+        print("  {}:  {}".format(v, v.violators()))
+
+
+def allocations_request(families, url=LOCAL_URL):
+    allocations = []
+    for family in families:
+        for kid in family.unallocated_kids:
+            allocations.append({
+                "fresher": kid.id,
+                "family": family.id
+            })
+
+    return allocations
+
+
+def allocate(dry=True, url=LOCAL_URL, debug=False, max_children=MAX_CHILDREN):
+    families = requests.get(url + "api/signup/all-families")
+    freshers = requests.get(url + "api/signup/all-unallocated-freshers")
+
+    if debug:
+        print(json.dumps(families.json(), indent=4))
+        print(json.dumps(freshers.json(), indent=4))
+
+    families = [Family(family) for family in families.json()]
+    freshers = [Fresher(fresher) for fresher in freshers.json()]
+
+    # Pre Allocation Stats
+    pre_stats(freshers, families)
+
+    # Blind dummy allocations
+    dummy_allocate(families, freshers, debug=debug)
+
+    if debug:
+        for family in families:
+            print(family)
+
+    # Swaps and transfers need to occur here
+    swaps_and_transfers(families, debug=debug)
+
+    # Post Allocation Stats
+    post_stats(families)
+
+    # Construct allocations request to backend
+    req = allocations_request(families, url=url)
+    response = requests.post(url + "api/signup/allocations", json=req)
+    print(response)
+    # print(json.dumps(req, indent=4))

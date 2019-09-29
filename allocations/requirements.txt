@@ -4,3 +4,4 @@ numpy
 rstr
 sklearn
 matplotlib
+requests

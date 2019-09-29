@@ -36,6 +36,11 @@ export class SignupController {
     return;
   }
 
+  @Get('fresher/status')
+  async fresherStatus(@Query('id') id: string): Promise<Fresher> {
+    return await this.signupService.fresherStatus(id);
+  }
+
   @UseGuards(AuthGuard('jwt'))
   @Post('parent')
   async parentSignup(@Body() parent: Parent): Promise<void> {
@@ -61,5 +66,20 @@ export class SignupController {
   async status(@Request() req: any): Promise<ParentStatus> {
     const shortcode: string = req.user.data.Login;
     return await this.signupService.parentStatus(shortcode);
+  }
+
+  @Get('all-families')
+  async allFamilies(): Promise<any> {
+    return await this.signupService.allFamilies();
+  }
+
+  @Get('all-unallocated-freshers')
+  async unallocatedFreshers(): Promise<any> {
+    return await this.signupService.allUnallocatedKids();
+  }
+
+  @Post('allocations')
+  async allocate(@Body() allocations: any): Promise<void> {
+    return await this.signupService.allocate(allocations);
   }
 }
