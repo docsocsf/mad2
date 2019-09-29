@@ -50,6 +50,9 @@ class Family extends Component {
                       </a>
                     </CardText>
                   )}
+                  <CardText>
+                    Shortcode: {this.props.parent1.student.shortcode}
+                  </CardText>
                 </CardBody>
               </Card>
             </Col>
@@ -82,6 +85,9 @@ class Family extends Component {
                       </a>
                     </CardText>
                   )}
+                  <CardText>
+                    Shortcode: {this.props.parent2.student.shortcode}
+                  </CardText>
                 </CardBody>
               </Card>
             </Col>
@@ -128,6 +134,8 @@ class Family extends Component {
                         </a>
                       </CardText>
                     )}
+
+                    <CardText>Shortcode: {kid.student.shortcode}</CardText>
                   </CardBody>
                 </Card>
               </Col>
