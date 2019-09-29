@@ -82,4 +82,9 @@ export class SignupController {
   async allocate(@Body() allocations: any): Promise<void> {
     return await this.signupService.allocate(allocations);
   }
+
+  @Post('notify-all')
+  async notifyAll(): Promise<void> {
+    await this.signupService.notifyAll();
+  }
 }

@@ -1,3 +1,3 @@
 from allocator.allocate import allocate
 
-allocate()
+allocate(url="https://mad.docsoc.co.uk/")
