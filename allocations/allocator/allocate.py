@@ -243,8 +243,12 @@ def allocate(dry=True, url=LOCAL_URL, debug=False, max_children=MAX_CHILDREN):
     # Post Allocation Stats
     post_stats(families)
 
-    # Construct allocations request to backend
-    req = allocations_request(families, url=url)
-    response = requests.post(url + "api/signup/allocations", json=req)
-    print(response)
-    # print(json.dumps(req, indent=4))
+    # Ask confirmation
+
+    if input("Would you like allocate as per the above? (y/n)") == 'y':
+        # Construct allocations request to backend
+        req = allocations_request(families, url=url)
+        response = requests.post(url + "api/signup/allocations", json=req)
+        print(response)
+    else:
+        print("Allocation cancelled")
