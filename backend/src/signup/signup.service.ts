@@ -330,6 +330,26 @@ export class SignupService {
 
   }
 
+  // TODO: Delete this
+  async notifyAll(): Promise<void> {
+    const parents: Parent[] = await this.parentModel.find(
+      {
+        family: { $exists: true, $ne: null },
+      },
+    );
+
+    Promise.all(parents.map(this.notifyParentAllocation));
+
+    const assignedFreshers: Fresher[] = await this.fresherModel.find(
+      {
+        family: { $exists: true, $ne: null },
+      },
+    );
+
+    Promise.all(assignedFreshers.map(this.notifyFresherAllocation));
+
+  }
+
   private async saveAllocation(fresherId: any, familyId: any): Promise<any> {
     const fresher: InstanceType<Fresher>
     = await this.getFresherFromId(fresherId);
