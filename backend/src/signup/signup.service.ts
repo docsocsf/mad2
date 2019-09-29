@@ -332,22 +332,29 @@ export class SignupService {
 
   // TODO: Delete this
   async notifyAll(): Promise<void> {
-    const parents: Parent[] = await this.parentModel.find(
+    const parents: InstanceType<Parent>[] = await this.parentModel.find(
       {
         family: { $exists: true, $ne: null },
       },
     );
 
-    Promise.all(parents.map(this.notifyParentAllocation));
+    const emails: string[] = [];
 
-    const assignedFreshers: Fresher[] = await this.fresherModel.find(
+    for (const p of parents) {
+      emails.push((p.student.shortcode + '@ic.ac.uk'));
+    }
+
+    this.notifyParentAllocation(emails);
+
+    const assignedFreshers: InstanceType<Fresher>[] = await this.fresherModel.find(
       {
         family: { $exists: true, $ne: null },
       },
     );
 
-    Promise.all(assignedFreshers.map(this.notifyFresherAllocation));
-
+    for (const f of assignedFreshers) {
+      await this.notifyFresherAllocation(f);
+    }
   }
 
   private async saveAllocation(fresherId: any, familyId: any): Promise<any> {
@@ -392,17 +399,19 @@ export class SignupService {
     return {fresher, family};
   }
 
-  private async notifyParentAllocation(parent: Parent): Promise<any> {
-    return this.mailerService.sendMail({
+  private async notifyParentAllocation(emails: string[]): Promise<any> {
+    this.mailerService.sendMail({
       from: 'docsoc@ic.ac.uk',
-      to: parent.student.shortcode + '@ic.ac.uk',
+      to: 'docsoc@ic.ac.uk',
+      // @ts-ignore
+      bcc: emails,
       subject: 'Mums and Dads Family Allocation',
       html: this.parentAllocationHtml,
     });
   }
 
   private async notifyFresherAllocation(fresher: InstanceType<Fresher>): Promise<any> {
-    return this.mailerService.sendMail({
+    this.mailerService.sendMail({
       from: 'docsoc@ic.ac.uk',
       to: fresher.student.shortcode + '@ic.ac.uk',
       subject: 'Mums and Dads Family Allocation',
