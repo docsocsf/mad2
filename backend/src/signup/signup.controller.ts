@@ -68,22 +68,22 @@ export class SignupController {
     return await this.signupService.parentStatus(shortcode);
   }
 
-  @Get('all-families')
+  // @Get('all-families')
   async allFamilies(): Promise<any> {
     return await this.signupService.allFamilies();
   }
 
-  @Get('all-unallocated-freshers')
+  // @Get('all-unallocated-freshers')
   async unallocatedFreshers(): Promise<any> {
     return await this.signupService.allUnallocatedKids();
   }
 
-  @Post('allocations')
+  // @Post('allocations')
   async allocate(@Body() allocations: any): Promise<void> {
     return await this.signupService.allocate(allocations);
   }
 
-  @Post('notify-all')
+  // @Post('notify-all')
   async notifyAll(): Promise<void> {
     await this.signupService.notifyAll();
   }

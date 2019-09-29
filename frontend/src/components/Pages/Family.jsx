@@ -125,13 +125,7 @@ class Family extends Component {
                     {kid.student.socialMedia != null && (
                       <CardText>
                         Social Media:{" "}
-                        <a
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          href={kid.student.socialMedia}
-                        >
                           {kid.student.socialMedia}
-                        </a>
                       </CardText>
                     )}
 

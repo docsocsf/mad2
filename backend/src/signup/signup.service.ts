@@ -400,7 +400,7 @@ export class SignupService {
   }
 
   private async notifyParentAllocation(emails: string[]): Promise<any> {
-    this.mailerService.sendMail({
+    return this.mailerService.sendMail({
       from: 'docsoc@ic.ac.uk',
       to: 'docsoc@ic.ac.uk',
       // @ts-ignore
@@ -411,7 +411,7 @@ export class SignupService {
   }
 
   private async notifyFresherAllocation(fresher: InstanceType<Fresher>): Promise<any> {
-    this.mailerService.sendMail({
+    return this.mailerService.sendMail({
       from: 'docsoc@ic.ac.uk',
       to: fresher.student.shortcode + '@ic.ac.uk',
       subject: 'Mums and Dads Family Allocation',
