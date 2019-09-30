@@ -313,20 +313,18 @@ export class SignupService {
       pair => pair.family,
     ));
 
-    await Promise.all([...allocatedFamilies].flatMap(f => {
-      return [
-        this.notifyParentAllocation(f.parents.proposerId),
-        this.notifyParentAllocation(f.parents.proposeeId),
-      ];
-    }));
+    for (const f of allocatedFamilies) {
+      await this.notifyParentAllocation(f.parents.proposerId);
+      await this.notifyParentAllocation(f.parents.proposeeId);
+    }
 
     const allocatedFreshers: Set<InstanceType<Fresher>> = new Set(allocatedPairs.map(
       pair => pair.fresher,
     ));
 
-    await Promise.all([...allocatedFreshers].map(
-      f => this.notifyFresherAllocation(f),
-    ));
+    for (const f of allocatedFreshers) {
+      await this.notifyFresherAllocation(f);
+    }
 
   }
 
