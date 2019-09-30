@@ -186,7 +186,9 @@ def pre_stats(freshers, families):
     print("All Families: {}".format(total_families))
 
 
-def post_stats(families):
+def post_stats(all_families):
+
+    families = [f for f in all_families if f.unallocated_kids != []]
 
     scores = [f.score() for f in families]
 
