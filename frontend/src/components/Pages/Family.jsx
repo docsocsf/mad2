@@ -41,13 +41,7 @@ class Family extends Component {
                   {this.props.parent1.student.socialMedia != null && (
                     <CardText>
                       Social Media:{" "}
-                      <a
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        href={this.props.parent1.student.socialMedia}
-                      >
-                        {this.props.parent1.student.socialMedia}
-                      </a>
+                      {this.props.parent1.student.socialMedia}
                     </CardText>
                   )}
                   <CardText>
