@@ -160,6 +160,25 @@ def swaps_and_transfers(families, debug=False):
           "{} iterations and {} swaps".format(iterations, no_swaps))
 
 
+def _family_stats(families):
+
+    f_0 = [f for f in families if len(f.kids) == 0]
+    f_1 = [f for f in families if len(f.kids) == 1]
+    f_2 = [f for f in families if len(f.kids) == 2]
+    f_3 = [f for f in families if len(f.kids) == 3]
+    f_4 = [f for f in families if len(f.kids) == 4]
+    f_5 = [f for f in families if len(f.kids) == 5]
+
+    for f, no in [(f_0, 0),
+                  (f_1, 1),
+                  (f_2, 2),
+                  (f_3, 3),
+                  (f_4, 4),
+                  (f_5, 5)]:
+        if f:
+            print("Number of families with {} kids: {}".format(no, len(f)))
+
+
 def pre_stats(freshers, families):
 
     total = len(freshers)
@@ -185,6 +204,8 @@ def pre_stats(freshers, families):
     print("JMC and Female Families: {}".format(jmc_female_families))
     print("All Families: {}".format(total_families))
 
+    _family_stats(families)
+
 
 def post_stats(all_families):
 
@@ -196,7 +217,8 @@ def post_stats(all_families):
     for family, score in zip(families, scores):
         print("{}: {}".format(family, score))
 
-    print("\nAVERAGE SCORE: {}".format(sum(scores) / len(scores)))
+    if families:
+        print("\nAVERAGE SCORE: {}".format(sum(scores) / len(scores)))
 
     violations = [f for f in families if f.violates_constraints()]
 
@@ -204,6 +226,8 @@ def post_stats(all_families):
     print("  NUMBER OF VIOLATIONS: {}".format(len(violations)))
     for v in violations:
         print("  {}:  {}".format(v, v.violators()))
+
+    _family_stats(all_families)
 
 
 def allocations_request(families, url=LOCAL_URL):

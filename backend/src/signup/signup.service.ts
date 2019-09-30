@@ -313,10 +313,13 @@ export class SignupService {
       pair => pair.family,
     ));
 
+    const emails = [];
     for (const f of allocatedFamilies) {
-      await this.notifyParentAllocation(f.parents.proposerId);
-      await this.notifyParentAllocation(f.parents.proposeeId);
+      emails.push[f.parents.proposerId.student.shortcode + '@ic.ac.uk'];
+      emails.push[f.parents.proposeeId.student.shortcode + '@ic.ac.uk'];
     }
+
+    await this.notifyParentAllocation(emails);
 
     const allocatedFreshers: Set<InstanceType<Fresher>> = new Set(allocatedPairs.map(
       pair => pair.fresher,
@@ -326,33 +329,6 @@ export class SignupService {
       await this.notifyFresherAllocation(f);
     }
 
-  }
-
-  // TODO: Delete this
-  async notifyAll(): Promise<void> {
-    const parents: InstanceType<Parent>[] = await this.parentModel.find(
-      {
-        family: { $exists: true, $ne: null },
-      },
-    );
-
-    const emails: string[] = [];
-
-    for (const p of parents) {
-      emails.push((p.student.shortcode + '@ic.ac.uk'));
-    }
-
-    this.notifyParentAllocation(emails);
-
-    const assignedFreshers: InstanceType<Fresher>[] = await this.fresherModel.find(
-      {
-        family: { $exists: true, $ne: null },
-      },
-    );
-
-    for (const f of assignedFreshers) {
-      await this.notifyFresherAllocation(f);
-    }
   }
 
   private async saveAllocation(fresherId: any, familyId: any): Promise<any> {
