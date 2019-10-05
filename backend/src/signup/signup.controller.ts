@@ -82,4 +82,9 @@ export class SignupController {
   async allocate(@Body() allocations: any): Promise<void> {
     return await this.signupService.allocate(allocations);
   }
+
+  @Post('random-allocations')
+  async randoms(@Body() freshers: any[]): Promise<void> {
+    return await this.signupService.randoms(freshers);
+  }
 }

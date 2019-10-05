@@ -9,6 +9,7 @@ import { ParentStatus } from './models/dto/responses/parentStatus.model';
 import { MailerService } from '@nest-modules/mailer';
 
 import * as fs from 'fs';
+import {Interests} from './models/mongo/interests.model';
 
 @Injectable()
 export class SignupService {
@@ -277,6 +278,63 @@ export class SignupService {
       );
     }
   }
+
+  async randoms(freshers: any[]): Promise<void> {
+
+    const newFreshers = freshers.map(f => {
+      return new this.fresherModel({
+        student: {
+          firstName: f.firstName,
+          lastName: f.lastName,
+          shortcode: f.shortcode,
+          course: 'Computing',
+          gender: 'Male',
+          preferredName: null,
+          socialMedia: null,
+        },
+        selfDescription: null,
+        interests: new Interests(),
+        signedUpTs: null,
+        verified: true,
+      }).save();
+    });
+
+    let savedFreshers = await Promise.all(newFreshers);
+
+    const families: InstanceType<Family>[] = await this.familyModel.find();
+
+    families.sort((a, b) => a.kids.length - b.kids.length);
+
+    const familiesWithNewKids: any[] = [];
+
+    for (const family of families) {
+      if (savedFreshers.length < 1) {
+        break;
+      } else {
+        const f: InstanceType<Fresher> = savedFreshers.pop();
+        familiesWithNewKids.push(family);
+        family.kids.push(f._id);
+        f.family = family._id;
+        await f.save();
+        await family.save();
+      }
+    }
+
+    const emails = [];
+    for (const f of familiesWithNewKids) {
+      emails.push(f.parents.proposerId.student.shortcode + '@ic.ac.uk');
+      emails.push(f.parents.proposeeId.student.shortcode + '@ic.ac.uk');
+    }
+
+    await this.notifyParentAllocation(emails);
+
+    for (const f of savedFreshers) {
+      await this.notifyFresherAllocation(f);
+    }
+
+    return;
+  }
+
 
   private async proposalsToSelf(me: InstanceType<Parent>): Promise<Marriage[]> {
     return await this.marriageModel
