@@ -299,9 +299,19 @@ export class SignupService {
       }).save();
     });
 
-    let savedFreshers = await Promise.all(newFreshers);
+    const savedFreshers = await Promise.all(newFreshers);
 
-    const families: InstanceType<Family>[] = await this.familyModel.find();
+    const families: InstanceType<Family>[] =
+    await this.familyModel.find().populate([
+      {
+        path: 'parents',
+        model: Marriage,
+        populate: [
+          {path: 'proposerId', model: Parent },
+          {path: 'proposeeId', model: Parent },
+        ],
+      },
+    ]);
 
     families.sort((a, b) => a.kids.length - b.kids.length);
 

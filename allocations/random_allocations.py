@@ -32,5 +32,5 @@ with open('kids.csv') as f:
 for kid in new_kids:
     print(kid)
 
-requests.post('http://localhost:8080/api/signup/random-allocations',
+requests.post('https://mad.docsoc.co.uk/api/signup/random-allocations',
               json=new_kids)
