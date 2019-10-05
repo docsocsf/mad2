@@ -315,8 +315,8 @@ export class SignupService {
 
     const emails = [];
     for (const f of allocatedFamilies) {
-      emails.push[f.parents.proposerId.student.shortcode + '@ic.ac.uk'];
-      emails.push[f.parents.proposeeId.student.shortcode + '@ic.ac.uk'];
+      emails.push(f.parents.proposerId.student.shortcode + '@ic.ac.uk');
+      emails.push(f.parents.proposeeId.student.shortcode + '@ic.ac.uk');
     }
 
     await this.notifyParentAllocation(emails);
