@@ -5,7 +5,6 @@ from allocator.models import Family, Fresher
 
 import requests
 
-
 SEED = 12345
 LOCAL_URL = "http://localhost:8080/"
 MAX_CHILDREN = 2
@@ -15,7 +14,6 @@ random.seed(555)
 
 
 def dummy_allocate(families, freshers, debug=False):
-
     leftovers = []
 
     # Try fullfill BOTH female and JMC constraints
@@ -71,12 +69,11 @@ def dummy_allocate(families, freshers, debug=False):
 
     families.sort(key=lambda x: x.no_of_kids)
     for fresher, family in zip(leftovers, families):
-            family.unallocated_kids.append(fresher)
+        family.unallocated_kids.append(fresher)
 
 
 def transferrable(kid, current_family, potential_family,
                   max_children=MAX_CHILDREN):
-
     if constraints_violation(kid, potential_family):
         return False
 
@@ -161,7 +158,6 @@ def swaps_and_transfers(families, debug=False):
 
 
 def _family_stats(families):
-
     f_0 = [f for f in families if len(f.kids) == 0]
     f_1 = [f for f in families if len(f.kids) == 1]
     f_2 = [f for f in families if len(f.kids) == 2]
@@ -180,7 +176,6 @@ def _family_stats(families):
 
 
 def pre_stats(freshers, families):
-
     total = len(freshers)
     females = len([f for f in freshers if f.female])
     jmc = len([f for f in freshers if f.jmc])
@@ -208,7 +203,6 @@ def pre_stats(freshers, families):
 
 
 def post_stats(all_families):
-
     families = [f for f in all_families if f.unallocated_kids != []]
 
     scores = [f.score() for f in families]
