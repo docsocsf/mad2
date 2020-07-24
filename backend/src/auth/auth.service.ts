@@ -12,12 +12,12 @@ export class AuthService {
 
   async validateUser(username: string, password: string): Promise<AuthResponse> {
     return (await axios.post(
-      'https://func.docsoc.co.uk/.netlify/functions/firebase_auth',
+      'https://auth.docsoc.co.uk/authorize',
       {
         user: username,
         pass: password,
       },
-    ));
+    )).data;
   }
 
   async login(user: any) {
