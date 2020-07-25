@@ -13,6 +13,6 @@ async function bootstrap() {
   app.use(morgan('dev'));
   app.use(helmet());
 
-  await app.listen(8080);
+  await app.listen(3000);
 }
 bootstrap();

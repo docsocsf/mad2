@@ -7,7 +7,7 @@ import requests
 
 
 SEED = 12345
-LOCAL_URL = "http://localhost:8080/"
+LOCAL_URL = "http://localhost:3000/"
 MAX_CHILDREN = 2
 ITERATIONS = 1000
 

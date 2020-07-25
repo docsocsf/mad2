@@ -10,6 +10,7 @@ export class AuthController {
   @UseGuards(AuthGuard('local'))
   @Post('login')
   async login(@Request() req: any): Promise<any> {
+    console.log("Visiting login api");
     const token: string = await this.authService.login(req.user);
     req.res.cookie(
       'jwt',

@@ -1,9 +1,9 @@
 {
   "scripts": {
-    "start": "concurrently \" cd backend && yarn start:dev\" \"cd frontend && yarn start\"",
+    "start": "npx concurrently \"cd backend && yarn start:dev\" \"cd frontend && yarn start\"",
     "start:debug": "concurrently \" cd backend && yarn start:debug\" \"cd frontend && yarn start\""
   },
   "devDependencies": {
-    "concurrently": "^4.1.2"
+    "concurrently": "^5.2.0"
   }
 }

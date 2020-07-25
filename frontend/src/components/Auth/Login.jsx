@@ -21,6 +21,7 @@ export default class Login extends Component {
     event.preventDefault();
     const username = event.target.username.value;
     const password = event.target.password.value;
+    console.log(username);
     try {
       await axios.post(
         "/api/login",
@@ -32,7 +33,7 @@ export default class Login extends Component {
           withCredentials: true
         }
       );
-
+      
       const response = await axios.get("/api/me", {
         withCredentials: true
       });
