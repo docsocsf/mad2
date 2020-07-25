@@ -4,6 +4,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import * as morgan from 'morgan';
 import * as helmet from 'helmet';
 import * as fs from 'fs';
+require('dotenv').config();
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(ApplicationModule);

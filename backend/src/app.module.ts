@@ -6,16 +6,14 @@ import { CookieParserMiddleware } from '@nest-middlewares/cookie-parser';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { MailerModule } from '@nest-modules/mailer';
 import * as path from 'path';
+require('dotenv').config();
 
 @Module({
   imports: [
     SignupModule,
     TypegooseModule.forRoot(
-      process.env.MONGO_URL || 'mongodb://localhost:27017/demo',
+      process.env.MONGO_URL,
       {
-        user: process.env.MONGO_USER,
-        pass: process.env.MONGO_PASS,
-        dbName: process.env.MONGO_DB_NAME || 'demo',
         useNewUrlParser: true,
       },
     ),
