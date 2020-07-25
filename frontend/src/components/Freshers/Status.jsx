@@ -26,7 +26,6 @@ export default class Status extends Component {
         withCredentials: true
       })
       .then(data => {
-        console.log(data);
         const status = data.data;
         this.setState({
           parent1: status.family.parents.proposerId,

@@ -21,7 +21,6 @@ export default class Login extends Component {
     event.preventDefault();
     const username = event.target.username.value;
     const password = event.target.password.value;
-    console.log(username);
     try {
       await axios.post(
         "/api/login",
@@ -38,9 +37,10 @@ export default class Login extends Component {
         withCredentials: true
       });
       localStorage.expiry = response.data.exp;
-      localStorage.firstName = response.data.data.FirstName;
-      localStorage.lastName = response.data.data.Surname;
-      localStorage.shortcode = response.data.data.Login;
+      localStorage.firstName = response.data.user.FirstName;
+      localStorage.lastName = response.data.user.Surname;
+      localStorage.shortcode = response.data.user.Login;
+
       this.props.loginSuccess();
       this.setState({ loading: false });
     } catch (err) {

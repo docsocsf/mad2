@@ -58,13 +58,13 @@ export class SignupController {
   @UseGuards(AuthGuard('jwt'))
   @Post('parent/propose')
   async propose(@Request() req: any, @Body() proposal: Proposal): Promise<Marriage> {
-    return await this.signupService.propose(req.user.data.Login, proposal.partnerShortcode);
+    return await this.signupService.propose(req.user.user.Login, proposal.partnerShortcode);
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Get('parent/status')
   async status(@Request() req: any): Promise<ParentStatus> {
-    const shortcode: string = req.user.data.Login;
+    const shortcode: string = req.user.user.Login;
     return await this.signupService.parentStatus(shortcode);
   }
 

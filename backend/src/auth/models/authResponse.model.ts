@@ -1,8 +1,8 @@
 export class AuthResponse {
   readonly auth: boolean;
-  readonly data!: {
+  readonly user!: {
     FirstName: string,
-    LastName: string,
+    Surname: string,
     CID: string,
     Email: string,
     Login: string,
