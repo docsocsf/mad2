@@ -1,6 +1,5 @@
 export class AuthResponse {
   readonly auth: boolean;
-  readonly member: boolean;
   readonly data!: {
     FirstName: string,
     LastName: string,
@@ -9,5 +8,8 @@ export class AuthResponse {
     Login: string,
     OrderNo: number,
     MemberType: string,
+    title: string,
+    DoB: string,
+    Gender: string
   };
 }
