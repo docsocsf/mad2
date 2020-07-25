@@ -264,7 +264,6 @@ export class SignupService {
 
   async parentStatus(shortcode: string): Promise<ParentStatus> {
     const me: InstanceType<Parent> = await this.getParentFromShortcode(shortcode);
-
     if (me === null) {
       return new ParentStatus(me, false, [], []);
     } else if (me.family) {
